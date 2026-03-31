@@ -1,1703 +1,261 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>US Signal | Meraki Portal</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    :root {
-      --bg: #081a2f;
-      --bg-2: #0d2745;
-      --bg-3: #12345c;
-      --panel: #102844;
-      --panel-2: #15355b;
-      --line: rgba(255, 255, 255, 0.12);
-      --text: #e8f1fb;
-      --muted: #9db3ca;
-      --accent: #00a3e0;
-      --accent-2: #33c3ff;
-      --success: #2fcf84;
-      --warning: #f3b64a;
-      --danger: #f06a6a;
-      --shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
-      --radius: 18px;
-      --radius-sm: 12px;
-      --sidebar-width: 280px;
-      --content-max: 1700px;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      background:
-        radial-gradient(circle at top right, rgba(0, 163, 224, 0.18), transparent 18%),
-        linear-gradient(180deg, #071526 0%, #081a2f 100%);
-      color: var(--text);
-      font-family: "Segoe UI", Inter, Arial, sans-serif;
-      min-height: 100%;
-    }
-
-    a {
-      color: var(--accent-2);
-      text-decoration: none;
-    }
-
-    button, input, select, textarea {
-      font: inherit;
-    }
-
-    .app {
-      display: grid;
-      grid-template-columns: var(--sidebar-width) 1fr;
-      min-height: 100vh;
-    }
-
-    .sidebar {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      padding: 24px 18px;
-      background: rgba(6, 18, 34, 0.95);
-      backdrop-filter: blur(10px);
-      border-right: 1px solid var(--line);
-      overflow-y: auto;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 24px;
-    }
-
-    .brand-logo {
-      width: 56px;
-      height: 56px;
-      border-radius: 14px;
-      overflow: hidden;
-      background: #fff;
-      display: grid;
-      place-items: center;
-      box-shadow: var(--shadow);
-      flex-shrink: 0;
-    }
-
-    .brand-logo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .brand-copy h1 {
-      margin: 0;
-      font-size: 18px;
-      line-height: 1.2;
-      font-weight: 700;
-    }
-
-    .brand-copy p {
-      margin: 4px 0 0;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .nav-group {
-      margin-top: 18px;
-    }
-
-    .nav-title {
-      margin: 18px 10px 10px;
-      color: var(--muted);
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .nav-btn {
-      width: 100%;
-      border: 1px solid transparent;
-      background: transparent;
-      color: var(--text);
-      text-align: left;
-      padding: 12px 14px;
-      border-radius: 12px;
-      cursor: pointer;
-      margin-bottom: 8px;
-      transition: 0.2s ease;
-    }
-
-    .nav-btn:hover,
-    .nav-btn.active {
-      background: rgba(0, 163, 224, 0.12);
-      border-color: rgba(0, 163, 224, 0.25);
-    }
-
-    .sidebar-card {
-      margin-top: 18px;
-      padding: 14px;
-      border-radius: 16px;
-      background: linear-gradient(180deg, rgba(16, 40, 68, 0.95), rgba(9, 28, 49, 0.98));
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
-    }
-
-    .sidebar-card h3 {
-      margin: 0 0 10px;
-      font-size: 14px;
-    }
-
-    .sidebar-card p,
-    .sidebar-card li {
-      margin: 0;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    .sidebar-card ul {
-      padding-left: 18px;
-      margin: 0;
-    }
-
-    .main {
-      padding: 24px;
-    }
-
-    .content {
-      max-width: var(--content-max);
-      margin: 0 auto;
-    }
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 16px;
-      margin-bottom: 20px;
-    }
-
-    .topbar h2 {
-      margin: 0;
-      font-size: 30px;
-      line-height: 1.1;
-      font-weight: 800;
-    }
-
-    .topbar p {
-      margin: 8px 0 0;
-      color: var(--muted);
-      max-width: 900px;
-    }
-
-    .user-chip {
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--line);
-      color: var(--muted);
-      font-size: 13px;
-      white-space: nowrap;
-    }
-
-    .toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    .input,
-    .select,
-    .textarea {
-      width: 100%;
-      border: 1px solid var(--line);
-      background: #091b2f;
-      color: var(--text);
-      border-radius: 14px;
-      padding: 12px 14px;
-      outline: none;
-    }
-
-    .textarea {
-      resize: vertical;
-      min-height: 180px;
-    }
-
-    .toolbar .select,
-    .toolbar .input {
-      max-width: 300px;
-    }
-
-    .btn {
-      border: 0;
-      border-radius: 14px;
-      padding: 12px 16px;
-      cursor: pointer;
-      font-weight: 700;
-      color: #03233b;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      box-shadow: var(--shadow);
-      transition: 0.2s ease;
-    }
-
-    .btn:hover {
-      transform: translateY(-1px);
-    }
-
-    .btn.secondary {
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--text);
-      border: 1px solid var(--line);
-      box-shadow: none;
-    }
-
-    .btn.danger {
-      background: rgba(240, 106, 106, 0.14);
-      color: #ffd2d2;
-      border: 1px solid rgba(240, 106, 106, 0.25);
-      box-shadow: none;
-    }
-
-    .grid {
-      display: grid;
-      gap: 16px;
-    }
-
-    .grid.kpi {
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      margin-bottom: 18px;
-    }
-
-    .grid.two {
-      grid-template-columns: 1.2fr 1fr;
-      margin-bottom: 18px;
-    }
-
-    .grid.two-equal {
-      grid-template-columns: 1fr 1fr;
-      margin-bottom: 18px;
-    }
-
-    .grid.three {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      margin-bottom: 18px;
-    }
-
-    .card {
-      background: linear-gradient(180deg, rgba(16, 40, 68, 0.95), rgba(10, 29, 49, 0.98));
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 18px;
-      box-shadow: var(--shadow);
-    }
-
-    .card h3 {
-      margin: 0 0 12px;
-      font-size: 16px;
-    }
-
-    .subtle {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    .kpi-label {
-      color: var(--muted);
-      font-size: 13px;
-      margin-bottom: 8px;
-    }
-
-    .kpi-value {
-      font-size: 34px;
-      font-weight: 800;
-      margin-bottom: 6px;
-      line-height: 1;
-    }
-
-    .kpi-meta {
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .progress {
-      height: 10px;
-      border-radius: 999px;
-      overflow: hidden;
-      background: rgba(255, 255, 255, 0.08);
-      margin-top: 10px;
-    }
-
-    .progress > span {
-      display: block;
-      height: 100%;
-      width: 0;
-      background: linear-gradient(90deg, var(--accent), var(--accent-2));
-      border-radius: 999px;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border-radius: 999px;
-      padding: 8px 12px;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .badge.stage-ONBOARD,
-    .badge.stage-IMPLEMENT {
-      background: rgba(243, 182, 74, 0.14);
-      color: #ffd98f;
-    }
-
-    .badge.stage-USE {
-      background: rgba(0, 163, 224, 0.14);
-      color: #90e0ff;
-    }
-
-    .badge.stage-ENGAGE,
-    .badge.stage-ADOPT {
-      background: rgba(47, 207, 132, 0.14);
-      color: #aaf3cb;
-    }
-
-    .chip-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--line);
-      color: var(--text);
-      border-radius: 999px;
-      padding: 8px 10px;
-      font-size: 12px;
-    }
-
-    .chip.ok {
-      color: #9df0c6;
-    }
-
-    .chip.warn {
-      color: #ffd98f;
-    }
-
-    .chip.bad {
-      color: #ffb2b2;
-    }
-
-    .panel {
-      display: none;
-    }
-
-    .panel.active {
-      display: block;
-    }
-
-    .stat-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .mini-stat {
-      padding: 14px;
-      border-radius: 14px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--line);
-    }
-
-    .mini-stat .label {
-      color: var(--muted);
-      font-size: 12px;
-      margin-bottom: 8px;
-    }
-
-    .mini-stat .value {
-      font-size: 24px;
-      font-weight: 800;
-    }
-
-    .chart {
-      height: 280px;
-      display: flex;
-      align-items: flex-end;
-      gap: 10px;
-      padding-top: 12px;
-    }
-
-    .bar-col {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .bar-shell {
-      width: 100%;
-      height: 210px;
-      display: flex;
-      align-items: flex-end;
-    }
-
-    .bar-fill {
-      width: 100%;
-      min-height: 2px;
-      border-radius: 10px 10px 0 0;
-      background: linear-gradient(180deg, var(--accent-2), var(--accent));
-    }
-
-    .chart-label {
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .chart-value {
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .table-wrap {
-      overflow-x: auto;
-      border-radius: 14px;
-      border: 1px solid var(--line);
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-    }
-
-    th, td {
-      text-align: left;
-      vertical-align: top;
-      padding: 12px 10px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    th {
-      background: rgba(255, 255, 255, 0.03);
-      color: #b6cee7;
-      font-weight: 700;
-      position: sticky;
-      top: 0;
-    }
-
-    td code {
-      color: #c8e8ff;
-      background: rgba(255, 255, 255, 0.04);
-      padding: 2px 6px;
-      border-radius: 8px;
-    }
-
-    .status-ok {
-      color: var(--success);
-      font-weight: 700;
-    }
-
-    .status-warn {
-      color: var(--warning);
-      font-weight: 700;
-    }
-
-    .status-bad {
-      color: var(--danger);
-      font-weight: 700;
-    }
-
-    .section-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 12px;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .empty {
-      padding: 24px;
-      text-align: center;
-      color: var(--muted);
-      border: 1px dashed var(--line);
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.03);
-    }
-
-    .help {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.5;
-      margin-top: 8px;
-    }
-
-    .response-box {
-      max-width: 420px;
-      max-height: 140px;
-      overflow: auto;
-      white-space: pre-wrap;
-      word-break: break-word;
-      background: #07111e;
-      border: 1px solid var(--line);
-      padding: 10px;
-      border-radius: 12px;
-      font-size: 12px;
-      color: #d9ebfb;
-    }
-
-    .mono {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    }
-
-    .pill {
-      display: inline-block;
-      border-radius: 999px;
-      padding: 4px 10px;
-      font-size: 12px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--line);
-    }
-
-    .footer-note {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.5;
-      margin-top: 16px;
-    }
-
-    @media (max-width: 1400px) {
-      .grid.kpi {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 1100px) {
-      .app {
-        grid-template-columns: 1fr;
-      }
-
-      .sidebar {
-        position: relative;
-        height: auto;
-      }
-
-      .grid.two,
-      .grid.two-equal,
-      .grid.three,
-      .form-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .grid.kpi {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 700px) {
-      .main {
-        padding: 16px;
-      }
-
-      .topbar {
-        flex-direction: column;
-      }
-
-      .grid.kpi {
-        grid-template-columns: 1fr;
-      }
-
-      .toolbar .select,
-      .toolbar .input {
-        max-width: none;
-      }
-    }
-  </style>
+<meta charset="utf-8"/>
+<title>US Signal | Meraki Portal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<style>
+:root{
+--bg:#081a2f;
+--panel:#102844;
+--line:rgba(255,255,255,.12);
+--text:#e8f1fb;
+--muted:#9db3ca;
+--accent:#00a3e0;
+--success:#2fcf84;
+--warning:#f3b64a;
+--danger:#f06a6a;
+}
+
+body{margin:0;font-family:Segoe UI;background:var(--bg);color:var(--text)}
+.app{display:grid;grid-template-columns:260px 1fr;height:100vh}
+
+/* SIDEBAR */
+.sidebar{background:#061222;padding:20px}
+.sidebar img{width:100%;margin-bottom:20px}
+.nav-btn{display:block;width:100%;padding:10px;color:#9db3ca;background:none;border:none;text-align:left;cursor:pointer}
+.nav-btn:hover,.nav-btn.active{background:#12345c}
+
+/* HEADER */
+.global-header{
+position:sticky;top:0;z-index:10;
+background:#081a2f;border-bottom:1px solid var(--line);
+display:flex;justify-content:space-between;padding:10px
+}
+
+.global-header input{
+padding:8px;border-radius:8px;border:1px solid var(--line);
+background:#091b2f;color:white
+}
+
+/* MAIN */
+.main{padding:20px;overflow:auto}
+.card{background:var(--panel);padding:16px;border-radius:10px;margin-bottom:16px}
+.grid{display:grid;gap:12px}
+.kpi{grid-template-columns:repeat(4,1fr)}
+
+.kpi .value{font-size:28px;font-weight:800}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse}
+td,th{padding:8px;border-bottom:1px solid var(--line)}
+th{color:#9db3ca}
+
+/* RAG */
+.rag-green{background:#1f7a4d;padding:6px 10px;border-radius:999px}
+.rag-yellow{background:#7a5d1f;padding:6px 10px;border-radius:999px}
+.rag-red{background:#7a1f1f;padding:6px 10px;border-radius:999px}
+
+/* MODAL */
+.modal{
+position:fixed;top:0;left:0;width:100%;height:100%;
+background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center
+}
+.modal-content{background:#0d2745;padding:20px;border-radius:10px;width:600px;max-height:80%;overflow:auto}
+</style>
 </head>
+
 <body>
-  <div class="app">
-    <aside class="sidebar">
-      <div class="brand">
-        <div class="brand-logo">
-          <img src="https://oncall.onenecklab.com/ussignal.jpg" alt="US Signal Logo" />
-        </div>
-        <div class="brand-copy">
-          <h1>US Signal Meraki Portal</h1>
-          <p>Automation, reporting, and lifecycle visibility</p>
-        </div>
-      </div>
-
-      <div class="nav-group">
-        <div class="nav-title">Navigation</div>
-        <button class="nav-btn active" data-panel="dashboard">Dashboard</button>
-        <button class="nav-btn" data-panel="customers">Customers</button>
-        <button class="nav-btn" data-panel="snmp">SNMP Targets</button>
-        <button class="nav-btn" data-panel="onprem">On-Prem Upload</button>
-        <button class="nav-btn" data-panel="reports">Reports</button>
-      </div>
-
-      <div class="sidebar-card">
-        <h3>Lifecycle Thresholds</h3>
-        <ul>
-          <li>Use: 100+ weekly calls and at least 75% success</li>
-          <li>Engage: 5,000+ weekly calls and at least 85% success</li>
-          <li>Adopt: 7,500+ weekly calls and at least 95% success</li>
-        </ul>
-      </div>
-
-      <div class="sidebar-card">
-        <h3>Portal Notes</h3>
-        <p>
-          This frontend assumes Cloudflare Zero Trust is already protecting the Worker.
-          The Worker remains the source of truth for access control, execution, raw API logging,
-          weekly scoring, and CSV output.
-        </p>
-      </div>
-
-      <div class="sidebar-card">
-        <h3>Worker Endpoints Used</h3>
-        <ul>
-          <li><span class="mono">/api/me</span></li>
-          <li><span class="mono">/api/customers</span></li>
-          <li><span class="mono">/api/run</span></li>
-          <li><span class="mono">/api/weekly</span></li>
-          <li><span class="mono">/api/reports/calls</span></li>
-          <li><span class="mono">/api/reports/calls.csv</span></li>
-          <li><span class="mono">/api/snmp</span> or future SNMP route updates</li>
-          <li><span class="mono">/api/onprem/upload</span></li>
-        </ul>
-      </div>
-    </aside>
-
-    <main class="main">
-      <div class="content">
-        <div class="topbar">
-          <div>
-            <h2>Enterprise Dashboard</h2>
-            <p>
-              This page provides a centralized operational view of customer-level Meraki API activity,
-              weekly lifecycle attainment, raw status code visibility, customer administration, SNMP
-              target entry, on-prem upload handling, and CSV export for reporting.
-            </p>
-          </div>
-          <div class="user-chip" id="userChip">Signed in as loading...</div>
-        </div>
-
-        <section id="panel-dashboard" class="panel active">
-          <div class="toolbar">
-            <select id="customerFilter" class="select"></select>
-            <input id="weekStart" class="input" type="date" />
-            <button id="btnRefreshDashboard" class="btn">Refresh Dashboard</button>
-            <button id="btnRunNow" class="btn secondary">Run Selected Customer</button>
-            <button id="btnExportCsv" class="btn secondary">Export CSV</button>
-          </div>
-
-          <div class="grid kpi">
-            <div class="card">
-              <div class="kpi-label">Weekly Calls</div>
-              <div class="kpi-value" id="kpiWeeklyCalls">0</div>
-              <div class="kpi-meta" id="kpiWeeklyCallsMeta">Target 7,500</div>
-              <div class="progress"><span id="callsProgress"></span></div>
-            </div>
-
-            <div class="card">
-              <div class="kpi-label">Success Rate</div>
-              <div class="kpi-value" id="kpiSuccessRate">0%</div>
-              <div class="kpi-meta">Based on logged API responses this week</div>
-            </div>
-
-            <div class="card">
-              <div class="kpi-label">Lifecycle Stage</div>
-              <div style="margin-top: 12px;">
-                <span id="kpiStageBadge" class="badge stage-ONBOARD">ONBOARD</span>
-              </div>
-              <div class="kpi-meta" id="kpiStageReason" style="margin-top: 12px;">No lifecycle reason yet.</div>
-            </div>
-
-            <div class="card">
-              <div class="kpi-label">Write Activity</div>
-              <div class="kpi-value" id="kpiWriteCalls">0</div>
-              <div class="kpi-meta">POST + PUT + DELETE this week</div>
-            </div>
-
-            <div class="card">
-              <div class="kpi-label">Unique Endpoints</div>
-              <div class="kpi-value" id="kpiUniqueEndpoints">0</div>
-              <div class="kpi-meta">Distinct method + path observations</div>
-            </div>
-          </div>
-
-          <div class="grid two">
-            <div class="card">
-              <h3>Weekly Activity Trend</h3>
-              <div id="activityChart" class="chart"></div>
-              <div class="footer-note">
-                This chart visualizes total calls by day for the selected week. It helps confirm whether the customer is generating regular activity throughout the week rather than concentrating calls on only one day.
-              </div>
-            </div>
-
-            <div class="card">
-              <h3>Method and Status Distribution</h3>
-
-              <div class="stat-grid" style="margin-bottom: 14px;">
-                <div class="mini-stat">
-                  <div class="label">GET Calls</div>
-                  <div class="value" id="statGet">0</div>
-                </div>
-                <div class="mini-stat">
-                  <div class="label">POST Calls</div>
-                  <div class="value" id="statPost">0</div>
-                </div>
-                <div class="mini-stat">
-                  <div class="label">PUT Calls</div>
-                  <div class="value" id="statPut">0</div>
-                </div>
-                <div class="mini-stat">
-                  <div class="label">DELETE Calls</div>
-                  <div class="value" id="statDelete">0</div>
-                </div>
-              </div>
-
-              <h3 style="margin-top: 6px;">HTTP Status Codes</h3>
-              <div id="statusCodeChips" class="chip-row"></div>
-              <div class="footer-note">
-                These status buckets are useful for quickly spotting failures. Successful responses should typically be dominated by 2xx codes. Repeated 4xx or 5xx codes should be investigated.
-              </div>
-            </div>
-          </div>
-
-          <div class="grid two-equal">
-            <div class="card">
-              <h3>Selected Customer Summary</h3>
-              <div id="customerSummary" class="subtle">
-                Select a customer to view summary details.
-              </div>
-            </div>
-
-            <div class="card">
-              <h3>Run Guidance</h3>
-              <div class="subtle">
-                Use the Run Selected Customer action to trigger the Worker against the currently selected customer.
-                This is useful for manual validation after updating API keys, adding a new org, or testing
-                status-code logging before a scheduled cron window.
-              </div>
-              <div class="section-actions">
-                <button id="btnRefreshCustomersMini" class="btn secondary">Reload Customers</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <h3>Recent API Calls</h3>
-            <div id="recentCallsTableWrap"></div>
-          </div>
-        </section>
-
-        <section id="panel-customers" class="panel">
-          <div class="grid two">
-            <div class="card">
-              <h3>Add or Update Customer</h3>
-              <div class="form-grid">
-                <div>
-                  <label class="subtle">Customer ID</label>
-                  <input id="custCustomerId" class="input" placeholder="Optional. Leave blank to auto-generate from name." />
-                </div>
-                <div>
-                  <label class="subtle">Customer Name</label>
-                  <input id="custName" class="input" placeholder="Example: Acme Health" />
-                </div>
-                <div>
-                  <label class="subtle">Meraki Org ID</label>
-                  <input id="custOrgId" class="input" placeholder="Example: 123456" />
-                </div>
-                <div>
-                  <label class="subtle">Tags</label>
-                  <input id="custTags" class="input" placeholder="Example: healthcare, west, production" />
-                </div>
-                <div>
-                  <label class="subtle">API Key</label>
-                  <input id="custApiKey" class="input" placeholder="Stored in Worker secret KV via API" />
-                </div>
-                <div>
-                  <label class="subtle">Write Test Network ID</label>
-                  <input id="custNetworkId" class="input" placeholder="Optional dedicated test network" />
-                </div>
-                <div>
-                  <label class="subtle">Enabled</label>
-                  <select id="custEnabled" class="select">
-                    <option value="true">Enabled</option>
-                    <option value="false">Disabled</option>
-                  </select>
-                </div>
-                <div>
-                  <label class="subtle">Write Test Mode</label>
-                  <select id="custWriteTest" class="select">
-                    <option value="false">Disabled</option>
-                    <option value="true">Enabled</option>
-                  </select>
-                </div>
-              </div>
-
-              <div style="margin-top: 12px;">
-                <label class="subtle">Customer Notes</label>
-                <textarea id="custNotes" class="textarea" placeholder="Internal notes, special handling instructions, local collector usage notes, or customer-specific restrictions."></textarea>
-              </div>
-
-              <div class="section-actions">
-                <button id="btnSaveCustomer" class="btn">Save Customer</button>
-                <button id="btnClearCustomerForm" class="btn secondary">Clear Form</button>
-              </div>
-
-              <div class="help">
-                Saving a customer allows you to register a Meraki organization, preserve its API key in the Worker-backed secret store,
-                and determine whether the customer can be included in scheduled automation runs. If the customer blocks outbound
-                internet connectivity from their internal environment, you can still use the on-prem upload workflow later.
-              </div>
-            </div>
-
-            <div class="card">
-              <h3>Customers</h3>
-              <div id="customersTableWrap"></div>
-            </div>
-          </div>
-        </section>
-
-        <section id="panel-snmp" class="panel">
-          <div class="grid two">
-            <div class="card">
-              <h3>SNMP Target Entry</h3>
-              <div class="form-grid">
-                <div>
-                  <label class="subtle">Target Name</label>
-                  <input id="snmpName" class="input" placeholder="Example: HQ Core Stack" />
-                </div>
-                <div>
-                  <label class="subtle">Address / Range / CIDR</label>
-                  <input id="snmpAddress" class="input" placeholder="10.10.10.10 or 10.10.10.0/24 or 10.10.10.1-10.10.10.20" />
-                </div>
-                <div>
-                  <label class="subtle">SNMP Version</label>
-                  <select id="snmpVersion" class="select">
-                    <option value="v2c">SNMP v2c</option>
-                    <option value="v3">SNMP v3</option>
-                  </select>
-                </div>
-                <div>
-                  <label class="subtle">Credential / Community</label>
-                  <input id="snmpCommunity" class="input" placeholder="Community string or credential label" />
-                </div>
-              </div>
-
-              <div style="margin-top: 12px;">
-                <label class="subtle">Notes</label>
-                <textarea id="snmpNotes" class="textarea" placeholder="Document how this target should be collected, whether it is on-prem only, and whether neighbor discovery data will be uploaded later."></textarea>
-              </div>
-
-              <div class="section-actions">
-                <button id="btnSaveSnmp" class="btn">Save SNMP Target</button>
-                <button id="btnClearSnmpForm" class="btn secondary">Clear Form</button>
-              </div>
-
-              <div class="help">
-                This page is intentionally designed for storage and workflow coordination rather than native SNMP polling from the browser.
-                You can enter single IP addresses, subnet ranges, or CIDR values and later map them to local collection procedures.
-              </div>
-            </div>
-
-            <div class="card">
-              <h3>Saved SNMP Targets</h3>
-              <div id="snmpTargetsTableWrap"></div>
-            </div>
-          </div>
-        </section>
-
-        <section id="panel-onprem" class="panel">
-          <div class="grid two">
-            <div class="card">
-              <h3>On-Prem Upload</h3>
-              <div>
-                <label class="subtle">Collector JSON Output</label>
-                <textarea id="onPremJson" class="textarea" placeholder='Paste exported local collector JSON here.'></textarea>
-              </div>
-
-              <div class="section-actions">
-                <button id="btnUploadOnPrem" class="btn">Upload Collector JSON</button>
-                <button id="btnLoadExampleUpload" class="btn secondary">Load Example Payload</button>
-              </div>
-
-              <div class="help">
-                This workflow is intended for customers that do not allow direct API execution or telemetry upload from inside their network.
-                A local process can run internally, export JSON, and you can import that data here for reporting and lifecycle measurement.
-              </div>
-            </div>
-
-            <div class="card">
-              <h3>Upload Result</h3>
-              <div id="onPremResult" class="response-box">No upload performed yet.</div>
-            </div>
-          </div>
-        </section>
-
-        <section id="panel-reports" class="panel">
-          <div class="grid two">
-            <div class="card">
-              <h3>Call Report Filters</h3>
-              <div class="form-grid">
-                <div>
-                  <label class="subtle">Customer</label>
-                  <select id="reportCustomerFilter" class="select"></select>
-                </div>
-                <div>
-                  <label class="subtle">Limit</label>
-                  <select id="reportLimit" class="select">
-                    <option value="50">50</option>
-                    <option value="100" selected>100</option>
-                    <option value="250">250</option>
-                    <option value="500">500</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="section-actions">
-                <button id="btnRefreshReports" class="btn">Refresh Reports</button>
-                <button id="btnExportReportsCsv" class="btn secondary">Export Report CSV</button>
-              </div>
-
-              <div class="help">
-                Use this section when you want a raw operational view of recently logged calls with status codes, response snippets,
-                and endpoint details for troubleshooting, adoption analysis, or internal reporting.
-              </div>
-            </div>
-
-            <div class="card">
-              <h3>Lifecycle Snapshot</h3>
-              <div id="lifecycleSnapshot" class="subtle">
-                Refresh reports to generate the current snapshot.
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <h3>Detailed Call Report</h3>
-            <div id="reportCallsTableWrap"></div>
-          </div>
-        </section>
-      </div>
-    </main>
-  </div>
-
-  <script>
-    const API_BASE = "";
-    const state = {
-      me: null,
-      customers: [],
-      selectedCustomerId: "",
-      weekly: null,
-      calls: [],
-      snmpTargets: [],
-      reportCalls: []
-    };
-
-    document.addEventListener("DOMContentLoaded", () => {
-      bindNavigation();
-      bindActions();
-      initializeWeekStart();
-      bootstrap();
-    });
-
-    function bindNavigation() {
-      document.querySelectorAll(".nav-btn").forEach(btn => {
-        btn.addEventListener("click", () => activatePanel(btn.dataset.panel));
-      });
-    }
-
-    function bindActions() {
-      document.getElementById("btnRefreshDashboard").addEventListener("click", refreshDashboard);
-      document.getElementById("btnRunNow").addEventListener("click", runSelectedCustomer);
-      document.getElementById("btnExportCsv").addEventListener("click", exportDashboardCsv);
-      document.getElementById("btnRefreshCustomersMini").addEventListener("click", loadCustomers);
-
-      document.getElementById("btnSaveCustomer").addEventListener("click", saveCustomer);
-      document.getElementById("btnClearCustomerForm").addEventListener("click", clearCustomerForm);
-
-      document.getElementById("btnSaveSnmp").addEventListener("click", saveSnmpTarget);
-      document.getElementById("btnClearSnmpForm").addEventListener("click", clearSnmpForm);
-
-      document.getElementById("btnUploadOnPrem").addEventListener("click", uploadOnPremPayload);
-      document.getElementById("btnLoadExampleUpload").addEventListener("click", loadExampleUpload);
-
-      document.getElementById("btnRefreshReports").addEventListener("click", refreshReports);
-      document.getElementById("btnExportReportsCsv").addEventListener("click", exportReportsCsv);
-
-      document.getElementById("customerFilter").addEventListener("change", (e) => {
-        state.selectedCustomerId = e.target.value;
-        syncReportFilter();
-        refreshDashboard();
-      });
-
-      document.getElementById("reportCustomerFilter").addEventListener("change", () => {
-        refreshReports();
-      });
-    }
-
-    function activatePanel(panelName) {
-      document.querySelectorAll(".panel").forEach(panel => panel.classList.remove("active"));
-      document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
-
-      const panel = document.getElementById("panel-" + panelName);
-      if (panel) panel.classList.add("active");
-
-      const navBtn = document.querySelector('.nav-btn[data-panel="' + panelName + '"]');
-      if (navBtn) navBtn.classList.add("active");
-    }
-
-    function initializeWeekStart() {
-      const now = new Date();
-      const day = now.getUTCDay();
-      const diff = day === 0 ? -6 : 1 - day;
-      now.setUTCDate(now.getUTCDate() + diff);
-      document.getElementById("weekStart").value = now.toISOString().slice(0, 10);
-    }
-
-    async function bootstrap() {
-      try {
-        await loadMe();
-        await loadCustomers();
-        await loadSnmpTargets();
-        await refreshDashboard();
-        await refreshReports();
-      } catch (error) {
-        alert("Initialization failed: " + error.message);
-      }
-    }
-
-    async function api(path, options = {}) {
-      const response = await fetch(API_BASE + path, {
-        ...options,
-        headers: {
-          "Content-Type": "application/json",
-          ...(options.headers || {})
-        }
-      });
-
-      const contentType = response.headers.get("content-type") || "";
-      const isJson = contentType.includes("application/json");
-      const payload = isJson ? await response.json() : await response.text();
-
-      if (!response.ok) {
-        const message = typeof payload === "string"
-          ? payload
-          : (payload.error || payload.message || JSON.stringify(payload));
-        throw new Error(message);
-      }
-
-      return payload;
-    }
-
-    async function loadMe() {
-      const data = await api("/api/me");
-      state.me = data.user || data;
-      document.getElementById("userChip").textContent = "Signed in as " + (state.me.email || "unknown");
-    }
-
-    async function loadCustomers() {
-      const data = await api("/api/customers");
-      state.customers = data.items || [];
-      populateCustomerDropdowns();
-      renderCustomersTable();
-      renderCustomerSummary();
-    }
-
-    function populateCustomerDropdowns() {
-      const customerFilter = document.getElementById("customerFilter");
-      const reportCustomerFilter = document.getElementById("reportCustomerFilter");
-
-      customerFilter.innerHTML = "";
-      reportCustomerFilter.innerHTML = "";
-
-      const allOption1 = new Option("All Customers", "");
-      const allOption2 = new Option("All Customers", "");
-      customerFilter.add(allOption1);
-      reportCustomerFilter.add(allOption2);
-
-      state.customers.forEach(customer => {
-        customerFilter.add(new Option(customer.name + " (" + customer.customerId + ")", customer.customerId));
-        reportCustomerFilter.add(new Option(customer.name + " (" + customer.customerId + ")", customer.customerId));
-      });
-
-      customerFilter.value = state.selectedCustomerId || "";
-      reportCustomerFilter.value = state.selectedCustomerId || "";
-    }
-
-    function syncReportFilter() {
-      document.getElementById("reportCustomerFilter").value = state.selectedCustomerId || "";
-    }
-
-    function renderCustomersTable() {
-      const wrap = document.getElementById("customersTableWrap");
-
-      if (!state.customers.length) {
-        wrap.innerHTML = '<div class="empty">No customers have been configured yet.</div>';
-        return;
-      }
-
-      wrap.innerHTML = `
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Customer ID</th>
-                <th>Org ID</th>
-                <th>Enabled</th>
-                <th>API Key</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${state.customers.map(customer => `
-                <tr>
-                  <td><strong>${escapeHtml(customer.name || "")}</strong></td>
-                  <td><code>${escapeHtml(customer.customerId || "")}</code></td>
-                  <td><code>${escapeHtml(customer.orgId || "")}</code></td>
-                  <td>${customer.enabled ? '<span class="status-ok">Enabled</span>' : '<span class="status-bad">Disabled</span>'}</td>
-                  <td>${customer.hasApiKey ? '<span class="status-ok">Stored</span>' : '<span class="status-warn">Missing</span>'}</td>
-                  <td>
-                    <div class="section-actions">
-                      <button class="btn secondary" onclick="editCustomerById('${escapeJs(customer.customerId)}')">Edit</button>
-                      <button class="btn danger" onclick="deleteCustomerById('${escapeJs(customer.customerId)}')">Delete</button>
-                    </div>
-                  </td>
-                </tr>
-              `).join("")}
-            </tbody>
-          </table>
-        </div>
-      `;
-    }
-
-    window.editCustomerById = function(customerId) {
-      const customer = state.customers.find(c => c.customerId === customerId);
-      if (!customer) return;
-
-      document.getElementById("custCustomerId").value = customer.customerId || "";
-      document.getElementById("custName").value = customer.name || "";
-      document.getElementById("custOrgId").value = customer.orgId || "";
-      document.getElementById("custTags").value = Array.isArray(customer.tags) ? customer.tags.join(", ") : "";
-      document.getElementById("custApiKey").value = "";
-      document.getElementById("custNetworkId").value = customer.networkId || "";
-      document.getElementById("custEnabled").value = String(customer.enabled !== false);
-      document.getElementById("custWriteTest").value = String(customer.writeTest === true);
-      document.getElementById("custNotes").value = customer.notes || "";
-
-      activatePanel("customers");
-    };
-
-    window.deleteCustomerById = async function(customerId) {
-      if (!confirm("Delete customer " + customerId + "?")) return;
-      await api("/api/customers/" + encodeURIComponent(customerId), { method: "DELETE" });
-      await loadCustomers();
-      await refreshDashboard();
-      await refreshReports();
-    };
-
-    async function saveCustomer() {
-      const payload = {
-        customerId: document.getElementById("custCustomerId").value.trim() || undefined,
-        name: document.getElementById("custName").value.trim(),
-        orgId: document.getElementById("custOrgId").value.trim(),
-        apiKey: document.getElementById("custApiKey").value.trim() || undefined,
-        networkId: document.getElementById("custNetworkId").value.trim(),
-        enabled: document.getElementById("custEnabled").value === "true",
-        writeTest: document.getElementById("custWriteTest").value === "true",
-        notes: document.getElementById("custNotes").value.trim(),
-        tags: document.getElementById("custTags").value
-          .split(",")
-          .map(item => item.trim())
-          .filter(Boolean)
-      };
-
-      if (!payload.name || !payload.orgId) {
-        alert("Customer name and Meraki org ID are required.");
-        return;
-      }
-
-      await api("/api/customers", {
-        method: "POST",
-        body: JSON.stringify(payload)
-      });
-
-      clearCustomerForm();
-      await loadCustomers();
-      await refreshDashboard();
-      alert("Customer saved successfully.");
-    }
-
-    function clearCustomerForm() {
-      document.getElementById("custCustomerId").value = "";
-      document.getElementById("custName").value = "";
-      document.getElementById("custOrgId").value = "";
-      document.getElementById("custTags").value = "";
-      document.getElementById("custApiKey").value = "";
-      document.getElementById("custNetworkId").value = "";
-      document.getElementById("custEnabled").value = "true";
-      document.getElementById("custWriteTest").value = "false";
-      document.getElementById("custNotes").value = "";
-    }
-
-    async function refreshDashboard() {
-      const customerId = document.getElementById("customerFilter").value || "";
-      const weekStart = document.getElementById("weekStart").value;
-
-      state.selectedCustomerId = customerId;
-
-      state.weekly = await api("/api/weekly?customerId=" + encodeURIComponent(customerId));
-      const reportData = await api("/api/reports/calls");
-      const allCalls = reportData.items || [];
-
-      state.calls = customerId
-        ? allCalls.filter(call => call.customerId === customerId)
-        : allCalls;
-
-      renderDashboardKpis();
-      renderActivityChart();
-      renderRecentCallsTable();
-      renderCustomerSummary();
-    }
-
-    function renderDashboardKpis() {
-      const weekly = state.weekly || {};
-      const methods = weekly.methods || {};
-      const totalCalls = Number(weekly.totalCalls || 0);
-      const successRate = Number(weekly.successRate || 0);
-      const stage = weekly.stage || "ONBOARD";
-      const stageReason = weekly.stageReason || "No lifecycle reasoning available.";
-      const writeCalls = Number(methods.POST || 0) + Number(methods.PUT || 0) + Number(methods.DELETE || 0);
-      const uniqueEndpoints = Number(weekly.uniqueEndpoints || 0);
-
-      document.getElementById("kpiWeeklyCalls").textContent = formatNumber(totalCalls);
-      document.getElementById("kpiSuccessRate").textContent = successRate + "%";
-      document.getElementById("kpiWriteCalls").textContent = formatNumber(writeCalls);
-      document.getElementById("kpiUniqueEndpoints").textContent = formatNumber(uniqueEndpoints);
-
-      const stageBadge = document.getElementById("kpiStageBadge");
-      stageBadge.textContent = stage;
-      stageBadge.className = "badge stage-" + stage;
-
-      document.getElementById("kpiStageReason").textContent = stageReason;
-
-      const progress = Math.min((totalCalls / 7500) * 100, 100);
-      document.getElementById("callsProgress").style.width = progress + "%";
-      document.getElementById("kpiWeeklyCallsMeta").textContent = "Target 7,500 | " + progress.toFixed(1) + "% achieved";
-
-      document.getElementById("statGet").textContent = formatNumber(methods.GET || 0);
-      document.getElementById("statPost").textContent = formatNumber(methods.POST || 0);
-      document.getElementById("statPut").textContent = formatNumber(methods.PUT || 0);
-      document.getElementById("statDelete").textContent = formatNumber(methods.DELETE || 0);
-
-      renderStatusCodeChips();
-    }
-
-    function renderStatusCodeChips() {
-      const wrap = document.getElementById("statusCodeChips");
-      const counts = (state.weekly && state.weekly.statusCounts) || {};
-      const entries = Object.entries(counts).sort((a, b) => a[0].localeCompare(b[0]));
-
-      if (!entries.length) {
-        wrap.innerHTML = '<div class="empty" style="width:100%;">No status code data is available.</div>';
-        return;
-      }
-
-      wrap.innerHTML = entries.map(([code, count]) => {
-        let cls = "warn";
-        if (String(code).startsWith("2")) cls = "ok";
-        if (String(code).startsWith("4") || String(code).startsWith("5")) cls = "bad";
-        return `<span class="chip ${cls}">${escapeHtml(code)} · ${formatNumber(count)}</span>`;
-      }).join("");
-    }
-
-    function renderActivityChart() {
-      const chart = document.getElementById("activityChart");
-      const daily = (state.weekly && state.weekly.daily) || {};
-      const days = Object.keys(daily).sort();
-
-      if (!days.length) {
-        chart.innerHTML = '<div class="empty" style="width:100%;">No daily activity exists for the selected period.</div>';
-        return;
-      }
-
-      const max = Math.max(...days.map(day => Number(daily[day].totalCalls || 0)), 1);
-
-      chart.innerHTML = days.map(day => {
-        const total = Number(daily[day].totalCalls || 0);
-        const height = Math.max((total / max) * 100, total > 0 ? 3 : 0);
-        return `
-          <div class="bar-col">
-            <div class="bar-shell">
-              <div class="bar-fill" style="height:${height}%"></div>
-            </div>
-            <div class="chart-label">${escapeHtml(day.slice(5))}</div>
-            <div class="chart-value">${formatNumber(total)}</div>
-          </div>
-        `;
-      }).join("");
-    }
-
-    function renderRecentCallsTable() {
-      const wrap = document.getElementById("recentCallsTableWrap");
-
-      if (!state.calls.length) {
-        wrap.innerHTML = '<div class="empty">No recent call logs are available for the current selection.</div>';
-        return;
-      }
-
-      const rows = state.calls
-        .sort((a, b) => String(b.timestamp || "").localeCompare(String(a.timestamp || "")))
-        .slice(0, 100)
-        .map(call => {
-          const statusClass = classifyStatus(call.status);
-          return `
-            <tr>
-              <td>${escapeHtml(call.timestamp || "")}</td>
-              <td>${escapeHtml(call.customerId || "")}</td>
-              <td><span class="pill">${escapeHtml(call.method || "")}</span></td>
-              <td><code>${escapeHtml(call.path || "")}</code></td>
-              <td><span class="${statusClass}">${escapeHtml(String(call.status ?? ""))}</span></td>
-              <td>${formatNumber(call.latency || call.latencyMs || 0)} ms</td>
-              <td>
-                <div class="response-box">${escapeHtml((call.response || call.responseSnippet || "").slice(0, 900))}</div>
-              </td>
-            </tr>
-          `;
-        }).join("");
-
-      wrap.innerHTML = `
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Timestamp</th>
-                <th>Customer</th>
-                <th>Method</th>
-                <th>Path</th>
-                <th>Status</th>
-                <th>Latency</th>
-                <th>Response</th>
-              </tr>
-            </thead>
-            <tbody>${rows}</tbody>
-          </table>
-        </div>
-      `;
-    }
-
-    function renderCustomerSummary() {
-      const summary = document.getElementById("customerSummary");
-      const customerId = state.selectedCustomerId;
-      if (!customerId) {
-        summary.innerHTML = `
-          <p>All customers are currently selected.</p>
-          <p>This view aggregates weekly activity across every customer currently returned by the Worker.</p>
-        `;
-        return;
-      }
-
-      const customer = state.customers.find(c => c.customerId === customerId);
-      if (!customer) {
-        summary.textContent = "Selected customer details could not be found.";
-        return;
-      }
-
-      summary.innerHTML = `
-        <div><strong>Name:</strong> ${escapeHtml(customer.name || "")}</div>
-        <div><strong>Customer ID:</strong> <span class="mono">${escapeHtml(customer.customerId || "")}</span></div>
-        <div><strong>Org ID:</strong> <span class="mono">${escapeHtml(customer.orgId || "")}</span></div>
-        <div><strong>Enabled:</strong> ${customer.enabled ? "Yes" : "No"}</div>
-        <div><strong>Write Test:</strong> ${customer.writeTest ? "Enabled" : "Disabled"}</div>
-        <div><strong>Test Network:</strong> ${escapeHtml(customer.networkId || "Not set")}</div>
-        <div><strong>Tags:</strong> ${Array.isArray(customer.tags) && customer.tags.length ? customer.tags.map(escapeHtml).join(", ") : "None"}</div>
-        <div><strong>Notes:</strong> ${escapeHtml(customer.notes || "No notes")}</div>
-      `;
-    }
-
-    async function runSelectedCustomer() {
-      const customerId = document.getElementById("customerFilter").value || "";
-      const result = await api("/api/run", {
-        method: "GET"
-      });
-
-      alert(
-        "Run completed.\n\n" +
-        "Total Calls: " + (result.totalCalls || 0) + "\n" +
-        "Success Calls: " + (result.successCalls || 0) + "\n" +
-        "Success Rate: " + (result.successRate || 0) + "%"
-      );
-
-      await refreshDashboard();
-      await refreshReports();
-    }
-
-    function exportDashboardCsv() {
-      const url = API_BASE + "/api/reports/calls.csv";
-      window.open(url, "_blank");
-    }
-
-    async function loadSnmpTargets() {
-      const targets = JSON.parse(localStorage.getItem("meraki_snmp_targets") || "[]");
-      state.snmpTargets = targets;
-      renderSnmpTargetsTable();
-    }
-
-    function renderSnmpTargetsTable() {
-      const wrap = document.getElementById("snmpTargetsTableWrap");
-
-      if (!state.snmpTargets.length) {
-        wrap.innerHTML = '<div class="empty">No SNMP targets have been stored in this browser yet.</div>';
-        return;
-      }
-
-      wrap.innerHTML = `
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Address</th>
-                <th>Version</th>
-                <th>Community/Credential</th>
-                <th>Notes</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${state.snmpTargets.map((target, index) => `
-                <tr>
-                  <td>${escapeHtml(target.name)}</td>
-                  <td><code>${escapeHtml(target.address)}</code></td>
-                  <td>${escapeHtml(target.version)}</td>
-                  <td>${escapeHtml(target.community)}</td>
-                  <td>${escapeHtml(target.notes || "")}</td>
-                  <td>
-                    <button class="btn danger" onclick="deleteSnmpTarget(${index})">Delete</button>
-                  </td>
-                </tr>
-              `).join("")}
-            </tbody>
-          </table>
-        </div>
-      `;
-    }
-
-    async function saveSnmpTarget() {
-      const target = {
-        name: document.getElementById("snmpName").value.trim(),
-        address: document.getElementById("snmpAddress").value.trim(),
-        version: document.getElementById("snmpVersion").value,
-        community: document.getElementById("snmpCommunity").value.trim(),
-        notes: document.getElementById("snmpNotes").value.trim()
-      };
-
-      if (!target.name || !target.address) {
-        alert("SNMP target name and address are required.");
-        return;
-      }
-
-      state.snmpTargets.push(target);
-      localStorage.setItem("meraki_snmp_targets", JSON.stringify(state.snmpTargets));
-      renderSnmpTargetsTable();
-      clearSnmpForm();
-
-      try {
-        await api("/api/snmp", {
-          method: "POST",
-          body: JSON.stringify(target)
-        });
-      } catch (error) {
-        console.warn("SNMP API route did not accept payload:", error.message);
-      }
-
-      alert("SNMP target saved.");
-    }
-
-    window.deleteSnmpTarget = function(index) {
-      state.snmpTargets.splice(index, 1);
-      localStorage.setItem("meraki_snmp_targets", JSON.stringify(state.snmpTargets));
-      renderSnmpTargetsTable();
-    };
-
-    function clearSnmpForm() {
-      document.getElementById("snmpName").value = "";
-      document.getElementById("snmpAddress").value = "";
-      document.getElementById("snmpVersion").value = "v2c";
-      document.getElementById("snmpCommunity").value = "";
-      document.getElementById("snmpNotes").value = "";
-    }
-
-    async function uploadOnPremPayload() {
-      const raw = document.getElementById("onPremJson").value.trim();
-      if (!raw) {
-        alert("Paste collector JSON first.");
-        return;
-      }
-
-      let parsed;
-      try {
-        parsed = JSON.parse(raw);
-      } catch (error) {
-        alert("The pasted JSON is not valid.");
-        return;
-      }
-
-      const result = await api("/api/onprem/upload", {
-        method: "POST",
-        body: JSON.stringify(parsed)
-      });
-
-      document.getElementById("onPremResult").textContent = JSON.stringify(result, null, 2);
-      await refreshDashboard();
-      await refreshReports();
-    }
-
-    function loadExampleUpload() {
-      const example = {
-        calls: [
-          {
-            customerId: "example-customer",
-            method: "GET",
-            path: "/organizations/123456/networks",
-            status: 200,
-            success: true,
-            latencyMs: 210,
-            timestamp: new Date().toISOString(),
-            responseSnippet: "{\"items\":[]}"
-          },
-          {
-            customerId: "example-customer",
-            method: "GET",
-            path: "/organizations/123456/devices",
-            status: 200,
-            success: true,
-            latencyMs: 245,
-            timestamp: new Date().toISOString(),
-            responseSnippet: "{\"devices\":[]}"
-          }
-        ]
-      };
-
-      document.getElementById("onPremJson").value = JSON.stringify(example, null, 2);
-    }
-
-    async function refreshReports() {
-      const customerId = document.getElementById("reportCustomerFilter").value || "";
-      const data = await api("/api/reports/calls");
-      state.reportCalls = customerId
-        ? (data.items || []).filter(item => item.customerId === customerId)
-        : (data.items || []);
-
-      renderLifecycleSnapshot();
-      renderReportCallsTable();
-    }
-
-    function renderLifecycleSnapshot() {
-      const wrap = document.getElementById("lifecycleSnapshot");
-      const weekly = state.weekly || {};
-      wrap.innerHTML = `
-        <div><strong>Stage:</strong> ${escapeHtml(weekly.stage || "Unknown")}</div>
-        <div><strong>Total Calls:</strong> ${formatNumber(weekly.totalCalls || 0)}</div>
-        <div><strong>Success Rate:</strong> ${escapeHtml(String(weekly.successRate || 0))}%</div>
-        <div><strong>Reason:</strong> ${escapeHtml(weekly.stageReason || "No stage reasoning was returned.")}</div>
-      `;
-    }
-
-    function renderReportCallsTable() {
-      const wrap = document.getElementById("reportCallsTableWrap");
-
-      if (!state.reportCalls.length) {
-        wrap.innerHTML = '<div class="empty">No call report entries are available.</div>';
-        return;
-      }
-
-      const limit = Number(document.getElementById("reportLimit").value || 100);
-      const rows = state.reportCalls
-        .sort((a, b) => String(b.timestamp || "").localeCompare(String(a.timestamp || "")))
-        .slice(0, limit)
-        .map(item => `
-          <tr>
-            <td>${escapeHtml(item.timestamp || "")}</td>
-            <td>${escapeHtml(item.customerId || "")}</td>
-            <td><span class="pill">${escapeHtml(item.method || "")}</span></td>
-            <td><code>${escapeHtml(item.path || "")}</code></td>
-            <td><span class="${classifyStatus(item.status)}">${escapeHtml(String(item.status ?? ""))}</span></td>
-            <td>${formatNumber(item.latency || item.latencyMs || 0)} ms</td>
-            <td>${escapeHtml(String(item.success))}</td>
-            <td><div class="response-box">${escapeHtml((item.response || item.responseSnippet || "").slice(0, 1200))}</div></td>
-          </tr>
-        `).join("");
-
-      wrap.innerHTML = `
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Timestamp</th>
-                <th>Customer</th>
-                <th>Method</th>
-                <th>Path</th>
-                <th>Status</th>
-                <th>Latency</th>
-                <th>Success</th>
-                <th>Response Snippet</th>
-              </tr>
-            </thead>
-            <tbody>${rows}</tbody>
-          </table>
-        </div>
-      `;
-    }
-
-    function exportReportsCsv() {
-      const url = API_BASE + "/api/reports/calls.csv";
-      window.open(url, "_blank");
-    }
-
-    function classifyStatus(status) {
-      const s = String(status || "");
-      if (s.startsWith("2")) return "status-ok";
-      if (s.startsWith("4") || s.startsWith("5")) return "status-bad";
-      return "status-warn";
-    }
-
-    function formatNumber(value) {
-      return new Intl.NumberFormat().format(Number(value || 0));
-    }
-
-    function escapeHtml(str) {
-      return String(str ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#39;");
-    }
-
-    function escapeJs(str) {
-      return String(str ?? "").replace(/'/g, "\\'");
-    }
-  </script>
+
+<div class="app">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+<img src="https://oncall.onenecklab.com/ussignal.jpg"/>
+
+<button class="nav-btn active" data-route="dashboard">Dashboard</button>
+<button class="nav-btn" data-route="customers">Customers</button>
+<button class="nav-btn" data-route="reports">Reports</button>
+<button class="nav-btn" data-route="snmp">SNMP</button>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- HEADER -->
+<div class="global-header">
+<div>
+<input id="search" placeholder="Search logs, customers..."/>
+</div>
+
+<div>
+<select id="customerSwitcher"></select>
+<span id="rag" class="rag-red">Critical</span>
+<button onclick="runNow()">Run</button>
+</div>
+</div>
+
+<!-- CRON -->
+<div id="cronBanner" class="card"></div>
+
+<!-- KPI -->
+<div class="grid kpi">
+<div class="card"><div>Calls</div><div id="kpiCalls" class="value">0</div></div>
+<div class="card"><div>Success</div><div id="kpiSuccess" class="value">0%</div></div>
+<div class="card"><div>Stage</div><div id="kpiStage">-</div></div>
+<div class="card"><div>Write</div><div id="kpiWrite">0</div></div>
+</div>
+
+<!-- TABLE -->
+<div class="card">
+<h3>Recent Calls</h3>
+<div id="table"></div>
+</div>
+
+</div>
+</div>
+
+<!-- MODAL -->
+<div id="modal" class="modal">
+<div class="modal-content" id="modalContent"></div>
+</div>
+
+<script>
+const API="";
+
+let state={customers:[],calls:[],weekly:{}};
+
+init();
+
+async function init(){
+await loadCustomers();
+await refresh();
+setInterval(refresh,60000);
+}
+
+/* API */
+async function api(path){
+const r=await fetch(API+path);
+return await r.json();
+}
+
+/* LOAD */
+async function loadCustomers(){
+const d=await api("/api/customers");
+state.customers=d.items||[];
+
+const sel=document.getElementById("customerSwitcher");
+sel.innerHTML="<option value=''>All</option>";
+
+state.customers.forEach(c=>{
+sel.add(new Option(c.name,c.customerId));
+});
+
+sel.onchange=refresh;
+}
+
+/* DASHBOARD */
+async function refresh(){
+const cid=document.getElementById("customerSwitcher").value;
+
+state.weekly=await api("/api/weekly?customerId="+cid);
+state.calls=(await api("/api/reports/calls")).items||[];
+
+render();
+await loadCron();
+}
+
+/* RENDER */
+function render(){
+const w=state.weekly;
+
+document.getElementById("kpiCalls").innerText=w.totalCalls||0;
+document.getElementById("kpiSuccess").innerText=(w.successRate||0)+"%";
+document.getElementById("kpiStage").innerText=w.stage||"-";
+
+const write=(w.methods?.POST||0)+(w.methods?.PUT||0)+(w.methods?.DELETE||0);
+document.getElementById("kpiWrite").innerText=write;
+
+updateRAG();
+renderTable();
+}
+
+/* RAG */
+function updateRAG(){
+const w=state.weekly;
+let el=document.getElementById("rag");
+
+if(w.totalCalls>=7500 && w.successRate>=95){
+el.className="rag-green";el.innerText="Healthy";
+}else if(w.totalCalls>=5000){
+el.className="rag-yellow";el.innerText="At Risk";
+}else{
+el.className="rag-red";el.innerText="Critical";
+}
+}
+
+/* TABLE */
+function renderTable(){
+let rows=state.calls.slice(0,50).map(c=>`
+<tr onclick="openModal('${c.timestamp}')">
+<td>${c.timestamp}</td>
+<td>${c.customerId}</td>
+<td>${c.method}</td>
+<td>${c.path}</td>
+<td>${c.status}</td>
+</tr>`).join("");
+
+document.getElementById("table").innerHTML=`
+<table>
+<tr><th>Time</th><th>Customer</th><th>Method</th><th>Path</th><th>Status</th></tr>
+${rows}
+</table>`;
+}
+
+/* MODAL */
+function openModal(ts){
+const call=state.calls.find(c=>c.timestamp===ts);
+document.getElementById("modalContent").innerText=JSON.stringify(call,null,2);
+document.getElementById("modal").style.display="flex";
+}
+
+document.getElementById("modal").onclick=()=>document.getElementById("modal").style.display="none";
+
+/* CRON */
+async function loadCron(){
+const d=await api("/api/cron/status");
+if(!d.lastRun){
+document.getElementById("cronBanner").innerText="No cron run yet";
+return;
+}
+document.getElementById("cronBanner").innerText=
+"Last Run: "+d.lastRun.ts+" | Calls: "+d.lastRun.result.totalCalls;
+}
+
+/* ACTIONS */
+async function runNow(){
+const r=await api("/api/run");
+alert(JSON.stringify(r,null,2));
+refresh();
+}
+
+/* SEARCH */
+document.getElementById("search").oninput=(e)=>{
+const q=e.target.value.toLowerCase();
+state.calls=state.calls.filter(c=>JSON.stringify(c).toLowerCase().includes(q));
+renderTable();
+};
+
+/* ROUTING */
+document.querySelectorAll(".nav-btn").forEach(b=>{
+b.onclick=()=>{
+history.pushState({}, "", "/"+b.dataset.route);
+document.querySelectorAll(".nav-btn").forEach(x=>x.classList.remove("active"));
+b.classList.add("active");
+};
+});
+</script>
+
 </body>
 </html>
