@@ -2,756 +2,994 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>US Signal | Meraki Portal</title>
+  <title>US Signal | Meraki Enterprise Portal</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
   <style>
-    :root{
-      --bg:#081a2f;
-      --bg-2:#0d2745;
-      --bg-3:#12345c;
-      --panel:#102844;
-      --panel-2:#15355b;
-      --panel-3:#0f223a;
-      --line:rgba(255,255,255,.12);
-      --line-2:rgba(255,255,255,.08);
-      --text:#e8f1fb;
-      --muted:#9db3ca;
-      --accent:#00a3e0;
-      --accent-2:#33c3ff;
-      --success:#2fcf84;
-      --warning:#f3b64a;
-      --danger:#f06a6a;
-      --shadow:0 18px 40px rgba(0,0,0,.28);
-      --radius:18px;
-      --radius-sm:12px;
-      --sidebar-width:280px;
-      --content-max:1800px;
-      --header-height:68px;
+    :root {
+      --bg: #081a2f;
+      --bg-2: #0d2745;
+      --bg-3: #12345c;
+      --panel: #102844;
+      --panel-2: #15355b;
+      --panel-3: #0f223a;
+      --line: rgba(255,255,255,.12);
+      --line-2: rgba(255,255,255,.08);
+      --text: #e8f1fb;
+      --muted: #9db3ca;
+      --accent: #00a3e0;
+      --accent-2: #33c3ff;
+      --success: #2fcf84;
+      --warning: #f3b64a;
+      --danger: #f06a6a;
+      --shadow: 0 18px 40px rgba(0,0,0,.28);
+      --radius: 18px;
+      --radius-sm: 12px;
+      --sidebar-width: 296px;
+      --content-max: 1880px;
+      --header-height: 72px;
+      --card-padding: 18px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --topology-mx: #2fcf84;
+      --topology-ms: #00a3e0;
+      --topology-mr: #f3b64a;
+      --topology-other: #f06a6a;
     }
 
-    * { box-sizing:border-box; }
+    :root.light {
+      --bg: #edf4fb;
+      --bg-2: #f8fbff;
+      --bg-3: #dfefff;
+      --panel: #ffffff;
+      --panel-2: #f6fbff;
+      --panel-3: #f1f7fd;
+      --line: rgba(0,0,0,.09);
+      --line-2: rgba(0,0,0,.06);
+      --text: #10253a;
+      --muted: #5d748c;
+      --accent: #007cb3;
+      --accent-2: #2d9fe5;
+      --success: #138d56;
+      --warning: #c58517;
+      --danger: #cf4256;
+      --shadow: 0 12px 32px rgba(14,31,53,.10);
+    }
 
-    html, body {
-      margin:0;
-      padding:0;
-      min-height:100%;
-      color:var(--text);
-      font-family:"Segoe UI", Inter, Arial, sans-serif;
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      color: var(--text);
+      font-family: "Segoe UI", Inter, Arial, sans-serif;
       background:
         radial-gradient(circle at top right, rgba(0,163,224,.16), transparent 18%),
         linear-gradient(180deg, #071526 0%, #081a2f 100%);
     }
 
+    :root.light html,
+    :root.light body {
+      background:
+        radial-gradient(circle at top right, rgba(0,163,224,.08), transparent 18%),
+        linear-gradient(180deg, #edf4fb 0%, #e8f1f8 100%);
+    }
+
     body {
-      overflow:hidden;
+      overflow: hidden;
     }
 
     a {
-      color:var(--accent-2);
-      text-decoration:none;
+      color: var(--accent-2);
+      text-decoration: none;
     }
 
-    button, input, select, textarea {
-      font:inherit;
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
     }
 
     .app {
-      display:grid;
-      grid-template-columns:var(--sidebar-width) 1fr;
-      min-height:100vh;
+      display: grid;
+      grid-template-columns: var(--sidebar-width) 1fr;
+      min-height: 100vh;
     }
 
     .sidebar {
-      position:sticky;
-      top:0;
-      height:100vh;
-      overflow:auto;
-      padding:22px 18px;
-      background:rgba(6,18,34,.96);
-      backdrop-filter:blur(10px);
-      border-right:1px solid var(--line);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: auto;
+      padding: 22px 18px;
+      background: rgba(6,18,34,.96);
+      backdrop-filter: blur(10px);
+      border-right: 1px solid var(--line);
+    }
+
+    :root.light .sidebar {
+      background: rgba(255,255,255,.96);
     }
 
     .brand {
-      display:flex;
-      align-items:center;
-      gap:14px;
-      margin-bottom:20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
     }
 
     .brand-logo {
-      width:58px;
-      height:58px;
-      border-radius:14px;
-      overflow:hidden;
-      background:#fff;
-      box-shadow:var(--shadow);
-      flex:0 0 auto;
+      width: 58px;
+      height: 58px;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: var(--shadow);
+      flex: 0 0 auto;
+      border: 1px solid var(--line);
     }
 
     .brand-logo img {
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     .brand-copy h1 {
-      margin:0;
-      font-size:18px;
-      line-height:1.15;
-      font-weight:800;
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.15;
+      font-weight: 800;
     }
 
     .brand-copy p {
-      margin:4px 0 0;
-      color:var(--muted);
-      font-size:12px;
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 12px;
     }
 
     .sidebar-section {
-      margin-top:18px;
+      margin-top: 18px;
     }
 
     .sidebar-title {
-      margin:0 10px 10px;
-      color:var(--muted);
-      font-size:12px;
-      text-transform:uppercase;
-      letter-spacing:.08em;
+      margin: 0 10px 10px;
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
     }
 
     .nav-btn {
-      width:100%;
-      border:1px solid transparent;
-      background:transparent;
-      color:var(--text);
-      text-align:left;
-      padding:12px 14px;
-      border-radius:12px;
-      cursor:pointer;
-      margin-bottom:8px;
-      transition:.18s ease;
+      width: 100%;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text);
+      text-align: left;
+      padding: 12px 14px;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-bottom: 8px;
+      transition: .18s ease;
     }
 
     .nav-btn:hover,
     .nav-btn.active {
-      background:rgba(0,163,224,.12);
-      border-color:rgba(0,163,224,.25);
+      background: rgba(0,163,224,.12);
+      border-color: rgba(0,163,224,.25);
     }
 
     .sidebar-card {
-      margin-top:16px;
-      padding:14px;
-      border-radius:16px;
-      background:linear-gradient(180deg, rgba(16,40,68,.95), rgba(9,28,49,.98));
-      border:1px solid var(--line);
-      box-shadow:var(--shadow);
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(16,40,68,.95), rgba(9,28,49,.98));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    :root.light .sidebar-card {
+      background: linear-gradient(180deg, #ffffff, #f7fbff);
     }
 
     .sidebar-card h3 {
-      margin:0 0 10px;
-      font-size:14px;
+      margin: 0 0 10px;
+      font-size: 14px;
     }
 
     .sidebar-card p,
     .sidebar-card li {
-      margin:0;
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.5;
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
     }
 
     .sidebar-card ul {
-      margin:0;
-      padding-left:18px;
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .sidebar-actions {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
     }
 
     .main {
-      height:100vh;
-      overflow:auto;
+      height: 100vh;
+      overflow: auto;
     }
 
     .global-header {
-      position:sticky;
-      top:0;
-      z-index:20;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:16px;
-      min-height:var(--header-height);
-      padding:14px 22px;
-      background:rgba(8,26,47,.92);
-      border-bottom:1px solid var(--line);
-      backdrop-filter:blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      min-height: var(--header-height);
+      padding: 14px 22px;
+      background: rgba(8,26,47,.92);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+    }
+
+    :root.light .global-header {
+      background: rgba(248,251,255,.92);
     }
 
     .gh-left,
     .gh-right {
-      display:flex;
-      align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
     .gh-search {
-      width:360px;
-      max-width:50vw;
-      border:1px solid var(--line);
-      background:#091b2f;
-      color:var(--text);
-      border-radius:12px;
-      padding:11px 14px;
-      outline:none;
+      width: 360px;
+      max-width: 50vw;
+      border: 1px solid var(--line);
+      background: #091b2f;
+      color: var(--text);
+      border-radius: 12px;
+      padding: 11px 14px;
+      outline: none;
+    }
+
+    :root.light .gh-search,
+    :root.light .input,
+    :root.light .select,
+    :root.light .textarea {
+      background: #ffffff;
     }
 
     .content {
-      max-width:var(--content-max);
-      margin:0 auto;
-      padding:22px;
+      max-width: var(--content-max);
+      margin: 0 auto;
+      padding: 22px;
     }
 
     .hero {
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:16px;
-      margin-bottom:18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 18px;
     }
 
     .hero h2 {
-      margin:0;
-      font-size:32px;
-      line-height:1.08;
-      font-weight:800;
+      margin: 0;
+      font-size: 32px;
+      line-height: 1.08;
+      font-weight: 800;
     }
 
     .hero p {
-      margin:8px 0 0;
-      color:var(--muted);
-      max-width:980px;
-      line-height:1.5;
+      margin: 8px 0 0;
+      color: var(--muted);
+      max-width: 980px;
+      line-height: 1.5;
+    }
+
+    .user-block {
+      display: grid;
+      gap: 8px;
+      justify-items: end;
     }
 
     .user-chip {
-      padding:10px 14px;
-      border-radius:999px;
-      background:rgba(255,255,255,.05);
-      border:1px solid var(--line);
-      color:var(--muted);
-      font-size:13px;
-      white-space:nowrap;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .session-chip {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
     }
 
     .toolbar {
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      margin-bottom:18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 18px;
     }
 
     .input,
     .select,
     .textarea {
-      width:100%;
-      border:1px solid var(--line);
-      background:#091b2f;
-      color:var(--text);
-      border-radius:14px;
-      padding:12px 14px;
-      outline:none;
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #091b2f;
+      color: var(--text);
+      border-radius: 14px;
+      padding: 12px 14px;
+      outline: none;
     }
 
     .textarea {
-      resize:vertical;
-      min-height:180px;
+      resize: vertical;
+      min-height: 180px;
     }
 
     .toolbar .select,
     .toolbar .input {
-      max-width:280px;
+      max-width: 280px;
     }
 
     .btn {
-      border:0;
-      border-radius:14px;
-      padding:12px 16px;
-      cursor:pointer;
-      font-weight:700;
-      color:#03233b;
-      background:linear-gradient(135deg, var(--accent), var(--accent-2));
-      box-shadow:var(--shadow);
-      transition:.18s ease;
+      border: 0;
+      border-radius: 14px;
+      padding: 12px 16px;
+      cursor: pointer;
+      font-weight: 700;
+      color: #03233b;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: var(--shadow);
+      transition: .18s ease;
     }
 
-    .btn:hover { transform:translateY(-1px); }
+    .btn:hover {
+      transform: translateY(-1px);
+    }
 
     .btn.secondary {
-      background:rgba(255,255,255,.05);
-      color:var(--text);
-      border:1px solid var(--line);
-      box-shadow:none;
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      border: 1px solid var(--line);
+      box-shadow: none;
     }
 
     .btn.danger {
-      background:rgba(240,106,106,.14);
-      color:#ffd2d2;
-      border:1px solid rgba(240,106,106,.25);
-      box-shadow:none;
+      background: rgba(240,106,106,.14);
+      color: #ffd2d2;
+      border: 1px solid rgba(240,106,106,.25);
+      box-shadow: none;
+    }
+
+    .btn.success {
+      background: rgba(47,207,132,.16);
+      color: #dbfff0;
+      border: 1px solid rgba(47,207,132,.28);
+      box-shadow: none;
     }
 
     .btn.small {
-      padding:8px 12px;
-      border-radius:10px;
-      font-size:12px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 12px;
     }
 
     .grid {
-      display:grid;
-      gap:16px;
+      display: grid;
+      gap: 16px;
     }
 
     .grid.kpi {
-      grid-template-columns:repeat(5, minmax(0,1fr));
-      margin-bottom:18px;
+      grid-template-columns: repeat(6, minmax(0,1fr));
+      margin-bottom: 18px;
     }
 
     .grid.two {
-      grid-template-columns:1.25fr 1fr;
-      margin-bottom:18px;
+      grid-template-columns: 1.25fr 1fr;
+      margin-bottom: 18px;
     }
 
     .grid.two-equal {
-      grid-template-columns:1fr 1fr;
-      margin-bottom:18px;
+      grid-template-columns: 1fr 1fr;
+      margin-bottom: 18px;
     }
 
     .grid.three {
-      grid-template-columns:repeat(3, minmax(0,1fr));
-      margin-bottom:18px;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      margin-bottom: 18px;
     }
 
     .card {
-      background:linear-gradient(180deg, rgba(16,40,68,.95), rgba(10,29,49,.98));
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      padding:18px;
-      box-shadow:var(--shadow);
+      background: linear-gradient(180deg, rgba(16,40,68,.95), rgba(10,29,49,.98));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    :root.light .card {
+      background: linear-gradient(180deg, #ffffff, #f5fbff);
     }
 
     .card h3 {
-      margin:0 0 12px;
-      font-size:16px;
+      margin: 0 0 12px;
+      font-size: 16px;
     }
 
     .subtle {
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.55;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
     }
 
     .kpi-label {
-      color:var(--muted);
-      font-size:13px;
-      margin-bottom:8px;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 8px;
     }
 
     .kpi-value {
-      font-size:34px;
-      font-weight:800;
-      margin-bottom:6px;
-      line-height:1;
+      font-size: 34px;
+      font-weight: 800;
+      margin-bottom: 6px;
+      line-height: 1;
     }
 
     .kpi-meta {
-      color:var(--muted);
-      font-size:12px;
+      color: var(--muted);
+      font-size: 12px;
     }
 
     .progress {
-      height:10px;
-      border-radius:999px;
-      overflow:hidden;
-      background:rgba(255,255,255,.08);
-      margin-top:10px;
+      height: 10px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(255,255,255,.08);
+      margin-top: 10px;
     }
 
     .progress > span {
-      display:block;
-      height:100%;
-      width:0;
-      background:linear-gradient(90deg, var(--accent), var(--accent-2));
-      border-radius:999px;
+      display: block;
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      border-radius: 999px;
     }
 
     .badge {
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      border-radius:999px;
-      padding:8px 12px;
-      font-size:12px;
-      font-weight:700;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 700;
     }
 
     .badge.stage-ONBOARD,
     .badge.stage-IMPLEMENT {
-      background:rgba(243,182,74,.14);
-      color:#ffd98f;
+      background: rgba(243,182,74,.14);
+      color: #ffd98f;
     }
 
     .badge.stage-USE {
-      background:rgba(0,163,224,.14);
-      color:#90e0ff;
+      background: rgba(0,163,224,.14);
+      color: #90e0ff;
     }
 
     .badge.stage-ENGAGE,
     .badge.stage-ADOPT {
-      background:rgba(47,207,132,.14);
-      color:#aaf3cb;
+      background: rgba(47,207,132,.14);
+      color: #aaf3cb;
     }
 
     .pill {
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      border-radius:999px;
-      padding:8px 12px;
-      font-size:12px;
-      font-weight:700;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.06);
-      color:var(--text);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
     }
 
-    .rag-green {
-      background:rgba(47,207,132,.16);
-      color:#aaf3cb;
-      border-color:rgba(47,207,132,.22);
+    .rag-green,
+    .sla-green {
+      background: rgba(47,207,132,.16);
+      color: #aaf3cb;
+      border-color: rgba(47,207,132,.22);
     }
 
-    .rag-yellow {
-      background:rgba(243,182,74,.14);
-      color:#ffe3ab;
-      border-color:rgba(243,182,74,.24);
+    .rag-yellow,
+    .sla-yellow {
+      background: rgba(243,182,74,.14);
+      color: #ffe3ab;
+      border-color: rgba(243,182,74,.24);
     }
 
-    .rag-red {
-      background:rgba(240,106,106,.14);
-      color:#ffc2c2;
-      border-color:rgba(240,106,106,.24);
+    .rag-red,
+    .sla-red {
+      background: rgba(240,106,106,.14);
+      color: #ffc2c2;
+      border-color: rgba(240,106,106,.24);
     }
 
     .chip-row {
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
     }
 
     .chip {
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      background:rgba(255,255,255,.06);
-      border:1px solid var(--line);
-      color:var(--text);
-      border-radius:999px;
-      padding:8px 10px;
-      font-size:12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--line);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-size: 12px;
     }
 
-    .chip.ok { color:#9df0c6; }
-    .chip.warn { color:#ffd98f; }
-    .chip.bad { color:#ffb2b2; }
+    .chip.ok { color: #9df0c6; }
+    .chip.warn { color: #ffd98f; }
+    .chip.bad { color: #ffb2b2; }
 
     .panel {
-      display:none;
+      display: none;
     }
 
     .panel.active {
-      display:block;
+      display: block;
     }
 
     .stat-grid {
-      display:grid;
-      grid-template-columns:repeat(2, minmax(0,1fr));
-      gap:12px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 12px;
     }
 
     .mini-stat {
-      padding:14px;
-      border-radius:14px;
-      background:rgba(255,255,255,.04);
-      border:1px solid var(--line);
+      padding: 14px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--line);
     }
 
     .mini-stat .label {
-      color:var(--muted);
-      font-size:12px;
-      margin-bottom:8px;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 8px;
     }
 
     .mini-stat .value {
-      font-size:24px;
-      font-weight:800;
+      font-size: 24px;
+      font-weight: 800;
     }
 
     .chart {
-      height:300px;
-      display:flex;
-      align-items:flex-end;
-      gap:10px;
-      padding-top:12px;
+      height: 300px;
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      padding-top: 12px;
     }
 
     .bar-col {
-      flex:1;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:8px;
-      min-width:0;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
     }
 
     .bar-shell {
-      width:100%;
-      height:220px;
-      display:flex;
-      align-items:flex-end;
+      width: 100%;
+      height: 220px;
+      display: flex;
+      align-items: flex-end;
     }
 
     .bar-fill {
-      width:100%;
-      min-height:2px;
-      border-radius:10px 10px 0 0;
-      background:linear-gradient(180deg, var(--accent-2), var(--accent));
+      width: 100%;
+      min-height: 2px;
+      border-radius: 10px 10px 0 0;
+      background: linear-gradient(180deg, var(--accent-2), var(--accent));
     }
 
     .chart-label {
-      color:var(--muted);
-      font-size:12px;
+      color: var(--muted);
+      font-size: 12px;
     }
 
     .chart-value {
-      font-size:12px;
-      font-weight:700;
+      font-size: 12px;
+      font-weight: 700;
     }
 
     .sparkline-wrap {
-      margin-top:10px;
-      height:44px;
+      margin-top: 10px;
+      height: 44px;
     }
 
     .sparkline-svg {
-      width:100%;
-      height:44px;
-      display:block;
+      width: 100%;
+      height: 44px;
+      display: block;
     }
 
     .table-wrap {
-      overflow:auto;
-      border-radius:14px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.02);
+      overflow: auto;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.02);
     }
 
     table {
-      width:100%;
-      border-collapse:collapse;
-      font-size:13px;
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
     }
 
-    th, td {
-      text-align:left;
-      vertical-align:top;
-      padding:12px 10px;
-      border-bottom:1px solid var(--line-2);
+    th,
+    td {
+      text-align: left;
+      vertical-align: top;
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--line-2);
     }
 
     th {
-      position:sticky;
-      top:0;
-      z-index:1;
-      background:rgba(255,255,255,.03);
-      color:#b6cee7;
-      font-weight:700;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: rgba(255,255,255,.03);
+      color: #b6cee7;
+      font-weight: 700;
     }
 
     tr.clickable {
-      cursor:pointer;
+      cursor: pointer;
     }
 
     tr.clickable:hover {
-      background:rgba(255,255,255,.03);
+      background: rgba(255,255,255,.03);
     }
 
     td code {
-      color:#c8e8ff;
-      background:rgba(255,255,255,.04);
-      padding:2px 6px;
-      border-radius:8px;
+      color: #c8e8ff;
+      background: rgba(255,255,255,.04);
+      padding: 2px 6px;
+      border-radius: 8px;
+      font-family: var(--mono);
     }
 
     .status-ok {
-      color:var(--success);
-      font-weight:700;
+      color: var(--success);
+      font-weight: 700;
     }
 
     .status-warn {
-      color:var(--warning);
-      font-weight:700;
+      color: var(--warning);
+      font-weight: 700;
     }
 
     .status-bad {
-      color:var(--danger);
-      font-weight:700;
+      color: var(--danger);
+      font-weight: 700;
     }
 
     .section-actions {
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:12px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
     }
 
     .form-grid {
-      display:grid;
-      grid-template-columns:repeat(2, minmax(0,1fr));
-      gap:12px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 12px;
     }
 
     .empty {
-      padding:24px;
-      text-align:center;
-      color:var(--muted);
-      border:1px dashed var(--line);
-      border-radius:16px;
-      background:rgba(255,255,255,.03);
+      padding: 24px;
+      text-align: center;
+      color: var(--muted);
+      border: 1px dashed var(--line);
+      border-radius: 16px;
+      background: rgba(255,255,255,.03);
     }
 
     .help {
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.5;
-      margin-top:8px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+      margin-top: 8px;
     }
 
     .response-box,
     pre.pretty {
-      white-space:pre-wrap;
-      word-break:break-word;
-      background:#07111e;
-      border:1px solid var(--line);
-      padding:10px;
-      border-radius:12px;
-      font-size:12px;
-      color:#d9ebfb;
-      margin:0;
-      max-height:220px;
-      overflow:auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: #07111e;
+      border: 1px solid var(--line);
+      padding: 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      color: #d9ebfb;
+      margin: 0;
+      max-height: 260px;
+      overflow: auto;
+      font-family: var(--mono);
+    }
+
+    :root.light .response-box,
+    :root.light pre.pretty {
+      background: #f3f8fd;
+      color: #18304a;
     }
 
     .mono {
-      font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-family: var(--mono);
     }
 
     .footer-note {
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.5;
-      margin-top:16px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+      margin-top: 16px;
     }
 
     .pagination {
-      display:flex;
-      align-items:center;
-      gap:10px;
-      margin-top:14px;
-      flex-wrap:wrap;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 14px;
+      flex-wrap: wrap;
     }
 
     .pagination .meta {
-      color:var(--muted);
-      font-size:12px;
+      color: var(--muted);
+      font-size: 12px;
     }
 
     .banner {
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
     }
 
     .banner strong {
-      color:var(--text);
+      color: var(--text);
     }
 
     .modal {
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,.62);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index:50;
-      padding:22px;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.62);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      padding: 22px;
     }
 
     .modal.show {
-      display:flex;
+      display: flex;
     }
 
     .modal-content {
-      width:min(1100px, 100%);
-      max-height:85vh;
-      overflow:auto;
-      border-radius:18px;
-      background:linear-gradient(180deg, rgba(16,40,68,.98), rgba(10,29,49,1));
-      border:1px solid var(--line);
-      box-shadow:var(--shadow);
-      padding:18px;
+      width: min(1200px, 100%);
+      max-height: 88vh;
+      overflow: auto;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(16,40,68,.98), rgba(10,29,49,1));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    :root.light .modal-content {
+      background: linear-gradient(180deg, #fff, #f5fbff);
     }
 
     .modal-head {
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      margin-bottom:14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
     }
 
     .modal-head h3 {
-      margin:0;
+      margin: 0;
     }
 
-    .route-hidden {
-      display:none !important;
+    .insight-list {
+      display: grid;
+      gap: 10px;
     }
 
-    @media (max-width: 1500px) {
-      .grid.kpi { grid-template-columns:repeat(3, minmax(0,1fr)); }
+    .insight {
+      padding: 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--line);
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .small-note {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .topology-wrap {
+      min-height: 420px;
+      background: rgba(255,255,255,.02);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      overflow: hidden;
+    }
+
+    .topology-svg {
+      width: 100%;
+      min-height: 380px;
+      display: block;
+    }
+
+    .legend {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .legend span::before {
+      content: "";
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin-right: 8px;
+      border-radius: 50%;
+      vertical-align: middle;
+      background: var(--accent);
+    }
+
+    .legend .mx::before { background: var(--topology-mx); }
+    .legend .ms::before { background: var(--topology-ms); }
+    .legend .mr::before { background: var(--topology-mr); }
+    .legend .other::before { background: var(--topology-other); }
+
+    .heat-row {
+      display: grid;
+      grid-template-columns: 180px 1fr 80px;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .heat-bar {
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      overflow: hidden;
+    }
+
+    .heat-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    }
+
+    .pill-grid {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 1700px) {
+      .grid.kpi { grid-template-columns: repeat(3, minmax(0,1fr)); }
     }
 
     @media (max-width: 1180px) {
-      .app { grid-template-columns:1fr; }
-      .sidebar { position:relative; height:auto; }
+      .app { grid-template-columns: 1fr; }
+      .sidebar { position: relative; height: auto; }
       .grid.two,
       .grid.two-equal,
       .grid.three,
-      .form-grid { grid-template-columns:1fr; }
-      .grid.kpi { grid-template-columns:repeat(2, minmax(0,1fr)); }
-      .gh-search { max-width:none; width:100%; }
-      .global-header { align-items:flex-start; }
+      .form-grid,
+      .split { grid-template-columns: 1fr; }
+      .grid.kpi { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .gh-search { max-width: none; width: 100%; }
+      .global-header { align-items: flex-start; }
     }
 
     @media (max-width: 760px) {
-      .content { padding:16px; }
-      .hero { flex-direction:column; }
-      .grid.kpi { grid-template-columns:1fr; }
+      .content { padding: 16px; }
+      .hero { flex-direction: column; }
+      .grid.kpi { grid-template-columns: 1fr; }
       .toolbar .select,
-      .toolbar .input { max-width:none; }
-      .global-header { padding:12px 16px; }
+      .toolbar .input { max-width: none; }
+      .global-header { padding: 12px 16px; }
+      .user-block { justify-items: start; }
+    }
+
+    @media print {
+      body,
+      html {
+        background: #fff !important;
+        color: #000 !important;
+      }
+      .sidebar,
+      .global-header,
+      .toolbar,
+      .section-actions,
+      .nav-btn,
+      .btn,
+      .modal {
+        display: none !important;
+      }
+      .main {
+        height: auto !important;
+        overflow: visible !important;
+      }
+      .content {
+        max-width: none !important;
+        padding: 0 !important;
+      }
+      .panel {
+        display: block !important;
+      }
+      .card,
+      .table-wrap {
+        box-shadow: none !important;
+        background: #fff !important;
+        color: #000 !important;
+        border-color: #ccc !important;
+      }
+      pre.pretty,
+      .response-box {
+        background: #fff !important;
+        color: #000 !important;
+        border: 1px solid #ccc !important;
+        max-height: none !important;
+      }
     }
   </style>
 </head>
@@ -771,6 +1009,8 @@
       <div class="sidebar-section">
         <div class="sidebar-title">Navigation</div>
         <button class="nav-btn active" data-route="dashboard">Dashboard</button>
+        <button class="nav-btn" data-route="devices">Devices</button>
+        <button class="nav-btn" data-route="topology">Topology</button>
         <button class="nav-btn" data-route="customers">Customers</button>
         <button class="nav-btn" data-route="snmp">SNMP Targets</button>
         <button class="nav-btn" data-route="onprem">On-Prem Upload</button>
@@ -787,19 +1027,46 @@
       </div>
 
       <div class="sidebar-card">
-        <h3>Platform Notes</h3>
-        <p>
-          This portal is designed as a single-page app. The Worker remains the
-          source of truth for access control, execution, raw API logs, weekly
-          scoring, CSV output, and cron verification.
-        </p>
+        <h3>SLA Thresholds</h3>
+        <ul>
+          <li>Green: success rate at or above 95%</li>
+          <li>Yellow: success rate between 85% and 94%</li>
+          <li>Red: success rate below 85%</li>
+        </ul>
       </div>
 
       <div class="sidebar-card">
-        <h3>Current Focus</h3>
+        <h3>Operational Controls</h3>
+        <div class="sidebar-actions">
+          <button id="btnSidebarRun" class="btn secondary small">Run Selected</button>
+          <button id="btnSidebarRefresh" class="btn secondary small">Refresh Data</button>
+          <button id="btnSidebarExport" class="btn secondary small">Export Executive PDF</button>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>Worker Endpoints Used</h3>
+        <ul>
+          <li><span class="mono">/api/me</span></li>
+          <li><span class="mono">/api/customers</span></li>
+          <li><span class="mono">/api/customers/:id/discover-orgs</span></li>
+          <li><span class="mono">/api/run</span></li>
+          <li><span class="mono">/api/weekly</span></li>
+          <li><span class="mono">/api/reports/lifecycle</span></li>
+          <li><span class="mono">/api/reports/calls</span></li>
+          <li><span class="mono">/api/reports/calls.csv</span></li>
+          <li><span class="mono">/api/reports/devices</span></li>
+          <li><span class="mono">/api/cron/status</span></li>
+          <li><span class="mono">/api/snmp</span></li>
+          <li><span class="mono">/api/onprem/upload</span></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>Platform Notes</h3>
         <p>
-          Meraki API execution, per-customer visibility, on-prem import,
-          SNMP target workflow coordination, and executive-ready reporting.
+          This frontend is wired to your Worker routes and supports per-customer, per-org reporting,
+          devices intelligence, topology inference, executive exports, live SLA posture, and session duration visibility.
         </p>
       </div>
     </aside>
@@ -807,12 +1074,15 @@
     <main class="main">
       <div class="global-header">
         <div class="gh-left">
-          <input id="globalSearch" class="gh-search" placeholder="Search customers, endpoints, logs, status codes..." />
+          <input id="globalSearch" class="gh-search" placeholder="Search customers, orgs, endpoints, outputs, serials, status codes..." autocomplete="off" />
         </div>
 
         <div class="gh-right">
           <select id="globalCustomerSwitcher" class="select" style="width:260px"></select>
+          <select id="orgSwitcher" class="select" style="width:260px"></select>
           <span id="ragStatus" class="pill rag-red">Critical</span>
+          <span id="slaStatus" class="pill sla-red">SLA Alert</span>
+          <button id="btnThemeToggle" class="btn secondary small">Light</button>
           <button id="btnGlobalRun" class="btn secondary">Run Now</button>
           <button id="btnGlobalRefresh" class="btn secondary">Refresh</button>
         </div>
@@ -823,10 +1093,15 @@
           <div>
             <h2 id="pageTitle">Enterprise Dashboard</h2>
             <p id="pageSubtitle">
-              This view provides a centralized operational picture of customer-level Meraki API activity, weekly lifecycle attainment, HTTP status behavior, cron execution, and report drill-downs.
+              This view provides a centralized operational picture of customer-level Meraki API activity,
+              lifecycle attainment, HTTP status behavior, cron execution, topology perspective,
+              inventory intelligence, session duration, and executive-ready reporting.
             </p>
           </div>
-          <div class="user-chip" id="userChip">Signed in as loading...</div>
+          <div class="user-block">
+            <div class="user-chip" id="userChip">Signed in as loading...</div>
+            <div class="session-chip" id="sessionChip">Session duration: 00:00:00</div>
+          </div>
         </div>
 
         <section id="panel-dashboard" class="panel active">
@@ -838,12 +1113,14 @@
               </div>
               <div class="section-actions" style="margin-top:0">
                 <button id="btnRefreshCron" class="btn secondary small">Refresh Cron</button>
+                <button id="btnExportExecutive" class="btn secondary small">Export Executive PDF</button>
               </div>
             </div>
           </div>
 
           <div class="toolbar">
             <select id="customerFilter" class="select"></select>
+            <select id="dashboardOrgFilter" class="select"></select>
             <input id="weekStart" class="input" type="date" />
             <button id="btnRefreshDashboard" class="btn">Refresh Dashboard</button>
             <button id="btnRunNow" class="btn secondary">Run Selected Customer</button>
@@ -886,6 +1163,12 @@
               <div class="kpi-value" id="kpiUniqueEndpoints">0</div>
               <div class="kpi-meta">Distinct method + path observations</div>
             </div>
+
+            <div class="card">
+              <div class="kpi-label">Inventory Count</div>
+              <div class="kpi-value" id="kpiInventoryCount">0</div>
+              <div class="kpi-meta">Devices discovered from inventory endpoint</div>
+            </div>
           </div>
 
           <div class="grid two">
@@ -893,13 +1176,13 @@
               <h3>Weekly Activity Trend</h3>
               <div id="activityChart" class="chart"></div>
               <div class="footer-note">
-                This chart shows total logged calls by day in the selected week. It helps determine whether activity is consistent enough to support lifecycle targets rather than clustered into isolated execution bursts.
+                This chart shows total logged calls by day in the selected week. It helps determine whether activity
+                is consistent enough to support lifecycle thresholds instead of being clustered into isolated bursts.
               </div>
             </div>
 
             <div class="card">
               <h3>Method and Status Distribution</h3>
-
               <div class="stat-grid" style="margin-bottom:14px;">
                 <div class="mini-stat">
                   <div class="label">GET Calls</div>
@@ -923,7 +1206,8 @@
               <div id="statusCodeChips" class="chip-row"></div>
 
               <div class="footer-note">
-                Repeated 4xx or 5xx responses typically indicate authentication issues, endpoint misuse, permission gaps, rate limits, or upstream service problems. The detailed call report below is the drill-down source.
+                Repeated 4xx or 5xx responses typically indicate authentication issues, endpoint misuse,
+                permission gaps, rate limits, or upstream service issues. Status reasons are surfaced directly.
               </div>
             </div>
           </div>
@@ -931,26 +1215,125 @@
           <div class="grid two-equal">
             <div class="card">
               <h3>Selected Customer Summary</h3>
-              <div id="customerSummary" class="subtle">
-                Select a customer to view summary details.
-              </div>
+              <div id="customerSummary" class="subtle"></div>
             </div>
-
             <div class="card">
-              <h3>Operational Guidance</h3>
-              <div class="subtle">
-                Use “Run Selected Customer” after updating an API key, modifying an org, or validating a customer immediately before scheduled cron windows. Use the cron banner to verify that scheduled jobs are firing as expected.
-              </div>
+              <h3>SLA Alerts & Guidance</h3>
+              <div id="slaInsights" class="insight-list"></div>
               <div class="section-actions">
                 <button id="btnRefreshCustomersMini" class="btn secondary">Reload Customers</button>
                 <button id="btnJumpReports" class="btn secondary">Open Reports</button>
+                <button id="btnJumpDevices" class="btn secondary">Open Devices</button>
               </div>
+            </div>
+          </div>
+
+          <div class="grid two">
+            <div class="card">
+              <h3>Top Failing Endpoints</h3>
+              <div id="topFailingEndpoints"></div>
+            </div>
+            <div class="card">
+              <h3>Executive Lifecycle Snapshot</h3>
+              <div id="executiveSnapshot" class="subtle"></div>
             </div>
           </div>
 
           <div class="card">
             <h3>Recent API Calls</h3>
             <div id="recentCallsTableWrap"></div>
+          </div>
+        </section>
+
+        <section id="panel-devices" class="panel">
+          <div class="toolbar">
+            <select id="devicesCustomerFilter" class="select"></select>
+            <select id="devicesOrgFilter" class="select"></select>
+            <button id="btnRefreshDevices" class="btn">Refresh Devices</button>
+            <button id="btnExportDevicesPdf" class="btn secondary">Export Devices PDF</button>
+          </div>
+
+          <div class="grid kpi">
+            <div class="card"><div class="kpi-label">Inventory Count</div><div class="kpi-value" id="devicesInventoryCount">0</div><div class="kpi-meta">Claimed devices in inventory</div></div>
+            <div class="card"><div class="kpi-label">Serial Count</div><div class="kpi-value" id="devicesSerialCount">0</div><div class="kpi-meta">Devices with serial numbers</div></div>
+            <div class="card"><div class="kpi-label">Unique Models</div><div class="kpi-value" id="devicesUniqueModels">0</div><div class="kpi-meta">Distinct model names</div></div>
+            <div class="card"><div class="kpi-label">License Signals</div><div class="kpi-value" id="devicesLicenseSignals">0</div><div class="kpi-meta">Fields available in license payload</div></div>
+            <div class="card"><div class="kpi-label">Top Product Type</div><div class="kpi-value" id="devicesTopProductType">-</div><div class="kpi-meta">Dominant category in inventory</div></div>
+            <div class="card"><div class="kpi-label">Topology Nodes</div><div class="kpi-value" id="devicesTopologyNodes">0</div><div class="kpi-meta">Nodes generated for visualization</div></div>
+          </div>
+
+          <div class="grid two">
+            <div class="card">
+              <h3>Inventory Summary</h3>
+              <div id="deviceSummary"></div>
+            </div>
+            <div class="card">
+              <h3>Model Distribution Heatmap</h3>
+              <div id="modelHeatmap"></div>
+            </div>
+          </div>
+
+          <div class="grid two">
+            <div class="card">
+              <h3>Top Models</h3>
+              <div id="deviceChart"></div>
+            </div>
+            <div class="card">
+              <h3>License Overview</h3>
+              <pre id="licenseOverview" class="pretty">Loading...</pre>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Inventory Table</h3>
+            <div id="deviceTable"></div>
+          </div>
+
+          <div class="card">
+            <h3>Serial Numbers</h3>
+            <pre id="serialList" class="pretty"></pre>
+          </div>
+
+          <div class="card">
+            <h3>Device Intelligence Insights</h3>
+            <div id="deviceInsightsNarrative" class="insight-list"></div>
+          </div>
+        </section>
+
+        <section id="panel-topology" class="panel">
+          <div class="toolbar">
+            <select id="topologyCustomerFilter" class="select"></select>
+            <select id="topologyOrgFilter" class="select"></select>
+            <button id="btnRefreshTopology" class="btn">Refresh Topology</button>
+            <button id="btnExportTopologyPdf" class="btn secondary">Export Topology PDF</button>
+          </div>
+
+          <div class="card">
+            <h3>Topology Visualization</h3>
+            <div class="topology-wrap">
+              <svg id="topologySvg" class="topology-svg" viewBox="0 0 1200 700"></svg>
+            </div>
+            <div class="legend">
+              <span class="mx">MX / Security</span>
+              <span class="ms">MS / Switching</span>
+              <span class="mr">MR / Wireless</span>
+              <span class="other">Other / Unknown</span>
+            </div>
+            <div class="footer-note">
+              This topology view is an analytics visualization built from available inventory patterns and product type categorization.
+              It is intended as an operational overview and proof artifact rather than a full physical cabling map.
+            </div>
+          </div>
+
+          <div class="grid two">
+            <div class="card">
+              <h3>Topology Summary</h3>
+              <div id="topologySummary"></div>
+            </div>
+            <div class="card">
+              <h3>Neighbor & Structure Notes</h3>
+              <div id="topologyNotes" class="insight-list"></div>
+            </div>
           </div>
         </section>
 
@@ -961,27 +1344,27 @@
               <div class="form-grid">
                 <div>
                   <label class="subtle">Customer ID</label>
-                  <input id="custCustomerId" class="input" placeholder="Optional. Leave blank to auto-generate from name." />
+                  <input id="custCustomerId" class="input" placeholder="Optional. Leave blank to auto-generate from name." autocomplete="off" />
                 </div>
                 <div>
                   <label class="subtle">Customer Name</label>
-                  <input id="custName" class="input" placeholder="Example: Acme Health" />
+                  <input id="custName" class="input" placeholder="Example: VoiceLab" autocomplete="off" />
                 </div>
                 <div>
                   <label class="subtle">Meraki Org ID</label>
-                  <input id="custOrgId" class="input" placeholder="Example: 123456" />
+                  <input id="custOrgId" class="input" placeholder="Auto-discovered if API key is provided" autocomplete="off" />
                 </div>
                 <div>
                   <label class="subtle">Tags</label>
-                  <input id="custTags" class="input" placeholder="Example: healthcare, west, production" />
+                  <input id="custTags" class="input" placeholder="Example: healthcare, west, production" autocomplete="off" />
                 </div>
                 <div>
                   <label class="subtle">API Key</label>
-                  <input id="custApiKey" class="input" placeholder="Stored in Worker secret KV via API" />
+                  <input id="custApiKey" class="input" placeholder="Stored in Worker secret KV via API" autocomplete="off" />
                 </div>
                 <div>
                   <label class="subtle">Write Test Network ID</label>
-                  <input id="custNetworkId" class="input" placeholder="Optional dedicated test network" />
+                  <input id="custNetworkId" class="input" placeholder="Optional dedicated test network" autocomplete="off" />
                 </div>
                 <div>
                   <label class="subtle">Enabled</label>
@@ -1006,11 +1389,14 @@
 
               <div class="section-actions">
                 <button id="btnSaveCustomer" class="btn">Save Customer</button>
+                <button id="btnDiscoverOrgs" class="btn secondary">Discover Orgs</button>
                 <button id="btnClearCustomerForm" class="btn secondary">Clear Form</button>
               </div>
 
               <div class="help">
-                Saving a customer registers the Meraki org, preserves the API key in the Worker-backed secret store, and determines whether the customer can participate in scheduled runs. Customers with internal network restrictions can still be handled through on-prem upload workflows.
+                Saving a customer can register the Meraki org, preserve the API key in the Worker-backed secret store,
+                and determine whether the customer participates in scheduled runs. Discover Orgs uses the saved API key
+                to populate mapped orgs and customer naming automatically.
               </div>
             </div>
 
@@ -1018,6 +1404,11 @@
               <h3>Customers</h3>
               <div id="customersTableWrap"></div>
             </div>
+          </div>
+
+          <div class="card">
+            <h3>Mapped Organizations for Selected Customer</h3>
+            <div id="orgMapTableWrap"></div>
           </div>
         </section>
 
@@ -1028,11 +1419,11 @@
               <div class="form-grid">
                 <div>
                   <label class="subtle">Target Name</label>
-                  <input id="snmpName" class="input" placeholder="Example: HQ Core Stack" />
+                  <input id="snmpName" class="input" placeholder="Example: HQ Core Stack" autocomplete="off" />
                 </div>
                 <div>
                   <label class="subtle">Address / Range / CIDR</label>
-                  <input id="snmpAddress" class="input" placeholder="10.10.10.10 or 10.10.10.0/24 or 10.10.10.1-10.10.10.20" />
+                  <input id="snmpAddress" class="input" placeholder="10.10.10.10 or 10.10.10.0/24 or 10.10.10.1-10.10.10.20" autocomplete="off" />
                 </div>
                 <div>
                   <label class="subtle">SNMP Version</label>
@@ -1043,7 +1434,7 @@
                 </div>
                 <div>
                   <label class="subtle">Credential / Community</label>
-                  <input id="snmpCommunity" class="input" placeholder="Community string or credential label" />
+                  <input id="snmpCommunity" class="input" placeholder="Community string or credential label" autocomplete="off" />
                 </div>
               </div>
 
@@ -1058,7 +1449,8 @@
               </div>
 
               <div class="help">
-                This section coordinates storage and workflow for SNMP targets. Native polling can remain local or manual, while the portal maintains visibility and upload context.
+                This section coordinates storage and workflow for SNMP targets. Native polling can remain local or manual,
+                while the portal maintains visibility, upload context, and future topology enrichment inputs.
               </div>
             </div>
 
@@ -1084,7 +1476,9 @@
               </div>
 
               <div class="help">
-                Use this when a customer will not allow direct API execution or telemetry upload from inside their network. A local process can run internally, export JSON, and the portal can import that data later for reporting and lifecycle scoring.
+                Use this when a customer will not allow direct API execution or telemetry upload from inside their network.
+                A local process can run internally, export JSON, and the portal can import that data later for reporting,
+                lifecycle scoring, and proof artifacts.
               </div>
             </div>
 
@@ -1103,6 +1497,10 @@
                 <div>
                   <label class="subtle">Customer</label>
                   <select id="reportCustomerFilter" class="select"></select>
+                </div>
+                <div>
+                  <label class="subtle">Org</label>
+                  <select id="reportOrgFilter" class="select"></select>
                 </div>
                 <div>
                   <label class="subtle">Limit</label>
@@ -1133,23 +1531,42 @@
                     <option value="DELETE">DELETE</option>
                   </select>
                 </div>
+                <div>
+                  <label class="subtle">Period</label>
+                  <select id="reportPeriodDays" class="select">
+                    <option value="7">7 Days</option>
+                    <option value="30" selected>30 Days</option>
+                    <option value="90">90 Days</option>
+                  </select>
+                </div>
               </div>
 
               <div class="section-actions">
                 <button id="btnRefreshReports" class="btn">Refresh Reports</button>
                 <button id="btnExportReportsCsv" class="btn secondary">Export Report CSV</button>
+                <button id="btnExportReportsPdf" class="btn secondary">Export PDF</button>
               </div>
 
               <div class="help">
-                This view provides raw operational visibility into recently logged API calls, their response codes, latency, and payload snippets. Use it for troubleshooting, adoption validation, and executive evidence gathering.
+                This view provides raw operational visibility into recently logged API calls, response codes, latency,
+                payload snippets, status explanations, and proof-ready summaries that can be exported for review.
               </div>
             </div>
 
             <div class="card">
               <h3>Lifecycle Snapshot</h3>
-              <div id="lifecycleSnapshot" class="subtle">
-                Refresh reports to generate the current snapshot.
-              </div>
+              <div id="lifecycleSnapshot" class="subtle"></div>
+            </div>
+          </div>
+
+          <div class="grid two">
+            <div class="card">
+              <h3>Status Code Explanations</h3>
+              <div id="statusReasoningPanel"></div>
+            </div>
+            <div class="card">
+              <h3>Top Failing API Patterns</h3>
+              <div id="failingApiPatterns"></div>
             </div>
           </div>
 
@@ -1184,21 +1601,32 @@
       me: null,
       customers: [],
       selectedCustomerId: "",
+      selectedOrgId: "",
       weekly: null,
+      lifecycle30: null,
       calls: [],
       filteredCalls: [],
       snmpTargets: [],
       reportCalls: [],
       reportFilteredCalls: [],
       reportPage: 1,
-      reportPageSize: 25,
-      currentRoute: "dashboard"
+      currentRoute: "dashboard",
+      devices: null,
+      topology: null,
+      topFailing: [],
+      sessionStartedAt: Date.now(),
+      sessionTimer: null,
+      sla: {
+        status: "red",
+        reasons: []
+      }
     };
 
     document.addEventListener("DOMContentLoaded", () => {
       bindNavigation();
       bindActions();
       initializeWeekStart();
+      applyTheme(localStorage.getItem("theme") || "dark");
       bootstrap();
     });
 
@@ -1219,8 +1647,10 @@
       document.getElementById("btnExportCsv").addEventListener("click", exportDashboardCsv);
       document.getElementById("btnRefreshCustomersMini").addEventListener("click", loadCustomers);
       document.getElementById("btnJumpReports").addEventListener("click", () => navigate("reports"));
+      document.getElementById("btnJumpDevices").addEventListener("click", () => navigate("devices"));
 
       document.getElementById("btnSaveCustomer").addEventListener("click", saveCustomer);
+      document.getElementById("btnDiscoverOrgs").addEventListener("click", discoverCustomerOrgs);
       document.getElementById("btnClearCustomerForm").addEventListener("click", clearCustomerForm);
 
       document.getElementById("btnSaveSnmp").addEventListener("click", saveSnmpTarget);
@@ -1231,30 +1661,22 @@
 
       document.getElementById("btnRefreshReports").addEventListener("click", refreshReports);
       document.getElementById("btnExportReportsCsv").addEventListener("click", exportReportsCsv);
+      document.getElementById("btnExportReportsPdf").addEventListener("click", exportExecutivePdf);
 
       document.getElementById("btnPrevPage").addEventListener("click", previousReportPage);
       document.getElementById("btnNextPage").addEventListener("click", nextReportPage);
 
-      document.getElementById("globalCustomerSwitcher").addEventListener("change", async (e) => {
-        state.selectedCustomerId = e.target.value;
-        syncCustomerFilters();
-        await refreshDashboard();
-        await refreshReports();
-      });
+      document.getElementById("globalCustomerSwitcher").addEventListener("change", onCustomerSelectionChange);
+      document.getElementById("customerFilter").addEventListener("change", onCustomerSelectionChange);
+      document.getElementById("reportCustomerFilter").addEventListener("change", onCustomerSelectionChange);
+      document.getElementById("devicesCustomerFilter").addEventListener("change", onCustomerSelectionChange);
+      document.getElementById("topologyCustomerFilter").addEventListener("change", onCustomerSelectionChange);
 
-      document.getElementById("customerFilter").addEventListener("change", async (e) => {
-        state.selectedCustomerId = e.target.value;
-        syncCustomerFilters();
-        await refreshDashboard();
-        await refreshReports();
-      });
-
-      document.getElementById("reportCustomerFilter").addEventListener("change", async (e) => {
-        state.selectedCustomerId = e.target.value;
-        syncCustomerFilters();
-        await refreshDashboard();
-        await refreshReports();
-      });
+      document.getElementById("orgSwitcher").addEventListener("change", onOrgSelectionChange);
+      document.getElementById("dashboardOrgFilter").addEventListener("change", onOrgSelectionChange);
+      document.getElementById("reportOrgFilter").addEventListener("change", onOrgSelectionChange);
+      document.getElementById("devicesOrgFilter").addEventListener("change", onOrgSelectionChange);
+      document.getElementById("topologyOrgFilter").addEventListener("change", onOrgSelectionChange);
 
       document.getElementById("reportLimit").addEventListener("change", () => {
         state.reportPage = 1;
@@ -1271,21 +1693,31 @@
         applyReportFilters();
       });
 
+      document.getElementById("reportPeriodDays").addEventListener("change", refreshReports);
+
       document.getElementById("globalSearch").addEventListener("input", handleGlobalSearch);
 
       document.getElementById("btnGlobalRun").addEventListener("click", runSelectedCustomer);
-      document.getElementById("btnGlobalRefresh").addEventListener("click", async () => {
-        await refreshDashboard();
-        await refreshReports();
-        await loadCronBanner();
-      });
-
+      document.getElementById("btnGlobalRefresh").addEventListener("click", fullRefresh);
       document.getElementById("btnRefreshCron").addEventListener("click", loadCronBanner);
 
       document.getElementById("btnCloseModal").addEventListener("click", closeCallModal);
       document.getElementById("callModal").addEventListener("click", (e) => {
         if (e.target.id === "callModal") closeCallModal();
       });
+
+      document.getElementById("btnThemeToggle").addEventListener("click", toggleTheme);
+      document.getElementById("btnSidebarRun").addEventListener("click", runSelectedCustomer);
+      document.getElementById("btnSidebarRefresh").addEventListener("click", fullRefresh);
+      document.getElementById("btnSidebarExport").addEventListener("click", exportExecutivePdf);
+
+      document.getElementById("btnRefreshDevices").addEventListener("click", loadDevicesPage);
+      document.getElementById("btnExportDevicesPdf").addEventListener("click", exportDevicesPdf);
+
+      document.getElementById("btnRefreshTopology").addEventListener("click", loadTopologyPage);
+      document.getElementById("btnExportTopologyPdf").addEventListener("click", exportTopologyPdf);
+
+      document.getElementById("btnExportExecutive").addEventListener("click", exportExecutivePdf);
 
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") closeCallModal();
@@ -1300,21 +1732,29 @@
       document.getElementById("weekStart").value = now.toISOString().slice(0, 10);
     }
 
+    function applyTheme(mode) {
+      document.documentElement.classList.toggle("light", mode === "light");
+      localStorage.setItem("theme", mode);
+      document.getElementById("btnThemeToggle").textContent = mode === "light" ? "Dark" : "Light";
+    }
+
+    function toggleTheme() {
+      const current = localStorage.getItem("theme") || "dark";
+      applyTheme(current === "dark" ? "light" : "dark");
+    }
+
     async function bootstrap() {
       try {
         await loadMe();
+        startSessionTimer();
         await loadCustomers();
         await loadSnmpTargets();
         handleRoute();
-        await refreshDashboard();
-        await refreshReports();
-        await loadCronBanner();
+        await fullRefresh();
 
         setInterval(async () => {
           try {
-            await refreshDashboard(false);
-            await refreshReports(false);
-            await loadCronBanner();
+            await fullRefresh(false);
           } catch (error) {
             console.warn("Auto-refresh failed:", error.message);
           }
@@ -1324,10 +1764,25 @@
       }
     }
 
+    function startSessionTimer() {
+      state.sessionStartedAt = Date.now();
+      updateSessionChip();
+      if (state.sessionTimer) clearInterval(state.sessionTimer);
+      state.sessionTimer = setInterval(updateSessionChip, 1000);
+    }
+
+    function updateSessionChip() {
+      const elapsed = Math.max(0, Math.floor((Date.now() - state.sessionStartedAt) / 1000));
+      const h = String(Math.floor(elapsed / 3600)).padStart(2, "0");
+      const m = String(Math.floor((elapsed % 3600) / 60)).padStart(2, "0");
+      const s = String(elapsed % 60).padStart(2, "0");
+      document.getElementById("sessionChip").textContent = "Session duration: " + h + ":" + m + ":" + s;
+    }
+
     function currentPathRoute() {
       const path = location.pathname.replace(/^\/+/, "").toLowerCase();
       if (!path) return "dashboard";
-      if (["dashboard", "customers", "snmp", "onprem", "reports"].includes(path)) return path;
+      if (["dashboard", "devices", "topology", "customers", "snmp", "onprem", "reports"].includes(path)) return path;
       return "dashboard";
     }
 
@@ -1352,15 +1807,23 @@
       const titles = {
         dashboard: {
           title: "Enterprise Dashboard",
-          subtitle: "This view provides a centralized operational picture of customer-level Meraki API activity, weekly lifecycle attainment, HTTP status behavior, cron execution, and report drill-downs."
+          subtitle: "Centralized operational picture of Meraki API activity, lifecycle attainment, SLA posture, status behavior, and executive drill-downs."
+        },
+        devices: {
+          title: "Devices Intelligence Dashboard",
+          subtitle: "Inventory analytics, serial visibility, model concentration, licensing overview, and device-level reporting for Meraki environments."
+        },
+        topology: {
+          title: "Topology Visualization",
+          subtitle: "Visual structure of the environment using inventory categorization, topology inference, and operational context for review and proof artifacts."
         },
         customers: {
           title: "Customer Administration",
-          subtitle: "Create, update, and maintain Meraki customer definitions, including org identifiers, API keys, notes, and write-test settings."
+          subtitle: "Create, update, and maintain Meraki customer definitions, mapped organizations, API keys, notes, and write-test settings."
         },
         snmp: {
           title: "SNMP Target Workflow",
-          subtitle: "Track single-IP, range, and CIDR-based SNMP collection targets for customer inventory and neighbor discovery workflows."
+          subtitle: "Track single-IP, range, and CIDR-based SNMP collection targets for customer inventory and future topology enrichment workflows."
         },
         onprem: {
           title: "On-Prem Collector Import",
@@ -1368,7 +1831,7 @@
         },
         reports: {
           title: "Operational Reports",
-          subtitle: "Filter, paginate, export, and inspect raw API call evidence, including HTTP response codes, latency, and response snippets."
+          subtitle: "Filter, paginate, export, and inspect raw API call evidence, including HTTP response codes, latency, payload snippets, and explanations."
         }
       };
 
@@ -1409,28 +1872,84 @@
       const data = await api("/api/customers");
       state.customers = data.items || [];
       populateCustomerDropdowns();
+      populateOrgSwitcher();
       renderCustomersTable();
       renderCustomerSummary();
+      renderOrgMapTable();
     }
 
     function populateCustomerDropdowns() {
-      const dropdownIds = ["customerFilter", "reportCustomerFilter", "globalCustomerSwitcher"];
+      const dropdownIds = [
+        "customerFilter",
+        "reportCustomerFilter",
+        "globalCustomerSwitcher",
+        "devicesCustomerFilter",
+        "topologyCustomerFilter"
+      ];
+
       dropdownIds.forEach(id => {
         const sel = document.getElementById(id);
         sel.innerHTML = "";
         sel.add(new Option("All Customers", ""));
         state.customers.forEach(customer => {
-          sel.add(new Option(customer.name + " (" + customer.customerId + ")", customer.customerId));
+          sel.add(new Option((customer.customerName || customer.name || customer.customerId) + " (" + customer.customerId + ")", customer.customerId));
         });
         sel.value = state.selectedCustomerId || "";
       });
     }
 
+    function populateOrgSwitcher() {
+      const ids = ["orgSwitcher", "dashboardOrgFilter", "reportOrgFilter", "devicesOrgFilter", "topologyOrgFilter"];
+      const customer = state.customers.find(c => c.customerId === state.selectedCustomerId);
+
+      ids.forEach(id => {
+        const sel = document.getElementById(id);
+        sel.innerHTML = "";
+        sel.add(new Option("All Orgs", ""));
+        if (customer && Array.isArray(customer.orgs)) {
+          customer.orgs.forEach(org => {
+            sel.add(new Option((org.name || org.orgId) + " (" + org.orgId + ")", org.orgId));
+          });
+        }
+        sel.value = state.selectedOrgId || "";
+      });
+    }
+
     function syncCustomerFilters() {
-      ["customerFilter", "reportCustomerFilter", "globalCustomerSwitcher"].forEach(id => {
+      ["customerFilter","reportCustomerFilter","globalCustomerSwitcher","devicesCustomerFilter","topologyCustomerFilter"].forEach(id => {
         const el = document.getElementById(id);
         el.value = state.selectedCustomerId || "";
       });
+      populateOrgSwitcher();
+    }
+
+    function syncOrgFilters() {
+      ["orgSwitcher","dashboardOrgFilter","reportOrgFilter","devicesOrgFilter","topologyOrgFilter"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = state.selectedOrgId || "";
+      });
+    }
+
+    async function onCustomerSelectionChange(e) {
+      state.selectedCustomerId = e.target.value || "";
+      state.selectedOrgId = "";
+      syncCustomerFilters();
+      syncOrgFilters();
+      await fullRefresh();
+    }
+
+    async function onOrgSelectionChange(e) {
+      state.selectedOrgId = e.target.value || "";
+      syncOrgFilters();
+      await fullRefresh();
+    }
+
+    async function fullRefresh(preserveSearch = true) {
+      await refreshDashboard(preserveSearch);
+      await refreshReports(false);
+      await loadDevicesPage(false);
+      await loadTopologyPage(false);
+      await loadCronBanner();
     }
 
     function renderCustomersTable() {
@@ -1448,7 +1967,8 @@
               <tr>
                 <th>Name</th>
                 <th>Customer ID</th>
-                <th>Org ID</th>
+                <th>Primary Org</th>
+                <th>Mapped Orgs</th>
                 <th>Enabled</th>
                 <th>API Key</th>
                 <th>Write Test</th>
@@ -1459,20 +1979,61 @@
               ${state.customers.map(customer => `
                 <tr>
                   <td>
-                    <strong>${escapeHtml(customer.name || "")}</strong><br>
+                    <strong>${escapeHtml(customer.customerName || customer.name || "")}</strong><br>
                     <span class="subtle">${escapeHtml(customer.notes || "")}</span>
                   </td>
                   <td><code>${escapeHtml(customer.customerId || "")}</code></td>
-                  <td><code>${escapeHtml(customer.orgId || "")}</code></td>
+                  <td><code>${escapeHtml(customer.primaryOrgId || customer.orgId || "")}</code></td>
+                  <td>${Array.isArray(customer.orgs) ? customer.orgs.length : 0}</td>
                   <td>${customer.enabled ? '<span class="status-ok">Enabled</span>' : '<span class="status-bad">Disabled</span>'}</td>
                   <td>${customer.hasApiKey ? '<span class="status-ok">Stored</span>' : '<span class="status-warn">Missing</span>'}</td>
                   <td>${customer.writeTest ? '<span class="status-ok">Enabled</span>' : '<span class="status-warn">Disabled</span>'}</td>
                   <td>
                     <div class="section-actions">
                       <button class="btn secondary small" onclick="editCustomerById('${escapeJs(customer.customerId)}')">Edit</button>
+                      <button class="btn secondary small" onclick="discoverCustomerOrgsById('${escapeJs(customer.customerId)}')">Discover Orgs</button>
                       <button class="btn danger small" onclick="deleteCustomerById('${escapeJs(customer.customerId)}')">Delete</button>
                     </div>
                   </td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function renderOrgMapTable() {
+      const wrap = document.getElementById("orgMapTableWrap");
+      const customer = state.customers.find(c => c.customerId === state.selectedCustomerId);
+
+      if (!customer || !Array.isArray(customer.orgs) || !customer.orgs.length) {
+        wrap.innerHTML = '<div class="empty">No mapped organizations are available for the selected customer.</div>';
+        return;
+      }
+
+      wrap.innerHTML = `
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Org Name</th>
+                <th>Org ID</th>
+                <th>Customer Number</th>
+                <th>Licensing Model</th>
+                <th>Cloud Region</th>
+                <th>API Enabled</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${customer.orgs.map(org => `
+                <tr>
+                  <td>${escapeHtml(org.name || "")}</td>
+                  <td><code>${escapeHtml(org.orgId || "")}</code></td>
+                  <td>${escapeHtml(org.customerNumber || "")}</td>
+                  <td>${escapeHtml(org.licensingModel || "")}</td>
+                  <td>${escapeHtml(org.cloudRegion || "")}</td>
+                  <td>${org.apiEnabled ? '<span class="status-ok">Yes</span>' : '<span class="status-warn">No</span>'}</td>
                 </tr>
               `).join("")}
             </tbody>
@@ -1485,9 +2046,14 @@
       const customer = state.customers.find(c => c.customerId === customerId);
       if (!customer) return;
 
+      state.selectedCustomerId = customerId;
+      state.selectedOrgId = customer.primaryOrgId || "";
+      syncCustomerFilters();
+      syncOrgFilters();
+
       document.getElementById("custCustomerId").value = customer.customerId || "";
-      document.getElementById("custName").value = customer.name || "";
-      document.getElementById("custOrgId").value = customer.orgId || "";
+      document.getElementById("custName").value = customer.customerName || customer.name || "";
+      document.getElementById("custOrgId").value = customer.primaryOrgId || customer.orgId || "";
       document.getElementById("custTags").value = Array.isArray(customer.tags) ? customer.tags.join(", ") : "";
       document.getElementById("custApiKey").value = "";
       document.getElementById("custNetworkId").value = customer.networkId || "";
@@ -1495,35 +2061,46 @@
       document.getElementById("custWriteTest").value = String(customer.writeTest === true);
       document.getElementById("custNotes").value = customer.notes || "";
 
+      renderOrgMapTable();
       navigate("customers");
+    };
+
+    window.discoverCustomerOrgsById = async function(customerId) {
+      await api("/api/customers/" + encodeURIComponent(customerId) + "/discover-orgs", { method: "POST", body: JSON.stringify({}) });
+      await loadCustomers();
+      state.selectedCustomerId = customerId;
+      syncCustomerFilters();
+      renderOrgMapTable();
+      await fullRefresh();
+      alert("Organization discovery completed.");
     };
 
     window.deleteCustomerById = async function(customerId) {
       if (!confirm("Delete customer " + customerId + "?")) return;
       await api("/api/customers/" + encodeURIComponent(customerId), { method: "DELETE" });
+      if (state.selectedCustomerId === customerId) {
+        state.selectedCustomerId = "";
+        state.selectedOrgId = "";
+      }
       await loadCustomers();
-      await refreshDashboard();
-      await refreshReports();
+      await fullRefresh();
     };
 
     async function saveCustomer() {
       const payload = {
         customerId: document.getElementById("custCustomerId").value.trim() || undefined,
-        name: document.getElementById("custName").value.trim(),
+        customerName: document.getElementById("custName").value.trim(),
         orgId: document.getElementById("custOrgId").value.trim(),
         apiKey: document.getElementById("custApiKey").value.trim() || undefined,
         networkId: document.getElementById("custNetworkId").value.trim(),
         enabled: document.getElementById("custEnabled").value === "true",
         writeTest: document.getElementById("custWriteTest").value === "true",
         notes: document.getElementById("custNotes").value.trim(),
-        tags: document.getElementById("custTags").value
-          .split(",")
-          .map(item => item.trim())
-          .filter(Boolean)
+        tags: document.getElementById("custTags").value.split(",").map(item => item.trim()).filter(Boolean)
       };
 
-      if (!payload.name || !payload.orgId) {
-        alert("Customer name and Meraki org ID are required.");
+      if (!payload.customerName && !payload.customerId) {
+        alert("Customer name or customer ID is required.");
         return;
       }
 
@@ -1534,8 +2111,17 @@
 
       clearCustomerForm();
       await loadCustomers();
-      await refreshDashboard();
+      await fullRefresh();
       alert("Customer saved successfully.");
+    }
+
+    async function discoverCustomerOrgs() {
+      const customerId = document.getElementById("custCustomerId").value.trim() || state.selectedCustomerId;
+      if (!customerId) {
+        alert("Select or save a customer first.");
+        return;
+      }
+      await discoverCustomerOrgsById(customerId);
     }
 
     function clearCustomerForm() {
@@ -1552,24 +2138,71 @@
 
     async function refreshDashboard(preserveSearch = true) {
       const customerId = state.selectedCustomerId || "";
-      state.weekly = await api("/api/weekly?customerId=" + encodeURIComponent(customerId));
+      const orgId = state.selectedOrgId || "";
 
-      const reportData = await api("/api/reports/calls");
-      const allCalls = reportData.items || [];
+      state.weekly = await api("/api/weekly?customerId=" + encodeURIComponent(customerId) + "&orgId=" + encodeURIComponent(orgId));
+      state.lifecycle30 = await api("/api/reports/lifecycle?days=30&customerId=" + encodeURIComponent(customerId) + "&orgId=" + encodeURIComponent(orgId));
 
-      state.calls = customerId
-        ? allCalls.filter(call => call.customerId === customerId)
-        : allCalls;
+      const reportData = await api("/api/reports/calls?days=30&customerId=" + encodeURIComponent(customerId) + "&orgId=" + encodeURIComponent(orgId) + "&limit=500");
+      state.calls = reportData.items || [];
 
       if (!preserveSearch) {
         document.getElementById("globalSearch").value = "";
       }
 
       applyGlobalSearch(false);
+      analyzeTopFailingEndpoints();
+      computeSlaState();
       renderDashboardKpis();
       renderActivityChart();
       renderRecentCallsTable();
       renderCustomerSummary();
+      renderExecutiveSnapshot();
+      renderStatusCodeChips();
+      renderSlaInsights();
+      renderTopFailingEndpoints();
+    }
+
+    function analyzeTopFailingEndpoints() {
+      const map = {};
+      state.calls.forEach(call => {
+        if (call.success) return;
+        const key = (call.method || "GET") + " " + (call.path || "");
+        if (!map[key]) {
+          map[key] = {
+            key,
+            count: 0,
+            status: call.status,
+            reason: call.statusReason || call.errorMessage || ""
+          };
+        }
+        map[key].count += 1;
+      });
+      state.topFailing = Object.values(map).sort((a,b) => b.count - a.count).slice(0, 10);
+    }
+
+    function computeSlaState() {
+      const w = state.weekly || {};
+      const success = Number(w.successRate || 0);
+      const reasons = [];
+
+      if (success < 95) reasons.push("Success rate is below the desired SLA threshold of 95%.");
+      if (state.topFailing.length) reasons.push("Failing endpoints were detected and require review.");
+      if ((w.failedCalls || 0) > 0) reasons.push("One or more requests returned non-success status codes.");
+      if ((w.totalCalls || 0) === 0) reasons.push("No recent activity was detected for the selected scope.");
+
+      let status = "green";
+      if (success < 85 || (w.totalCalls || 0) === 0) status = "red";
+      else if (success < 95) status = "yellow";
+
+      state.sla = {
+        status,
+        reasons
+      };
+
+      const el = document.getElementById("slaStatus");
+      el.className = "pill " + (status === "green" ? "sla-green" : status === "yellow" ? "sla-yellow" : "sla-red");
+      el.textContent = status === "green" ? "SLA Healthy" : status === "yellow" ? "SLA At Risk" : "SLA Alert";
     }
 
     function renderDashboardKpis() {
@@ -1578,14 +2211,16 @@
       const totalCalls = Number(weekly.totalCalls || 0);
       const successRate = Number(weekly.successRate || 0);
       const stage = weekly.stage || "ONBOARD";
-      const stageReason = weekly.stageReason || "No lifecycle reasoning available.";
+      const stageReason = weekly.reason || weekly.stageReason || "No lifecycle reasoning available.";
       const writeCalls = Number(methods.POST || 0) + Number(methods.PUT || 0) + Number(methods.DELETE || 0);
       const uniqueEndpoints = Number(weekly.uniqueEndpoints || 0);
+      const inventoryCount = Number(state.devices?.inventoryCount || 0);
 
       document.getElementById("kpiWeeklyCalls").textContent = formatNumber(totalCalls);
       document.getElementById("kpiSuccessRate").textContent = successRate + "%";
       document.getElementById("kpiWriteCalls").textContent = formatNumber(writeCalls);
       document.getElementById("kpiUniqueEndpoints").textContent = formatNumber(uniqueEndpoints);
+      document.getElementById("kpiInventoryCount").textContent = formatNumber(inventoryCount);
 
       const stageBadge = document.getElementById("kpiStageBadge");
       stageBadge.textContent = stage;
@@ -1602,7 +2237,8 @@
       document.getElementById("statPut").textContent = formatNumber(methods.PUT || 0);
       document.getElementById("statDelete").textContent = formatNumber(methods.DELETE || 0);
 
-      renderStatusCodeChips();
+      document.getElementById("kpiInventoryCount").textContent = formatNumber(inventoryCount);
+
       updateRAG();
       renderSparklines();
     }
@@ -1631,7 +2267,8 @@
     function renderStatusCodeChips() {
       const wrap = document.getElementById("statusCodeChips");
       const counts = (state.weekly && state.weekly.statusCounts) || {};
-      const entries = Object.entries(counts).sort((a, b) => a[0].localeCompare(b[0]));
+      const reasons = (state.weekly && state.weekly.statusReasons) || {};
+      const entries = Object.entries(counts).sort((a,b) => a[0].localeCompare(b[0]));
 
       if (!entries.length) {
         wrap.innerHTML = '<div class="empty" style="width:100%;">No status code data is available.</div>';
@@ -1642,7 +2279,7 @@
         let cls = "warn";
         if (String(code).startsWith("2")) cls = "ok";
         if (String(code).startsWith("4") || String(code).startsWith("5") || String(code) === "0") cls = "bad";
-        return `<span class="chip ${cls}">${escapeHtml(code)} · ${formatNumber(count)}</span>`;
+        return `<div class="chip ${cls}">${escapeHtml(code)} · ${formatNumber(count)} · ${escapeHtml(reasons[code] || "")}</div>`;
       }).join("");
     }
 
@@ -1663,9 +2300,7 @@
         const height = Math.max((total / max) * 100, total > 0 ? 3 : 0);
         return `
           <div class="bar-col">
-            <div class="bar-shell">
-              <div class="bar-fill" style="height:${height}%"></div>
-            </div>
+            <div class="bar-shell"><div class="bar-fill" style="height:${height}%"></div></div>
             <div class="chart-label">${escapeHtml(day.slice(5))}</div>
             <div class="chart-value">${formatNumber(total)}</div>
           </div>
@@ -1730,26 +2365,26 @@
         return;
       }
 
-      const rows = rowsSource
-        .sort((a, b) => String(b.timestamp || "").localeCompare(String(a.timestamp || "")))
-        .slice(0, 100)
-        .map((call, idx) => {
-          const statusClass = classifyStatus(call.status);
-          const key = encodeURIComponent(String(call.timestamp || "") + "|" + idx);
-          return `
-            <tr class="clickable" data-call-key="${key}">
-              <td>${escapeHtml(call.timestamp || "")}</td>
-              <td>${escapeHtml(call.customerId || "")}</td>
-              <td><span class="pill">${escapeHtml(call.method || "")}</span></td>
-              <td><code>${escapeHtml(call.path || "")}</code></td>
-              <td><span class="${statusClass}">${escapeHtml(String(call.status ?? ""))}</span></td>
-              <td>${formatNumber(call.latency || call.latencyMs || 0)} ms</td>
-              <td>
-                <div class="response-box">${escapeHtml((call.response || call.responseSnippet || "").slice(0, 500))}</div>
-              </td>
-            </tr>
-          `;
-        }).join("");
+      const sortedRows = rowsSource
+        .slice()
+        .sort((a,b) => String(b.timestamp || "").localeCompare(String(a.timestamp || "")))
+        .slice(0, 100);
+
+      const rows = sortedRows.map((call, idx) => {
+        const statusClass = classifyStatus(call.status);
+        return `
+          <tr class="clickable" data-idx="${idx}">
+            <td>${escapeHtml(call.timestamp || "")}</td>
+            <td>${escapeHtml(call.customerName || call.customerId || "")}</td>
+            <td>${escapeHtml(call.orgName || call.orgId || "")}</td>
+            <td><span class="pill">${escapeHtml(call.method || "")}</span></td>
+            <td><code>${escapeHtml(call.path || "")}</code></td>
+            <td><span class="${statusClass}">${escapeHtml(String(call.status ?? ""))}</span></td>
+            <td>${formatNumber(call.latency || call.latencyMs || 0)} ms</td>
+            <td><div class="response-box">${escapeHtml(formatPretty(call.responsePreview || call.response || call.responseSnippet || ""))}</div></td>
+          </tr>
+        `;
+      }).join("");
 
       wrap.innerHTML = `
         <div class="table-wrap">
@@ -1758,11 +2393,12 @@
               <tr>
                 <th>Timestamp</th>
                 <th>Customer</th>
+                <th>Org</th>
                 <th>Method</th>
                 <th>Path</th>
                 <th>Status</th>
                 <th>Latency</th>
-                <th>Response</th>
+                <th>Preview</th>
               </tr>
             </thead>
             <tbody>${rows}</tbody>
@@ -1771,23 +2407,20 @@
       `;
 
       wrap.querySelectorAll("tr.clickable").forEach((row, idx) => {
-        row.addEventListener("click", () => {
-          const source = rowsSource
-            .sort((a, b) => String(b.timestamp || "").localeCompare(String(a.timestamp || "")))
-            .slice(0, 100);
-          openCallModal(source[idx]);
-        });
+        row.addEventListener("click", () => openCallModal(sortedRows[idx]));
       });
     }
 
     function renderCustomerSummary() {
       const summary = document.getElementById("customerSummary");
       const customerId = state.selectedCustomerId;
+
       if (!customerId) {
         summary.innerHTML = `
           <p>All customers are currently selected.</p>
-          <p>This view aggregates weekly activity across every customer currently returned by the Worker. Use the customer switcher to pivot into a single tenant view.</p>
+          <p>This view aggregates lifecycle, calls, devices, and alerts across every customer returned by the Worker.</p>
         `;
+        renderOrgMapTable();
         return;
       }
 
@@ -1798,22 +2431,65 @@
       }
 
       summary.innerHTML = `
-        <div><strong>Name:</strong> ${escapeHtml(customer.name || "")}</div>
+        <div><strong>Name:</strong> ${escapeHtml(state.weekly?.customerName || customer.customerName || customer.name || "")}</div>
         <div><strong>Customer ID:</strong> <span class="mono">${escapeHtml(customer.customerId || "")}</span></div>
-        <div><strong>Org ID:</strong> <span class="mono">${escapeHtml(customer.orgId || "")}</span></div>
+        <div><strong>Primary Org ID:</strong> <span class="mono">${escapeHtml(customer.primaryOrgId || customer.orgId || "")}</span></div>
+        <div><strong>Selected Org:</strong> <span class="mono">${escapeHtml(state.selectedOrgId || "All")}</span></div>
+        <div><strong>Mapped Orgs:</strong> ${Array.isArray(customer.orgs) ? customer.orgs.length : 0}</div>
         <div><strong>Enabled:</strong> ${customer.enabled ? "Yes" : "No"}</div>
         <div><strong>Write Test:</strong> ${customer.writeTest ? "Enabled" : "Disabled"}</div>
         <div><strong>Test Network:</strong> ${escapeHtml(customer.networkId || "Not set")}</div>
         <div><strong>Tags:</strong> ${Array.isArray(customer.tags) && customer.tags.length ? customer.tags.map(escapeHtml).join(", ") : "None"}</div>
         <div><strong>Notes:</strong> ${escapeHtml(customer.notes || "No notes")}</div>
       `;
+
+      renderOrgMapTable();
+    }
+
+    function renderExecutiveSnapshot() {
+      const w = state.lifecycle30 || state.weekly || {};
+      document.getElementById("executiveSnapshot").innerHTML = `
+        <div><strong>Customer Name:</strong> ${escapeHtml(w.customerName || "-")}</div>
+        <div><strong>Org Name:</strong> ${escapeHtml(w.orgName || w.orgId || "-")}</div>
+        <div><strong>Stage:</strong> ${escapeHtml(w.stage || "-")}</div>
+        <div><strong>Total API Calls:</strong> ${formatNumber(w.totalCalls || 0)}</div>
+        <div><strong>Success Rate:</strong> ${escapeHtml(String(w.successRate || 0))}%</div>
+        <div><strong>Reason:</strong> ${escapeHtml(w.reason || w.stageReason || "No lifecycle rationale available.")}</div>
+      `;
+    }
+
+    function renderSlaInsights() {
+      const wrap = document.getElementById("slaInsights");
+      const reasons = state.sla.reasons || [];
+      if (!reasons.length) {
+        wrap.innerHTML = '<div class="insight">SLA is currently healthy. No alert conditions were detected for the selected scope.</div>';
+        return;
+      }
+      wrap.innerHTML = reasons.map(r => `<div class="insight">${escapeHtml(r)}</div>`).join("");
+    }
+
+    function renderTopFailingEndpoints() {
+      const wrap = document.getElementById("topFailingEndpoints");
+      if (!state.topFailing.length) {
+        wrap.innerHTML = '<div class="empty">No failing endpoints were identified in the selected period.</div>';
+        return;
+      }
+
+      wrap.innerHTML = state.topFailing.map(item => `
+        <div class="insight">
+          <div><strong>${escapeHtml(item.key)}</strong></div>
+          <div>Failures: ${formatNumber(item.count)}</div>
+          <div class="small-note">${escapeHtml(item.reason || "")}</div>
+        </div>
+      `).join("");
     }
 
     async function runSelectedCustomer() {
       let path = "/api/run";
-      if (state.selectedCustomerId) {
-        path += "?customerId=" + encodeURIComponent(state.selectedCustomerId);
-      }
+      const qs = [];
+      if (state.selectedCustomerId) qs.push("customerId=" + encodeURIComponent(state.selectedCustomerId));
+      if (state.selectedOrgId) qs.push("orgId=" + encodeURIComponent(state.selectedOrgId));
+      if (qs.length) path += "?" + qs.join("&");
 
       const result = await api(path, { method: "GET" });
 
@@ -1824,14 +2500,16 @@
         "Success Rate: " + (result.successRate || "n/a")
       );
 
-      await refreshDashboard();
-      await refreshReports();
-      await loadCronBanner();
+      await fullRefresh();
     }
 
     function exportDashboardCsv() {
-      const url = API_BASE + "/api/reports/calls.csv";
-      window.open(url, "_blank");
+      const params = new URLSearchParams();
+      if (state.selectedCustomerId) params.set("customerId", state.selectedCustomerId);
+      if (state.selectedOrgId) params.set("orgId", state.selectedOrgId);
+      params.set("days", "30");
+      params.set("limit", "1000");
+      window.open(API_BASE + "/api/reports/calls.csv?" + params.toString(), "_blank");
     }
 
     async function loadSnmpTargets() {
@@ -1869,9 +2547,7 @@
                   <td>${escapeHtml(target.version)}</td>
                   <td>${escapeHtml(target.community)}</td>
                   <td>${escapeHtml(target.notes || "")}</td>
-                  <td>
-                    <button class="btn danger small" onclick="deleteSnmpTarget(${index})">Delete</button>
-                  </td>
+                  <td><button class="btn danger small" onclick="deleteSnmpTarget(${index})">Delete</button></td>
                 </tr>
               `).join("")}
             </tbody>
@@ -1946,8 +2622,7 @@
       });
 
       document.getElementById("onPremResult").textContent = JSON.stringify(result, null, 2);
-      await refreshDashboard();
-      await refreshReports();
+      await fullRefresh();
     }
 
     function loadExampleUpload() {
@@ -1955,23 +2630,29 @@
         calls: [
           {
             customerId: "example-customer",
+            customerName: "Example Customer",
+            orgId: "123456",
+            orgName: "Example Org",
             method: "GET",
             path: "/organizations/123456/networks",
             status: 200,
             success: true,
             latencyMs: 210,
             timestamp: new Date().toISOString(),
-            responseSnippet: "{\"items\":[]}"
+            response: [{ id: "n_1", name: "Example Network" }]
           },
           {
             customerId: "example-customer",
+            customerName: "Example Customer",
+            orgId: "123456",
+            orgName: "Example Org",
             method: "GET",
             path: "/organizations/123456/devices",
             status: 200,
             success: true,
             latencyMs: 245,
             timestamp: new Date().toISOString(),
-            responseSnippet: "{\"devices\":[]}"
+            response: [{ name: "Edge MX", model: "MX95", serial: "Q2XX-AAAA-BBBB" }]
           }
         ]
       };
@@ -1981,14 +2662,23 @@
 
     async function refreshReports(resetPage = true) {
       const customerId = state.selectedCustomerId || "";
-      const data = await api("/api/reports/calls");
-      state.reportCalls = customerId
-        ? (data.items || []).filter(item => item.customerId === customerId)
-        : (data.items || []);
+      const orgId = state.selectedOrgId || "";
+      const days = document.getElementById("reportPeriodDays").value || "30";
+
+      const params = new URLSearchParams();
+      if (customerId) params.set("customerId", customerId);
+      if (orgId) params.set("orgId", orgId);
+      params.set("days", days);
+      params.set("limit", "1000");
+
+      const data = await api("/api/reports/calls?" + params.toString());
+      state.reportCalls = data.items || [];
 
       if (resetPage) state.reportPage = 1;
       applyReportFilters();
       renderLifecycleSnapshot();
+      renderStatusReasoningPanel();
+      renderFailingApiPatterns();
     }
 
     function applyReportFilters() {
@@ -2005,14 +2695,51 @@
     }
 
     function renderLifecycleSnapshot() {
-      const wrap = document.getElementById("lifecycleSnapshot");
-      const weekly = state.weekly || {};
-      wrap.innerHTML = `
-        <div><strong>Stage:</strong> ${escapeHtml(weekly.stage || "Unknown")}</div>
-        <div><strong>Total Calls:</strong> ${formatNumber(weekly.totalCalls || 0)}</div>
-        <div><strong>Success Rate:</strong> ${escapeHtml(String(weekly.successRate || 0))}%</div>
-        <div><strong>Reason:</strong> ${escapeHtml(weekly.stageReason || "No stage reasoning was returned.")}</div>
+      const w = state.lifecycle30 || state.weekly || {};
+      document.getElementById("lifecycleSnapshot").innerHTML = `
+        <div><strong>Customer Name:</strong> ${escapeHtml(w.customerName || "-")}</div>
+        <div><strong>Org Name:</strong> ${escapeHtml(w.orgName || w.orgId || "-")}</div>
+        <div><strong>Stage:</strong> ${escapeHtml(w.stage || "-")}</div>
+        <div><strong>Total API Calls:</strong> ${formatNumber(w.totalCalls || 0)}</div>
+        <div><strong>Success Rate:</strong> ${escapeHtml(String(w.successRate || 0))}%</div>
+        <div><strong>Reason:</strong> ${escapeHtml(w.reason || w.stageReason || "No stage reasoning was returned.")}</div>
       `;
+    }
+
+    function renderStatusReasoningPanel() {
+      const wrap = document.getElementById("statusReasoningPanel");
+      const w = state.lifecycle30 || state.weekly || {};
+      const counts = w.statusCounts || {};
+      const reasons = w.statusReasons || {};
+
+      const entries = Object.entries(counts);
+      if (!entries.length) {
+        wrap.innerHTML = '<div class="empty">No status code explanations are available.</div>';
+        return;
+      }
+
+      wrap.innerHTML = entries.map(([code, count]) => `
+        <div class="insight">
+          <div><strong>${escapeHtml(code)} = ${formatNumber(count)}</strong></div>
+          <div class="small-note">${escapeHtml(reasons[code] || "")}</div>
+        </div>
+      `).join("");
+    }
+
+    function renderFailingApiPatterns() {
+      const wrap = document.getElementById("failingApiPatterns");
+      if (!state.topFailing.length) {
+        wrap.innerHTML = '<div class="empty">No failing API patterns were identified in the selected period.</div>';
+        return;
+      }
+
+      wrap.innerHTML = state.topFailing.map(item => `
+        <div class="insight">
+          <div><strong>${escapeHtml(item.key)}</strong></div>
+          <div>Failures: ${formatNumber(item.count)}</div>
+          <div class="small-note">${escapeHtml(item.reason || "")}</div>
+        </div>
+      `).join("");
     }
 
     function renderReportCallsTable() {
@@ -2030,19 +2757,21 @@
 
       const start = (state.reportPage - 1) * pageSize;
       const pageItems = state.reportFilteredCalls
-        .sort((a, b) => String(b.timestamp || "").localeCompare(String(a.timestamp || "")))
+        .slice()
+        .sort((a,b) => String(b.timestamp || "").localeCompare(String(a.timestamp || "")))
         .slice(start, start + pageSize);
 
       const rows = pageItems.map((item, idx) => `
         <tr class="clickable" data-idx="${idx}">
           <td>${escapeHtml(item.timestamp || "")}</td>
-          <td>${escapeHtml(item.customerId || "")}</td>
+          <td>${escapeHtml(item.customerName || item.customerId || "")}</td>
+          <td>${escapeHtml(item.orgName || item.orgId || "")}</td>
           <td><span class="pill">${escapeHtml(item.method || "")}</span></td>
           <td><code>${escapeHtml(item.path || "")}</code></td>
           <td><span class="${classifyStatus(item.status)}">${escapeHtml(String(item.status ?? ""))}</span></td>
           <td>${formatNumber(item.latency || item.latencyMs || 0)} ms</td>
           <td>${escapeHtml(String(item.success))}</td>
-          <td><div class="response-box">${escapeHtml((item.response || item.responseSnippet || "").slice(0, 700))}</div></td>
+          <td><div class="response-box">${escapeHtml(formatPretty(item.responsePreview || item.response || item.responseSnippet || ""))}</div></td>
         </tr>
       `).join("");
 
@@ -2053,12 +2782,13 @@
               <tr>
                 <th>Timestamp</th>
                 <th>Customer</th>
+                <th>Org</th>
                 <th>Method</th>
                 <th>Path</th>
                 <th>Status</th>
                 <th>Latency</th>
                 <th>Success</th>
-                <th>Response Snippet</th>
+                <th>Response Preview</th>
               </tr>
             </thead>
             <tbody>${rows}</tbody>
@@ -2071,8 +2801,7 @@
       });
 
       document.getElementById("reportPageMeta").textContent =
-        "Page " + state.reportPage + " of " + totalPages +
-        " | " + formatNumber(state.reportFilteredCalls.length) + " rows";
+        "Page " + state.reportPage + " of " + totalPages + " | " + formatNumber(state.reportFilteredCalls.length) + " rows";
     }
 
     function previousReportPage() {
@@ -2091,14 +2820,26 @@
       }
     }
 
-    function exportReportsCsv() {
-      const url = API_BASE + "/api/reports/calls.csv";
-      window.open(url, "_blank");
+    function handleGlobalSearch() {
+      applyGlobalSearch(true);
     }
 
-    function exportDashboardCsv() {
-      const url = API_BASE + "/api/reports/calls.csv";
-      window.open(url, "_blank");
+    function applyGlobalSearch(reRenderReports = true) {
+      const q = document.getElementById("globalSearch").value.trim().toLowerCase();
+
+      if (!q) {
+        state.filteredCalls = [...state.calls];
+        if (reRenderReports) applyReportFilters();
+        renderRecentCallsTable();
+        return;
+      }
+
+      state.filteredCalls = state.calls.filter(call => JSON.stringify(call).toLowerCase().includes(q));
+      if (reRenderReports) {
+        state.reportFilteredCalls = state.reportCalls.filter(call => JSON.stringify(call).toLowerCase().includes(q));
+        renderReportCallsTable();
+      }
+      renderRecentCallsTable();
     }
 
     async function loadCronBanner() {
@@ -2124,40 +2865,321 @@
           " | Success Calls: " + successCalls +
           " | Status: " + status;
       } catch (error) {
-        document.getElementById("cronBannerText").textContent =
-          "Unable to load cron status: " + error.message;
+        document.getElementById("cronBannerText").textContent = "Unable to load cron status: " + error.message;
       }
     }
 
-    function handleGlobalSearch() {
-      applyGlobalSearch(true);
-    }
-
-    function applyGlobalSearch(reRenderReports = true) {
-      const q = document.getElementById("globalSearch").value.trim().toLowerCase();
-
-      if (!q) {
-        state.filteredCalls = [...state.calls];
-        if (reRenderReports) {
-          state.reportFilteredCalls = [...state.reportCalls];
-          applyReportFilters();
-        }
-        renderRecentCallsTable();
+    async function loadDevicesPage(triggerRenders = true) {
+      if (!state.selectedCustomerId) {
+        state.devices = null;
+        renderDevicePage();
         return;
       }
 
-      state.filteredCalls = state.calls.filter(call =>
-        JSON.stringify(call).toLowerCase().includes(q)
-      );
+      const params = new URLSearchParams();
+      params.set("customerId", state.selectedCustomerId);
+      if (state.selectedOrgId) params.set("orgId", state.selectedOrgId);
 
-      if (reRenderReports) {
-        state.reportCalls = state.reportCalls.filter(call =>
-          JSON.stringify(call).toLowerCase().includes(q)
-        );
-        applyReportFilters();
+      state.devices = await api("/api/reports/devices?" + params.toString());
+      renderDevicePage();
+    }
+
+    function renderDevicePage() {
+      const data = state.devices;
+      if (!data) {
+        document.getElementById("devicesInventoryCount").textContent = "0";
+        document.getElementById("devicesSerialCount").textContent = "0";
+        document.getElementById("devicesUniqueModels").textContent = "0";
+        document.getElementById("devicesLicenseSignals").textContent = "0";
+        document.getElementById("devicesTopProductType").textContent = "-";
+        document.getElementById("devicesTopologyNodes").textContent = "0";
+        document.getElementById("deviceSummary").innerHTML = '<div class="empty">Select a customer to load inventory analytics.</div>';
+        document.getElementById("modelHeatmap").innerHTML = '<div class="empty">No model data available.</div>';
+        document.getElementById("deviceChart").innerHTML = '<div class="empty">No device chart available.</div>';
+        document.getElementById("licenseOverview").textContent = "No license overview available.";
+        document.getElementById("deviceTable").innerHTML = '<div class="empty">No devices available.</div>';
+        document.getElementById("serialList").textContent = "";
+        document.getElementById("deviceInsightsNarrative").innerHTML = '<div class="empty">No device insights available.</div>';
+        return;
       }
 
-      renderRecentCallsTable();
+      const devices = Array.isArray(data.devices) ? data.devices : [];
+      const modelCounts = data.modelCounts || {};
+      const uniqueModels = Object.keys(modelCounts).length;
+      const serialNumbers = Array.isArray(data.serialNumbers) ? data.serialNumbers : [];
+      const licenseSignals = data.licenseOverview && typeof data.licenseOverview === "object"
+        ? Object.keys(data.licenseOverview).length
+        : 0;
+
+      const productTypeCounts = {};
+      devices.forEach(d => {
+        const p = d.productType || "unknown";
+        productTypeCounts[p] = (productTypeCounts[p] || 0) + 1;
+      });
+      const topProductType = Object.entries(productTypeCounts).sort((a,b) => b[1] - a[1])[0]?.[0] || "-";
+
+      document.getElementById("devicesInventoryCount").textContent = formatNumber(data.inventoryCount || devices.length);
+      document.getElementById("devicesSerialCount").textContent = formatNumber(serialNumbers.length);
+      document.getElementById("devicesUniqueModels").textContent = formatNumber(uniqueModels);
+      document.getElementById("devicesLicenseSignals").textContent = formatNumber(licenseSignals);
+      document.getElementById("devicesTopProductType").textContent = escapeHtml(topProductType);
+      document.getElementById("devicesTopologyNodes").textContent = formatNumber(devices.length);
+      document.getElementById("kpiInventoryCount").textContent = formatNumber(data.inventoryCount || devices.length);
+
+      document.getElementById("deviceSummary").innerHTML = `
+        <div><strong>Customer:</strong> ${escapeHtml(data.customerName || state.weekly?.customerName || "-")}</div>
+        <div><strong>Org:</strong> ${escapeHtml(data.orgName || data.orgId || "-")}</div>
+        <div><strong>Inventory Count:</strong> ${formatNumber(data.inventoryCount || devices.length)}</div>
+        <div><strong>Top Product Type:</strong> ${escapeHtml(topProductType)}</div>
+        <div><strong>Model Diversity:</strong> ${formatNumber(uniqueModels)} distinct models</div>
+      `;
+
+      renderModelHeatmap(modelCounts);
+      renderDeviceChart(modelCounts);
+      renderDeviceTable(devices);
+      document.getElementById("serialList").textContent = serialNumbers.join("\n");
+      document.getElementById("licenseOverview").textContent = JSON.stringify(data.licenseOverview || {}, null, 2);
+      renderDeviceInsightsNarrative(data);
+    }
+
+    function renderModelHeatmap(modelCounts) {
+      const container = document.getElementById("modelHeatmap");
+      const entries = Object.entries(modelCounts).sort((a,b) => b[1] - a[1]);
+      if (!entries.length) {
+        container.innerHTML = '<div class="empty">No model distribution data available.</div>';
+        return;
+      }
+      const max = Math.max(...entries.map(([_, c]) => c), 1);
+      container.innerHTML = entries.slice(0, 12).map(([model, count]) => `
+        <div class="heat-row">
+          <div>${escapeHtml(model)}</div>
+          <div class="heat-bar"><div class="heat-fill" style="width:${(count / max) * 100}%"></div></div>
+          <div>${formatNumber(count)}</div>
+        </div>
+      `).join("");
+    }
+
+    function renderDeviceChart(modelCounts) {
+      const container = document.getElementById("deviceChart");
+      const entries = Object.entries(modelCounts).sort((a,b) => b[1] - a[1]).slice(0, 10);
+      if (!entries.length) {
+        container.innerHTML = '<div class="empty">No chart data available.</div>';
+        return;
+      }
+      const max = Math.max(...entries.map(([_, c]) => c), 1);
+      container.innerHTML = `
+        <div class="chart">
+          ${entries.map(([model, count]) => {
+            const height = Math.max((count / max) * 100, 4);
+            return `
+              <div class="bar-col">
+                <div class="bar-shell"><div class="bar-fill" style="height:${height}%"></div></div>
+                <div class="chart-label">${escapeHtml(model)}</div>
+                <div class="chart-value">${formatNumber(count)}</div>
+              </div>
+            `;
+          }).join("")}
+        </div>
+      `;
+    }
+
+    function renderDeviceTable(devices) {
+      const container = document.getElementById("deviceTable");
+      if (!devices.length) {
+        container.innerHTML = '<div class="empty">No devices returned from inventory.</div>';
+        return;
+      }
+      container.innerHTML = `
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Model</th>
+                <th>Serial</th>
+                <th>MAC</th>
+                <th>Network ID</th>
+                <th>Product Type</th>
+                <th>Claimed</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${devices.map(d => `
+                <tr>
+                  <td>${escapeHtml(d.name || "-")}</td>
+                  <td>${escapeHtml(d.model || "-")}</td>
+                  <td><code>${escapeHtml(d.serial || "-")}</code></td>
+                  <td>${escapeHtml(d.mac || "-")}</td>
+                  <td><code>${escapeHtml(d.networkId || "-")}</code></td>
+                  <td>${escapeHtml(d.productType || "-")}</td>
+                  <td>${escapeHtml(d.claimedAt || "-")}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function renderDeviceInsightsNarrative(data) {
+      const container = document.getElementById("deviceInsightsNarrative");
+      const insights = Array.isArray(data.insights) ? data.insights : [];
+      if (!insights.length) {
+        container.innerHTML = '<div class="empty">No narrative insights available.</div>';
+        return;
+      }
+      container.innerHTML = insights.map(item => `<div class="insight">${escapeHtml(item)}</div>`).join("");
+    }
+
+    async function loadTopologyPage() {
+      if (!state.selectedCustomerId) {
+        state.topology = null;
+        renderTopologyPage();
+        return;
+      }
+
+      if (!state.devices) {
+        await loadDevicesPage(false);
+      }
+
+      state.topology = buildTopologyModel(state.devices);
+      renderTopologyPage();
+    }
+
+    function buildTopologyModel(deviceData) {
+      const devices = Array.isArray(deviceData?.devices) ? deviceData.devices : [];
+      const nodes = [];
+      const edges = [];
+
+      const gateways = devices.filter(d => String(d.productType || "").toLowerCase().includes("appliance") || String(d.model || "").startsWith("MX"));
+      const switches = devices.filter(d => String(d.productType || "").toLowerCase().includes("switch") || String(d.model || "").startsWith("MS"));
+      const aps = devices.filter(d => String(d.productType || "").toLowerCase().includes("wireless") || String(d.model || "").startsWith("MR"));
+      const others = devices.filter(d => !gateways.includes(d) && !switches.includes(d) && !aps.includes(d));
+
+      const centerGateway = gateways[0] || devices[0] || null;
+
+      devices.forEach((d, idx) => {
+        const type = classifyDeviceType(d);
+        nodes.push({
+          id: d.serial || d.name || ("node-" + idx),
+          label: d.name || d.model || d.serial || ("Device " + (idx + 1)),
+          model: d.model || "",
+          serial: d.serial || "",
+          productType: d.productType || "",
+          type
+        });
+      });
+
+      if (centerGateway) {
+        devices.forEach((d, idx) => {
+          if ((d.serial || d.name) === (centerGateway.serial || centerGateway.name)) return;
+          edges.push({
+            from: centerGateway.serial || centerGateway.name || "core",
+            to: d.serial || d.name || ("node-" + idx)
+          });
+        });
+      }
+
+      return {
+        nodes,
+        edges,
+        groups: {
+          gateways,
+          switches,
+          aps,
+          others
+        }
+      };
+    }
+
+    function classifyDeviceType(device) {
+      const model = String(device.model || "").toUpperCase();
+      const productType = String(device.productType || "").toLowerCase();
+      if (model.startsWith("MX") || productType.includes("appliance")) return "mx";
+      if (model.startsWith("MS") || productType.includes("switch")) return "ms";
+      if (model.startsWith("MR") || productType.includes("wireless")) return "mr";
+      return "other";
+    }
+
+    function renderTopologyPage() {
+      const svg = document.getElementById("topologySvg");
+      const summary = document.getElementById("topologySummary");
+      const notes = document.getElementById("topologyNotes");
+
+      if (!state.topology || !state.topology.nodes.length) {
+        svg.innerHTML = "";
+        summary.innerHTML = '<div class="empty">No topology can be generated without device inventory.</div>';
+        notes.innerHTML = '<div class="empty">No topology notes available.</div>';
+        return;
+      }
+
+      const nodes = state.topology.nodes;
+      const edges = state.topology.edges;
+      const width = 1200;
+      const height = 700;
+      const cx = width / 2;
+      const cy = height / 2;
+      const radius = 240;
+
+      const positions = nodes.map((node, idx) => {
+        if (idx === 0) {
+          return { ...node, x: cx, y: cy };
+        }
+        const angle = (Math.PI * 2 * (idx - 1)) / Math.max(nodes.length - 1, 1);
+        return {
+          ...node,
+          x: cx + Math.cos(angle) * radius,
+          y: cy + Math.sin(angle) * radius
+        };
+      });
+
+      const posMap = Object.fromEntries(positions.map(p => [p.id, p]));
+      const typeColor = {
+        mx: getComputedStyle(document.documentElement).getPropertyValue('--topology-mx').trim() || "#2fcf84",
+        ms: getComputedStyle(document.documentElement).getPropertyValue('--topology-ms').trim() || "#00a3e0",
+        mr: getComputedStyle(document.documentElement).getPropertyValue('--topology-mr').trim() || "#f3b64a",
+        other: getComputedStyle(document.documentElement).getPropertyValue('--topology-other').trim() || "#f06a6a"
+      };
+
+      svg.innerHTML = `
+        <rect x="0" y="0" width="${width}" height="${height}" fill="transparent"></rect>
+        ${edges.map(edge => {
+          const a = posMap[edge.from];
+          const b = posMap[edge.to];
+          if (!a || !b) return "";
+          return `<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="rgba(255,255,255,.16)" stroke-width="2" />`;
+        }).join("")}
+        ${positions.map(node => `
+          <g>
+            <circle cx="${node.x}" cy="${node.y}" r="34" fill="${typeColor[node.type] || typeColor.other}" opacity="0.95"></circle>
+            <text x="${node.x}" y="${node.y - 46}" fill="var(--text)" text-anchor="middle" font-size="12">${escapeHtml(shortLabel(node.label, 18))}</text>
+            <text x="${node.x}" y="${node.y + 4}" fill="#081a2f" text-anchor="middle" font-size="11" font-weight="700">${escapeHtml(shortLabel(node.model || node.type.toUpperCase(), 10))}</text>
+            <text x="${node.x}" y="${node.y + 18}" fill="#081a2f" text-anchor="middle" font-size="9">${escapeHtml(shortLabel(node.serial || "", 12))}</text>
+          </g>
+        `).join("")}
+      `;
+
+      summary.innerHTML = `
+        <div><strong>Total Nodes:</strong> ${formatNumber(nodes.length)}</div>
+        <div><strong>Total Edges:</strong> ${formatNumber(edges.length)}</div>
+        <div><strong>MX / Security:</strong> ${formatNumber(state.topology.groups.gateways.length)}</div>
+        <div><strong>MS / Switching:</strong> ${formatNumber(state.topology.groups.switches.length)}</div>
+        <div><strong>MR / Wireless:</strong> ${formatNumber(state.topology.groups.aps.length)}</div>
+        <div><strong>Other:</strong> ${formatNumber(state.topology.groups.others.length)}</div>
+      `;
+
+      const notesList = [
+        `Topology inference used inventory categorization across ${nodes.length} devices.`,
+        `Central placement is biased toward the first MX or appliance-like device as a likely core or security edge.`,
+        `${state.topology.groups.switches.length} switching devices and ${state.topology.groups.aps.length} wireless devices were positioned around the inferred core.`,
+        `This visualization is suitable for executive narrative and operational proof, but should not be treated as a physical cable map.`
+      ];
+      notes.innerHTML = notesList.map(n => `<div class="insight">${escapeHtml(n)}</div>`).join("");
+    }
+
+    function shortLabel(text, n) {
+      const s = String(text || "");
+      return s.length > n ? s.slice(0, n - 1) + "…" : s;
     }
 
     function openCallModal(call) {
@@ -2192,6 +3214,153 @@
     function escapeJs(str) {
       return String(str ?? "").replace(/'/g, "\\'");
     }
+
+    function formatPretty(data) {
+      try {
+        const obj = typeof data === "string" ? JSON.parse(data) : data;
+        return JSON.stringify(obj, null, 2);
+      } catch {
+        return String(data).slice(0, 700);
+      }
+    }
+
+    function buildExecutiveReportHtml(sectionTitle) {
+      const w = state.lifecycle30 || state.weekly || {};
+      const devices = state.devices || {};
+      const calls = (state.reportFilteredCalls && state.reportFilteredCalls.length ? state.reportFilteredCalls : state.calls || []).slice(0, 20);
+
+      const statusSection = Object.entries(w.statusCounts || {}).map(([k, v]) => `
+        <li><strong>${escapeHtml(k)}</strong> = ${formatNumber(v)} — ${escapeHtml((w.statusReasons || {})[k] || "")}</li>
+      `).join("");
+
+      const callSection = calls.map(c => `
+        <tr>
+          <td>${escapeHtml(c.timestamp || "")}</td>
+          <td>${escapeHtml(c.method || "")}</td>
+          <td>${escapeHtml(c.path || "")}</td>
+          <td>${escapeHtml(String(c.status || ""))}</td>
+          <td>${escapeHtml(c.statusReason || "")}</td>
+        </tr>
+      `).join("");
+
+      const deviceSection = Array.isArray(devices.devices) ? devices.devices.slice(0, 20).map(d => `
+        <tr>
+          <td>${escapeHtml(d.name || "-")}</td>
+          <td>${escapeHtml(d.model || "-")}</td>
+          <td>${escapeHtml(d.serial || "-")}</td>
+          <td>${escapeHtml(d.productType || "-")}</td>
+        </tr>
+      `).join("") : "";
+
+      return `
+        <html>
+        <head>
+          <title>Meraki Executive Proof Report</title>
+          <style>
+            body{font-family:Arial,sans-serif;padding:24px;color:#10253a}
+            h1,h2,h3{margin:0 0 12px}
+            .section{margin-bottom:24px}
+            table{width:100%;border-collapse:collapse;font-size:12px}
+            td,th{border:1px solid #cdd9e6;padding:8px;vertical-align:top}
+            th{background:#eef5fb;text-align:left}
+            ul{margin:0;padding-left:20px}
+          </style>
+        </head>
+        <body>
+          <h1>US Signal | Meraki Executive Proof Report</h1>
+          <div class="section">
+            <strong>Report Section:</strong> ${escapeHtml(sectionTitle)}<br>
+            <strong>Generated:</strong> ${new Date().toLocaleString()}<br>
+            <strong>Signed-in User:</strong> ${escapeHtml(state.me?.email || "unknown")}<br>
+            <strong>Session Duration:</strong> ${document.getElementById("sessionChip").textContent.replace("Session duration: ", "")}
+          </div>
+
+          <div class="section">
+            <h2>Lifecycle Snapshot</h2>
+            <p><strong>Customer Name:</strong> ${escapeHtml(w.customerName || "-")}</p>
+            <p><strong>Org Name:</strong> ${escapeHtml(w.orgName || w.orgId || "-")}</p>
+            <p><strong>Stage:</strong> ${escapeHtml(w.stage || "-")}</p>
+            <p><strong>Total API Calls:</strong> ${formatNumber(w.totalCalls || 0)}</p>
+            <p><strong>Success Rate:</strong> ${escapeHtml(String(w.successRate || 0))}%</p>
+            <p><strong>Reason:</strong> ${escapeHtml(w.reason || w.stageReason || "-")}</p>
+          </div>
+
+          <div class="section">
+            <h2>API Status Codes and Reasons</h2>
+            <ul>${statusSection || "<li>No status codes available.</li>"}</ul>
+          </div>
+
+          <div class="section">
+            <h2>Sample API Calls</h2>
+            <table>
+              <thead>
+                <tr><th>Timestamp</th><th>Method</th><th>Path</th><th>Status</th><th>Explanation</th></tr>
+              </thead>
+              <tbody>${callSection || '<tr><td colspan="5">No call evidence available.</td></tr>'}</tbody>
+            </table>
+          </div>
+
+          <div class="section">
+            <h2>Devices and Inventory Evidence</h2>
+            <p><strong>Inventory Count:</strong> ${formatNumber(devices.inventoryCount || 0)}</p>
+            <p><strong>Serial Count:</strong> ${formatNumber((devices.serialNumbers || []).length)}</p>
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Model</th><th>Serial</th><th>Product Type</th></tr>
+              </thead>
+              <tbody>${deviceSection || '<tr><td colspan="4">No device evidence available.</td></tr>'}</tbody>
+            </table>
+          </div>
+
+          <script>window.print()<\/script>
+        </body>
+        </html>
+      `;
+    }
+
+    function exportExecutivePdf() {
+      const win = window.open("", "_blank");
+      win.document.write(buildExecutiveReportHtml("Executive Summary"));
+      win.document.close();
+    }
+
+    function exportDevicesPdf() {
+      const win = window.open("", "_blank");
+      win.document.write(buildExecutiveReportHtml("Devices Intelligence"));
+      win.document.close();
+    }
+
+    function exportTopologyPdf() {
+      const win = window.open("", "_blank");
+      win.document.write(buildExecutiveReportHtml("Topology and Structure"));
+      win.document.close();
+    }
+
+    function exportReportsCsv() {
+      const params = new URLSearchParams();
+      if (state.selectedCustomerId) params.set("customerId", state.selectedCustomerId);
+      if (state.selectedOrgId) params.set("orgId", state.selectedOrgId);
+      params.set("days", document.getElementById("reportPeriodDays").value || "30");
+      params.set("limit", "1000");
+      window.open(API_BASE + "/api/reports/calls.csv?" + params.toString(), "_blank");
+    }
+
+    async function loadDevicesPage() {
+      if (!state.selectedCustomerId) {
+        state.devices = null;
+        renderDevicePage();
+        return;
+      }
+
+      const params = new URLSearchParams();
+      params.set("customerId", state.selectedCustomerId);
+      if (state.selectedOrgId) params.set("orgId", state.selectedOrgId);
+
+      state.devices = await api("/api/reports/devices?" + params.toString());
+      renderDevicePage();
+    }
+
+    window.exportExecutivePdf = exportExecutivePdf;
   </script>
 </body>
 </html>
