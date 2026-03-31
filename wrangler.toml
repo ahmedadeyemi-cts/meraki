@@ -1,6 +1,0 @@
-name = "meraki"
-main = "worker.js" 
-compatibility_date = "2025-01-01" 
-[[routes]] 
-pattern = "meraki.onenecklab.com/*" 
-zone_name = "onenecklab.com"
