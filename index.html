@@ -76,21 +76,9 @@
         linear-gradient(180deg, #edf4fb 0%, #e8f1f8 100%);
     }
 
-    body {
-      overflow: hidden;
-    }
-
-    a {
-      color: var(--accent-2);
-      text-decoration: none;
-    }
-
-    button,
-    input,
-    select,
-    textarea {
-      font: inherit;
-    }
+    body { overflow: hidden; }
+    a { color: var(--accent-2); text-decoration: none; }
+    button, input, select, textarea { font: inherit; }
 
     .app {
       display: grid;
@@ -109,9 +97,7 @@
       border-right: 1px solid var(--line);
     }
 
-    :root.light .sidebar {
-      background: rgba(255,255,255,.96);
-    }
+    :root.light .sidebar { background: rgba(255,255,255,.96); }
 
     .brand {
       display: flex;
@@ -151,9 +137,7 @@
       font-size: 12px;
     }
 
-    .sidebar-section {
-      margin-top: 18px;
-    }
+    .sidebar-section { margin-top: 18px; }
 
     .sidebar-title {
       margin: 0 10px 10px;
@@ -191,38 +175,20 @@
       box-shadow: var(--shadow);
     }
 
-    :root.light .sidebar-card {
-      background: linear-gradient(180deg, #ffffff, #f7fbff);
-    }
+    :root.light .sidebar-card { background: linear-gradient(180deg, #ffffff, #f7fbff); }
 
-    .sidebar-card h3 {
-      margin: 0 0 10px;
-      font-size: 14px;
-    }
-
-    .sidebar-card p,
-    .sidebar-card li {
+    .sidebar-card h3 { margin: 0 0 10px; font-size: 14px; }
+    .sidebar-card p, .sidebar-card li {
       margin: 0;
       color: var(--muted);
       font-size: 12px;
       line-height: 1.5;
     }
 
-    .sidebar-card ul {
-      margin: 0;
-      padding-left: 18px;
-    }
+    .sidebar-card ul { margin: 0; padding-left: 18px; }
+    .sidebar-actions { display: grid; gap: 10px; margin-top: 10px; }
 
-    .sidebar-actions {
-      display: grid;
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    .main {
-      height: 100vh;
-      overflow: auto;
-    }
+    .main { height: 100vh; overflow: auto; }
 
     .global-header {
       position: sticky;
@@ -239,12 +205,9 @@
       backdrop-filter: blur(12px);
     }
 
-    :root.light .global-header {
-      background: rgba(248,251,255,.92);
-    }
+    :root.light .global-header { background: rgba(248,251,255,.92); }
 
-    .gh-left,
-    .gh-right {
+    .gh-left, .gh-right {
       display: flex;
       align-items: center;
       gap: 12px;
@@ -265,9 +228,7 @@
     :root.light .gh-search,
     :root.light .input,
     :root.light .select,
-    :root.light .textarea {
-      background: #ffffff;
-    }
+    :root.light .textarea { background: #ffffff; }
 
     .content {
       max-width: var(--content-max);
@@ -303,7 +264,8 @@
       justify-items: end;
     }
 
-    .user-chip {
+    .user-chip,
+    .session-chip {
       padding: 10px 14px;
       border-radius: 999px;
       background: rgba(255,255,255,.05);
@@ -315,12 +277,7 @@
 
     .session-chip {
       padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.05);
-      border: 1px solid var(--line);
-      color: var(--muted);
       font-size: 12px;
-      white-space: nowrap;
     }
 
     .toolbar {
@@ -342,14 +299,12 @@
       outline: none;
     }
 
+    .toolbar .select,
+    .toolbar .input { max-width: 280px; }
+
     .textarea {
       resize: vertical;
       min-height: 180px;
-    }
-
-    .toolbar .select,
-    .toolbar .input {
-      max-width: 280px;
     }
 
     .btn {
@@ -364,9 +319,7 @@
       transition: .18s ease;
     }
 
-    .btn:hover {
-      transform: translateY(-1px);
-    }
+    .btn:hover { transform: translateY(-1px); }
 
     .btn.secondary {
       background: rgba(255,255,255,.05);
@@ -382,43 +335,16 @@
       box-shadow: none;
     }
 
-    .btn.success {
-      background: rgba(47,207,132,.16);
-      color: #dbfff0;
-      border: 1px solid rgba(47,207,132,.28);
-      box-shadow: none;
-    }
-
     .btn.small {
       padding: 8px 12px;
       border-radius: 10px;
       font-size: 12px;
     }
 
-    .grid {
-      display: grid;
-      gap: 16px;
-    }
-
-    .grid.kpi {
-      grid-template-columns: repeat(6, minmax(0,1fr));
-      margin-bottom: 18px;
-    }
-
-    .grid.two {
-      grid-template-columns: 1.25fr 1fr;
-      margin-bottom: 18px;
-    }
-
-    .grid.two-equal {
-      grid-template-columns: 1fr 1fr;
-      margin-bottom: 18px;
-    }
-
-    .grid.three {
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      margin-bottom: 18px;
-    }
+    .grid { display: grid; gap: 16px; }
+    .grid.kpi { grid-template-columns: repeat(6, minmax(0,1fr)); margin-bottom: 18px; }
+    .grid.two { grid-template-columns: 1.25fr 1fr; margin-bottom: 18px; }
+    .grid.two-equal { grid-template-columns: 1fr 1fr; margin-bottom: 18px; }
 
     .card {
       background: linear-gradient(180deg, rgba(16,40,68,.95), rgba(10,29,49,.98));
@@ -428,38 +354,13 @@
       box-shadow: var(--shadow);
     }
 
-    :root.light .card {
-      background: linear-gradient(180deg, #ffffff, #f5fbff);
-    }
+    :root.light .card { background: linear-gradient(180deg, #ffffff, #f5fbff); }
 
-    .card h3 {
-      margin: 0 0 12px;
-      font-size: 16px;
-    }
-
-    .subtle {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.55;
-    }
-
-    .kpi-label {
-      color: var(--muted);
-      font-size: 13px;
-      margin-bottom: 8px;
-    }
-
-    .kpi-value {
-      font-size: 34px;
-      font-weight: 800;
-      margin-bottom: 6px;
-      line-height: 1;
-    }
-
-    .kpi-meta {
-      color: var(--muted);
-      font-size: 12px;
-    }
+    .card h3 { margin: 0 0 12px; font-size: 16px; }
+    .subtle { color: var(--muted); font-size: 13px; line-height: 1.55; }
+    .kpi-label { color: var(--muted); font-size: 13px; margin-bottom: 8px; }
+    .kpi-value { font-size: 34px; font-weight: 800; margin-bottom: 6px; line-height: 1; }
+    .kpi-meta { color: var(--muted); font-size: 12px; }
 
     .progress {
       height: 10px;
@@ -477,96 +378,43 @@
       border-radius: 999px;
     }
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border-radius: 999px;
-      padding: 8px 12px;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .badge.stage-ONBOARD,
-    .badge.stage-IMPLEMENT {
-      background: rgba(243,182,74,.14);
-      color: #ffd98f;
-    }
-
-    .badge.stage-USE {
-      background: rgba(0,163,224,.14);
-      color: #90e0ff;
-    }
-
-    .badge.stage-ENGAGE,
-    .badge.stage-ADOPT {
-      background: rgba(47,207,132,.14);
-      color: #aaf3cb;
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border-radius: 999px;
-      padding: 8px 12px;
-      font-size: 12px;
-      font-weight: 700;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.06);
-      color: var(--text);
-    }
-
-    .rag-green,
-    .sla-green {
-      background: rgba(47,207,132,.16);
-      color: #aaf3cb;
-      border-color: rgba(47,207,132,.22);
-    }
-
-    .rag-yellow,
-    .sla-yellow {
-      background: rgba(243,182,74,.14);
-      color: #ffe3ab;
-      border-color: rgba(243,182,74,.24);
-    }
-
-    .rag-red,
-    .sla-red {
-      background: rgba(240,106,106,.14);
-      color: #ffc2c2;
-      border-color: rgba(240,106,106,.24);
-    }
-
-    .chip-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
+    .badge,
+    .pill,
     .chip {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(255,255,255,.06);
-      border: 1px solid var(--line);
-      color: var(--text);
       border-radius: 999px;
-      padding: 8px 10px;
+      padding: 8px 12px;
       font-size: 12px;
+      font-weight: 700;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
     }
 
+    .badge { border: 0; }
+    .badge.stage-ONBOARD,
+    .badge.stage-IMPLEMENT { background: rgba(243,182,74,.14); color: #ffd98f; }
+    .badge.stage-USE { background: rgba(0,163,224,.14); color: #90e0ff; }
+    .badge.stage-ENGAGE,
+    .badge.stage-ADOPT { background: rgba(47,207,132,.14); color: #aaf3cb; }
+
+    .rag-green,
+    .sla-green { background: rgba(47,207,132,.16); color: #aaf3cb; border-color: rgba(47,207,132,.22); }
+    .rag-yellow,
+    .sla-yellow { background: rgba(243,182,74,.14); color: #ffe3ab; border-color: rgba(243,182,74,.24); }
+    .rag-red,
+    .sla-red { background: rgba(240,106,106,.14); color: #ffc2c2; border-color: rgba(240,106,106,.24); }
+
+    .chip-row,
+    .pill-grid { display: flex; flex-wrap: wrap; gap: 8px; }
     .chip.ok { color: #9df0c6; }
     .chip.warn { color: #ffd98f; }
     .chip.bad { color: #ffb2b2; }
 
-    .panel {
-      display: none;
-    }
-
-    .panel.active {
-      display: block;
-    }
+    .panel { display: none; }
+    .panel.active { display: block; }
 
     .stat-grid {
       display: grid;
@@ -581,16 +429,8 @@
       border: 1px solid var(--line);
     }
 
-    .mini-stat .label {
-      color: var(--muted);
-      font-size: 12px;
-      margin-bottom: 8px;
-    }
-
-    .mini-stat .value {
-      font-size: 24px;
-      font-weight: 800;
-    }
+    .mini-stat .label { color: var(--muted); font-size: 12px; margin-bottom: 8px; }
+    .mini-stat .value { font-size: 24px; font-weight: 800; }
 
     .chart {
       height: 300px;
@@ -623,26 +463,11 @@
       background: linear-gradient(180deg, var(--accent-2), var(--accent));
     }
 
-    .chart-label {
-      color: var(--muted);
-      font-size: 12px;
-    }
+    .chart-label { color: var(--muted); font-size: 12px; }
+    .chart-value { font-size: 12px; font-weight: 700; }
 
-    .chart-value {
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .sparkline-wrap {
-      margin-top: 10px;
-      height: 44px;
-    }
-
-    .sparkline-svg {
-      width: 100%;
-      height: 44px;
-      display: block;
-    }
+    .sparkline-wrap { margin-top: 10px; height: 44px; }
+    .sparkline-svg { width: 100%; height: 44px; display: block; }
 
     .table-wrap {
       overflow: auto;
@@ -651,11 +476,7 @@
       background: rgba(255,255,255,.02);
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-    }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
 
     th,
     td {
@@ -674,13 +495,8 @@
       font-weight: 700;
     }
 
-    tr.clickable {
-      cursor: pointer;
-    }
-
-    tr.clickable:hover {
-      background: rgba(255,255,255,.03);
-    }
+    tr.clickable { cursor: pointer; }
+    tr.clickable:hover { background: rgba(255,255,255,.03); }
 
     td code {
       color: #c8e8ff;
@@ -690,33 +506,12 @@
       font-family: var(--mono);
     }
 
-    .status-ok {
-      color: var(--success);
-      font-weight: 700;
-    }
+    .status-ok { color: var(--success); font-weight: 700; }
+    .status-warn { color: var(--warning); font-weight: 700; }
+    .status-bad { color: var(--danger); font-weight: 700; }
 
-    .status-warn {
-      color: var(--warning);
-      font-weight: 700;
-    }
-
-    .status-bad {
-      color: var(--danger);
-      font-weight: 700;
-    }
-
-    .section-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 12px;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap: 12px;
-    }
+    .section-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+    .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
 
     .empty {
       padding: 24px;
@@ -727,11 +522,12 @@
       background: rgba(255,255,255,.03);
     }
 
-    .help {
+    .help,
+    .footer-note,
+    .small-note {
       color: var(--muted);
       font-size: 12px;
       line-height: 1.5;
-      margin-top: 8px;
     }
 
     .response-box,
@@ -756,16 +552,7 @@
       color: #18304a;
     }
 
-    .mono {
-      font-family: var(--mono);
-    }
-
-    .footer-note {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.5;
-      margin-top: 16px;
-    }
+    .mono { font-family: var(--mono); }
 
     .pagination {
       display: flex;
@@ -775,10 +562,7 @@
       flex-wrap: wrap;
     }
 
-    .pagination .meta {
-      color: var(--muted);
-      font-size: 12px;
-    }
+    .pagination .meta { color: var(--muted); font-size: 12px; }
 
     .banner {
       display: flex;
@@ -787,9 +571,7 @@
       gap: 14px;
     }
 
-    .banner strong {
-      color: var(--text);
-    }
+    .banner strong { color: var(--text); }
 
     .modal {
       position: fixed;
@@ -802,9 +584,7 @@
       padding: 22px;
     }
 
-    .modal.show {
-      display: flex;
-    }
+    .modal.show { display: flex; }
 
     .modal-content {
       width: min(1200px, 100%);
@@ -817,9 +597,7 @@
       padding: 18px;
     }
 
-    :root.light .modal-content {
-      background: linear-gradient(180deg, #fff, #f5fbff);
-    }
+    :root.light .modal-content { background: linear-gradient(180deg, #fff, #f5fbff); }
 
     .modal-head {
       display: flex;
@@ -829,32 +607,15 @@
       margin-bottom: 14px;
     }
 
-    .modal-head h3 {
-      margin: 0;
-    }
+    .modal-head h3 { margin: 0; }
 
-    .insight-list {
-      display: grid;
-      gap: 10px;
-    }
+    .insight-list { display: grid; gap: 10px; }
 
     .insight {
       padding: 12px;
       border-radius: 14px;
       background: rgba(255,255,255,.04);
       border: 1px solid var(--line);
-    }
-
-    .split {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-
-    .small-note {
-      font-size: 11px;
-      color: var(--muted);
-      line-height: 1.5;
     }
 
     .topology-wrap {
@@ -866,11 +627,7 @@
       overflow: hidden;
     }
 
-    .topology-svg {
-      width: 100%;
-      min-height: 380px;
-      display: block;
-    }
+    .topology-svg { width: 100%; min-height: 380px; display: block; }
 
     .legend {
       display: flex;
@@ -917,10 +674,16 @@
       background: linear-gradient(90deg, var(--accent), var(--accent-2));
     }
 
-    .pill-grid {
-      display: flex;
+    .checkbox-wrap {
+      display: inline-flex;
+      align-items: center;
       gap: 8px;
-      flex-wrap: wrap;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      min-height: 46px;
     }
 
     @media (max-width: 1700px) {
@@ -932,9 +695,7 @@
       .sidebar { position: relative; height: auto; }
       .grid.two,
       .grid.two-equal,
-      .grid.three,
-      .form-grid,
-      .split { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
       .grid.kpi { grid-template-columns: repeat(2, minmax(0,1fr)); }
       .gh-search { max-width: none; width: 100%; }
       .global-header { align-items: flex-start; }
@@ -948,48 +709,6 @@
       .toolbar .input { max-width: none; }
       .global-header { padding: 12px 16px; }
       .user-block { justify-items: start; }
-    }
-
-    @media print {
-      body,
-      html {
-        background: #fff !important;
-        color: #000 !important;
-      }
-      .sidebar,
-      .global-header,
-      .toolbar,
-      .section-actions,
-      .nav-btn,
-      .btn,
-      .modal {
-        display: none !important;
-      }
-      .main {
-        height: auto !important;
-        overflow: visible !important;
-      }
-      .content {
-        max-width: none !important;
-        padding: 0 !important;
-      }
-      .panel {
-        display: block !important;
-      }
-      .card,
-      .table-wrap {
-        box-shadow: none !important;
-        background: #fff !important;
-        color: #000 !important;
-        border-color: #ccc !important;
-      }
-      pre.pretty,
-      .response-box {
-        background: #fff !important;
-        color: #000 !important;
-        border: 1px solid #ccc !important;
-        max-height: none !important;
-      }
     }
   </style>
 </head>
@@ -1015,6 +734,13 @@
         <button class="nav-btn" data-route="snmp">SNMP Targets</button>
         <button class="nav-btn" data-route="onprem">On-Prem Upload</button>
         <button class="nav-btn" data-route="reports">Reports</button>
+        <button class="nav-btn" data-route="governance">Governance</button>
+        <button class="nav-btn" data-route="executive">Executive</button>
+        <button class="nav-btn" data-route="audit-detail">Audit Detail</button>
+        <button class="nav-btn" data-route="appendix">Appendix</button>
+        <button class="nav-btn" data-route="reference">Reference</button>
+        <button class="nav-btn" data-route="playbooks">Playbooks</button>
+        <button class="nav-btn" data-route="notes">Notes</button>
       </div>
 
       <div class="sidebar-card">
@@ -1023,6 +749,15 @@
           <li>Use: 100+ weekly calls and at least 75% success</li>
           <li>Engage: 5,000+ weekly calls and at least 85% success</li>
           <li>Adopt: 7,500+ weekly calls and at least 95% success</li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>Recommended Cron Cadence</h3>
+        <ul>
+          <li>Every 6 hours for steady call growth toward 8,000 calls in 2 weeks</li>
+          <li>Use manual Run Now for testing or troubleshooting</li>
+          <li>Use force live refresh only when you need current data immediately</li>
         </ul>
       </div>
 
@@ -1056,6 +791,7 @@
           <li><span class="mono">/api/reports/calls</span></li>
           <li><span class="mono">/api/reports/calls.csv</span></li>
           <li><span class="mono">/api/reports/devices</span></li>
+          <li><span class="mono">/api/reports/proof</span></li>
           <li><span class="mono">/api/cron/status</span></li>
           <li><span class="mono">/api/snmp</span></li>
           <li><span class="mono">/api/onprem/upload</span></li>
@@ -1065,7 +801,7 @@
       <div class="sidebar-card">
         <h3>Platform Notes</h3>
         <p>
-          This frontend is wired to your Worker routes and supports per-customer, per-org reporting,
+          This frontend is aligned to your expanded Worker and includes proof reporting, force-live run control,
           devices intelligence, topology inference, executive exports, live SLA posture, and session duration visibility.
         </p>
       </div>
@@ -1094,7 +830,7 @@
             <h2 id="pageTitle">Enterprise Dashboard</h2>
             <p id="pageSubtitle">
               This view provides a centralized operational picture of customer-level Meraki API activity,
-              lifecycle attainment, HTTP status behavior, cron execution, topology perspective,
+              lifecycle attainment, proof data, HTTP status behavior, cron execution, topology perspective,
               inventory intelligence, session duration, and executive-ready reporting.
             </p>
           </div>
@@ -1122,6 +858,7 @@
             <select id="customerFilter" class="select"></select>
             <select id="dashboardOrgFilter" class="select"></select>
             <input id="weekStart" class="input" type="date" />
+            <label class="checkbox-wrap"><input id="forceLiveToggle" type="checkbox" /> Force live run</label>
             <button id="btnRefreshDashboard" class="btn">Refresh Dashboard</button>
             <button id="btnRunNow" class="btn secondary">Run Selected Customer</button>
             <button id="btnExportCsv" class="btn secondary">Export CSV</button>
@@ -1184,22 +921,10 @@
             <div class="card">
               <h3>Method and Status Distribution</h3>
               <div class="stat-grid" style="margin-bottom:14px;">
-                <div class="mini-stat">
-                  <div class="label">GET Calls</div>
-                  <div class="value" id="statGet">0</div>
-                </div>
-                <div class="mini-stat">
-                  <div class="label">POST Calls</div>
-                  <div class="value" id="statPost">0</div>
-                </div>
-                <div class="mini-stat">
-                  <div class="label">PUT Calls</div>
-                  <div class="value" id="statPut">0</div>
-                </div>
-                <div class="mini-stat">
-                  <div class="label">DELETE Calls</div>
-                  <div class="value" id="statDelete">0</div>
-                </div>
+                <div class="mini-stat"><div class="label">GET Calls</div><div class="value" id="statGet">0</div></div>
+                <div class="mini-stat"><div class="label">POST Calls</div><div class="value" id="statPost">0</div></div>
+                <div class="mini-stat"><div class="label">PUT Calls</div><div class="value" id="statPut">0</div></div>
+                <div class="mini-stat"><div class="label">DELETE Calls</div><div class="value" id="statDelete">0</div></div>
               </div>
 
               <h3 style="margin-top:6px;">HTTP Status Codes</h3>
@@ -1342,44 +1067,14 @@
             <div class="card">
               <h3>Add or Update Customer</h3>
               <div class="form-grid">
-                <div>
-                  <label class="subtle">Customer ID</label>
-                  <input id="custCustomerId" class="input" placeholder="Optional. Leave blank to auto-generate from name." autocomplete="off" />
-                </div>
-                <div>
-                  <label class="subtle">Customer Name</label>
-                  <input id="custName" class="input" placeholder="Example: VoiceLab" autocomplete="off" />
-                </div>
-                <div>
-                  <label class="subtle">Meraki Org ID</label>
-                  <input id="custOrgId" class="input" placeholder="Auto-discovered if API key is provided" autocomplete="off" />
-                </div>
-                <div>
-                  <label class="subtle">Tags</label>
-                  <input id="custTags" class="input" placeholder="Example: healthcare, west, production" autocomplete="off" />
-                </div>
-                <div>
-                  <label class="subtle">API Key</label>
-                  <input id="custApiKey" class="input" placeholder="Stored in Worker secret KV via API" autocomplete="off" />
-                </div>
-                <div>
-                  <label class="subtle">Write Test Network ID</label>
-                  <input id="custNetworkId" class="input" placeholder="Optional dedicated test network" autocomplete="off" />
-                </div>
-                <div>
-                  <label class="subtle">Enabled</label>
-                  <select id="custEnabled" class="select">
-                    <option value="true">Enabled</option>
-                    <option value="false">Disabled</option>
-                  </select>
-                </div>
-                <div>
-                  <label class="subtle">Write Test Mode</label>
-                  <select id="custWriteTest" class="select">
-                    <option value="false">Disabled</option>
-                    <option value="true">Enabled</option>
-                  </select>
-                </div>
+                <div><label class="subtle">Customer ID</label><input id="custCustomerId" class="input" placeholder="Optional. Leave blank to auto-generate from name." autocomplete="off" /></div>
+                <div><label class="subtle">Customer Name</label><input id="custName" class="input" placeholder="Example: VoiceLab" autocomplete="off" /></div>
+                <div><label class="subtle">Meraki Org ID</label><input id="custOrgId" class="input" placeholder="Auto-discovered if API key is provided" autocomplete="off" /></div>
+                <div><label class="subtle">Tags</label><input id="custTags" class="input" placeholder="Example: healthcare, west, production" autocomplete="off" /></div>
+                <div><label class="subtle">API Key</label><input id="custApiKey" class="input" placeholder="Stored in Worker secret KV via API" autocomplete="off" /></div>
+                <div><label class="subtle">Write Test Network ID</label><input id="custNetworkId" class="input" placeholder="Optional dedicated test network" autocomplete="off" /></div>
+                <div><label class="subtle">Enabled</label><select id="custEnabled" class="select"><option value="true">Enabled</option><option value="false">Disabled</option></select></div>
+                <div><label class="subtle">Write Test Mode</label><select id="custWriteTest" class="select"><option value="false">Disabled</option><option value="true">Enabled</option></select></div>
               </div>
 
               <div style="margin-top:12px;">
@@ -1417,25 +1112,10 @@
             <div class="card">
               <h3>SNMP Target Entry</h3>
               <div class="form-grid">
-                <div>
-                  <label class="subtle">Target Name</label>
-                  <input id="snmpName" class="input" placeholder="Example: HQ Core Stack" autocomplete="off" />
-                </div>
-                <div>
-                  <label class="subtle">Address / Range / CIDR</label>
-                  <input id="snmpAddress" class="input" placeholder="10.10.10.10 or 10.10.10.0/24 or 10.10.10.1-10.10.10.20" autocomplete="off" />
-                </div>
-                <div>
-                  <label class="subtle">SNMP Version</label>
-                  <select id="snmpVersion" class="select">
-                    <option value="v2c">SNMP v2c</option>
-                    <option value="v3">SNMP v3</option>
-                  </select>
-                </div>
-                <div>
-                  <label class="subtle">Credential / Community</label>
-                  <input id="snmpCommunity" class="input" placeholder="Community string or credential label" autocomplete="off" />
-                </div>
+                <div><label class="subtle">Target Name</label><input id="snmpName" class="input" placeholder="Example: HQ Core Stack" autocomplete="off" /></div>
+                <div><label class="subtle">Address / Range / CIDR</label><input id="snmpAddress" class="input" placeholder="10.10.10.10 or 10.10.10.0/24 or 10.10.10.1-10.10.10.20" autocomplete="off" /></div>
+                <div><label class="subtle">SNMP Version</label><select id="snmpVersion" class="select"><option value="v2c">SNMP v2c</option><option value="v3">SNMP v3</option></select></div>
+                <div><label class="subtle">Credential / Community</label><input id="snmpCommunity" class="input" placeholder="Community string or credential label" autocomplete="off" /></div>
               </div>
 
               <div style="margin-top:12px;">
@@ -1494,51 +1174,12 @@
             <div class="card">
               <h3>Call Report Filters</h3>
               <div class="form-grid">
-                <div>
-                  <label class="subtle">Customer</label>
-                  <select id="reportCustomerFilter" class="select"></select>
-                </div>
-                <div>
-                  <label class="subtle">Org</label>
-                  <select id="reportOrgFilter" class="select"></select>
-                </div>
-                <div>
-                  <label class="subtle">Limit</label>
-                  <select id="reportLimit" class="select">
-                    <option value="50">50</option>
-                    <option value="100" selected>100</option>
-                    <option value="250">250</option>
-                    <option value="500">500</option>
-                  </select>
-                </div>
-                <div>
-                  <label class="subtle">Status Filter</label>
-                  <select id="reportStatusFilter" class="select">
-                    <option value="">All Statuses</option>
-                    <option value="2">2xx Success</option>
-                    <option value="4">4xx Client Errors</option>
-                    <option value="5">5xx Server Errors</option>
-                    <option value="0">0 / Transport Issues</option>
-                  </select>
-                </div>
-                <div>
-                  <label class="subtle">Method Filter</label>
-                  <select id="reportMethodFilter" class="select">
-                    <option value="">All Methods</option>
-                    <option value="GET">GET</option>
-                    <option value="POST">POST</option>
-                    <option value="PUT">PUT</option>
-                    <option value="DELETE">DELETE</option>
-                  </select>
-                </div>
-                <div>
-                  <label class="subtle">Period</label>
-                  <select id="reportPeriodDays" class="select">
-                    <option value="7">7 Days</option>
-                    <option value="30" selected>30 Days</option>
-                    <option value="90">90 Days</option>
-                  </select>
-                </div>
+                <div><label class="subtle">Customer</label><select id="reportCustomerFilter" class="select"></select></div>
+                <div><label class="subtle">Org</label><select id="reportOrgFilter" class="select"></select></div>
+                <div><label class="subtle">Limit</label><select id="reportLimit" class="select"><option value="50">50</option><option value="100" selected>100</option><option value="250">250</option><option value="500">500</option></select></div>
+                <div><label class="subtle">Status Filter</label><select id="reportStatusFilter" class="select"><option value="">All Statuses</option><option value="2">2xx Success</option><option value="4">4xx Client Errors</option><option value="5">5xx Server Errors</option><option value="0">0 / Transport Issues</option></select></div>
+                <div><label class="subtle">Method Filter</label><select id="reportMethodFilter" class="select"><option value="">All Methods</option><option value="GET">GET</option><option value="POST">POST</option><option value="PUT">PUT</option><option value="DELETE">DELETE</option></select></div>
+                <div><label class="subtle">Period</label><select id="reportPeriodDays" class="select"><option value="7">7 Days</option><option value="14">14 Days</option><option value="30" selected>30 Days</option><option value="90">90 Days</option></select></div>
               </div>
 
               <div class="section-actions">
@@ -1549,7 +1190,7 @@
 
               <div class="help">
                 This view provides raw operational visibility into recently logged API calls, response codes, latency,
-                payload snippets, status explanations, and proof-ready summaries that can be exported for review.
+                payload snippets, status explanations, proof summaries, and export-ready evidence.
               </div>
             </div>
 
@@ -1570,6 +1211,17 @@
             </div>
           </div>
 
+          <div class="grid two">
+            <div class="card">
+              <h3>Proof and Audit Summary</h3>
+              <div id="proofSummaryPanel" class="subtle"></div>
+            </div>
+            <div class="card">
+              <h3>Proof Samples</h3>
+              <pre id="proofSamples" class="pretty">Loading...</pre>
+            </div>
+          </div>
+
           <div class="card">
             <h3>Detailed Call Report</h3>
             <div id="reportCallsTableWrap"></div>
@@ -1579,7 +1231,316 @@
               <div class="meta" id="reportPageMeta">Page 1</div>
             </div>
           </div>
+        
+        <section id="panel-executive-extension" class="panel active" style="display:none">
         </section>
+
+        <section id="panel-proof-extension" class="panel active" style="display:none">
+        </section>
+
+        <section id="panel-extended-dashboard-block" class="panel active" style="display:none">
+        </section>
+
+        <section id="panel-ops-detail" class="panel" style="display:block">
+          <div class="grid two">
+            <div class="card">
+              <h3>Adoption Runbook Guidance</h3>
+              <div class="insight-list" id="runbookGuidance">
+                <div class="insight">Use a six-hour cron cadence for steady API generation without creating unnecessary noise.</div>
+                <div class="insight">Run a force-live execution only when you need current Meraki state immediately for validation or executive proof.</div>
+                <div class="insight">Keep write-test mode disabled unless you have an approved test network ID for the customer.</div>
+                <div class="insight">Use the proof report to show both raw call volume and the audit endpoints that validate configuration and API activity.</div>
+              </div>
+            </div>
+            <div class="card">
+              <h3>Collection Scope Summary</h3>
+              <div id="collectionScopeSummary" class="subtle">
+                <div><strong>Org-Level Monitoring:</strong> organizations, networks, devices, inventory, statuses, license overview, API requests, configuration changes.</div>
+                <div><strong>Network Expansion:</strong> network devices, clients, events, alerts settings, SSIDs, and appliance VLANs where applicable.</div>
+                <div><strong>Proof Strategy:</strong> use 14-day proof output alongside 30-day lifecycle and current inventory evidence for executive reporting.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid two">
+            <div class="card">
+              <h3>Lifecycle Threshold Narrative</h3>
+              <div id="lifecycleNarrative" class="insight-list"></div>
+            </div>
+            <div class="card">
+              <h3>Operational Recommendations</h3>
+              <div id="operationalRecommendations" class="insight-list"></div>
+            </div>
+          </div>
+
+          <div class="grid two">
+            <div class="card">
+              <h3>Success Distribution Summary</h3>
+              <div id="successDistributionSummary" class="subtle"></div>
+            </div>
+            <div class="card">
+              <h3>Endpoint Mix Summary</h3>
+              <div id="endpointMixSummary" class="subtle"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Proof Readiness Narrative</h3>
+            <div id="proofReadinessNarrative" class="insight-list"></div>
+          </div>
+
+          <div class="card">
+            <h3>Export Notes</h3>
+            <div class="subtle">
+              <p>The print-ready PDF flow is designed to generate a defensible executive artifact that shows lifecycle stage, status-code reasoning, sample call evidence, proof samples, and inventory evidence together.</p>
+              <p>Use the CSV export for raw evidence review, and use the PDF export for stakeholder updates, customer proof of activity, and adoption milestone documentation.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="panel-governance" class="panel">
+          <div class="grid two">
+            <div class="card">
+              <h3>Adoption Governance Summary</h3>
+              <div id="governanceSummary" class="insight-list">
+                <div class="insight">Use this section to review whether API volume, success rate, proof coverage, and inventory evidence are sufficient for internal governance checkpoints.</div>
+                <div class="insight">A customer can be highly active but still be below adoption if status quality, audit visibility, or endpoint diversity is weak.</div>
+                <div class="insight">This view is intended to support managed-services review conversations and internal runbook alignment.</div>
+              </div>
+            </div>
+            <div class="card">
+              <h3>Governance Checklist</h3>
+              <div id="governanceChecklist" class="insight-list">
+                <div class="insight">API key saved and org discovery completed.</div>
+                <div class="insight">Cron enabled and producing a stable run history.</div>
+                <div class="insight">Lifecycle and proof exports available for customer review.</div>
+                <div class="insight">Inventory and license visibility confirmed for the target org.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Lifecycle to Proof Alignment</h3>
+            <div id="lifecycleProofAlignment" class="subtle"></div>
+          </div>
+
+          <div class="grid two">
+            <div class="card">
+              <h3>Risk Notes</h3>
+              <div id="riskNotes" class="insight-list"></div>
+            </div>
+            <div class="card">
+              <h3>Mitigation Notes</h3>
+              <div id="mitigationNotes" class="insight-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="panel-executive" class="panel">
+          <div class="grid two">
+            <div class="card">
+              <h3>Executive Narrative</h3>
+              <div id="executiveNarrative" class="insight-list"></div>
+            </div>
+            <div class="card">
+              <h3>Executive Talking Points</h3>
+              <div id="executiveTalkingPoints" class="insight-list"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Executive Metrics Rollup</h3>
+            <div id="executiveMetricsRollup" class="subtle"></div>
+          </div>
+
+          <div class="grid two">
+            <div class="card">
+              <h3>Customer Value Narrative</h3>
+              <div id="customerValueNarrative" class="insight-list"></div>
+            </div>
+            <div class="card">
+              <h3>Operational Value Narrative</h3>
+              <div id="operationalValueNarrative" class="insight-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="panel-audit-detail" class="panel">
+          <div class="grid two">
+            <div class="card">
+              <h3>Audit Endpoint Summary</h3>
+              <div id="auditEndpointSummary" class="subtle"></div>
+            </div>
+            <div class="card">
+              <h3>Audit Interpretation</h3>
+              <div id="auditInterpretation" class="insight-list"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Proof Artifact Guidance</h3>
+            <div id="proofArtifactGuidance" class="insight-list"></div>
+          </div>
+        </section>
+
+        <section id="panel-appendix" class="panel">
+          <div class="card">
+            <h3>Appendix A: Endpoint Catalog</h3>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Scope</th><th>Endpoint</th><th>Purpose</th></tr></thead>
+                <tbody>
+                  <tr><td>Organization</td><td><code>/organizations</code></td><td>Org discovery and validation of the API key scope.</td></tr>
+                  <tr><td>Organization</td><td><code>/organizations/{orgId}/networks</code></td><td>Network discovery used to drive per-network expansion.</td></tr>
+                  <tr><td>Organization</td><td><code>/organizations/{orgId}/devices</code></td><td>Device list at org scope.</td></tr>
+                  <tr><td>Organization</td><td><code>/organizations/{orgId}/inventory/devices</code></td><td>Inventory evidence, serial numbers, and device analytics.</td></tr>
+                  <tr><td>Organization</td><td><code>/organizations/{orgId}/devices/statuses</code></td><td>Current state and health-oriented device status data.</td></tr>
+                  <tr><td>Organization</td><td><code>/organizations/{orgId}/licenses/overview</code></td><td>License summary used for reporting and inventory context.</td></tr>
+                  <tr><td>Organization</td><td><code>/organizations/{orgId}/apiRequests</code></td><td>Proof that API activity is occurring over time.</td></tr>
+                  <tr><td>Organization</td><td><code>/organizations/{orgId}/configurationChanges</code></td><td>Change-oriented audit evidence within the reporting window.</td></tr>
+                  <tr><td>Network</td><td><code>/networks/{networkId}/devices</code></td><td>Network-scoped device data for breadth of collection.</td></tr>
+                  <tr><td>Network</td><td><code>/networks/{networkId}/clients</code></td><td>Client-oriented activity expansion.</td></tr>
+                  <tr><td>Network</td><td><code>/networks/{networkId}/events</code></td><td>Event sampling for broader operational visibility.</td></tr>
+                  <tr><td>Network</td><td><code>/networks/{networkId}/alerts/settings</code></td><td>Alerting configuration evidence.</td></tr>
+                  <tr><td>Network</td><td><code>/networks/{networkId}/wireless/ssids</code></td><td>Wireless configuration coverage.</td></tr>
+                  <tr><td>Network</td><td><code>/networks/{networkId}/appliance/vlans</code></td><td>VLAN evidence where appliance scope applies.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="grid two">
+            <div class="card">
+              <h3>Appendix B: Reporting Interpretation</h3>
+              <div class="insight-list">
+                <div class="insight">Lifecycle answers how mature the activity is.</div>
+                <div class="insight">Proof answers whether audit-oriented evidence exists within the recent reporting window.</div>
+                <div class="insight">Devices answers whether operational inventory and serial-level evidence can be shown.</div>
+                <div class="insight">Status-code reporting answers whether the activity is healthy enough to trust.</div>
+              </div>
+            </div>
+            <div class="card">
+              <h3>Appendix C: Managed Services Notes</h3>
+              <div class="insight-list">
+                <div class="insight">Use this portal to support internal runbooks, quarterly reviews, and customer value documentation.</div>
+                <div class="insight">Keep customer notes updated whenever a customer has restrictions on write tests, cloud access, or local-only collection.</div>
+                <div class="insight">Use SNMP and on-prem import workflows when cloud-side polling alone is not enough.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="panel-reference" class="panel">
+          <div class="grid two">
+            <div class="card">
+              <h3>Reference: Status Interpretation Matrix</h3>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Status</th><th>Meaning</th><th>Operational Interpretation</th></tr></thead>
+                  <tbody>
+                    <tr><td>200</td><td>Success</td><td>The endpoint responded successfully and can be used as part of proof and lifecycle evidence.</td></tr>
+                    <tr><td>201</td><td>Created</td><td>A create-style action succeeded. This is useful when write-test activity is intentionally enabled.</td></tr>
+                    <tr><td>204</td><td>No Content</td><td>The request succeeded without a body. This still counts as valid activity.</td></tr>
+                    <tr><td>400</td><td>Bad Request</td><td>Parameters or payload likely need correction.</td></tr>
+                    <tr><td>401</td><td>Unauthorized</td><td>Authentication is failing and API key validation should be reviewed.</td></tr>
+                    <tr><td>403</td><td>Forbidden</td><td>The key may not have access to the org or endpoint in scope.</td></tr>
+                    <tr><td>404</td><td>Not Found</td><td>Usually points to an endpoint mismatch, bad org ID, or scope problem.</td></tr>
+                    <tr><td>429</td><td>Rate Limited</td><td>The cadence or concurrency should be reduced and retry behavior respected.</td></tr>
+                    <tr><td>5xx</td><td>Upstream Error</td><td>The platform should log and surface this as a service-side failure condition.</td></tr>
+                    <tr><td>0</td><td>Transport Failure</td><td>No HTTP response was received, usually indicating request or network failure before completion.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="card">
+              <h3>Reference: Recommended Review Motions</h3>
+              <div class="insight-list">
+                <div class="insight">Daily: review cron health, failed endpoints, and current success-rate posture.</div>
+                <div class="insight">Weekly: review lifecycle trend, proof accumulation, and device evidence coverage.</div>
+                <div class="insight">Monthly: export PDF proof artifacts and summarize customer adoption progress.</div>
+                <div class="insight">Quarterly: compare customer maturity across managed-services accounts using the same reporting standard.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid two">
+            <div class="card">
+              <h3>Reference: Collection Design Notes</h3>
+              <div class="insight-list">
+                <div class="insight">Org-level calls create consistent core visibility and a predictable baseline for lifecycle scoring.</div>
+                <div class="insight">Network expansion increases depth and helps achieve meaningful endpoint diversity.</div>
+                <div class="insight">Proof endpoints are important because they show that the collection is not just broad, but also audit-aware.</div>
+                <div class="insight">Device inventory is especially useful because it lets the report show serial-level evidence instead of only abstract metrics.</div>
+              </div>
+            </div>
+            <div class="card">
+              <h3>Reference: Executive Usage Notes</h3>
+              <div class="insight-list">
+                <div class="insight">Use the executive export when you need a concise artifact for leadership or customer-facing review.</div>
+                <div class="insight">Use the reports panel when you need a raw evidence trail behind the executive summary.</div>
+                <div class="insight">Use the devices and topology panels when you need supporting operational detail behind the adoption story.</div>
+                <div class="insight">Use the governance panel to assess whether the platform is meeting your internal readiness standards.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="panel-playbooks" class="panel">
+          <div class="grid two">
+            <div class="card">
+              <h3>Operational Playbook: New Customer Onboarding</h3>
+              <div class="insight-list">
+                <div class="insight">Create the customer record and save the API key.</div>
+                <div class="insight">Run organization discovery and confirm mapped orgs.</div>
+                <div class="insight">Execute a manual run and verify status quality, proof endpoints, and inventory evidence.</div>
+                <div class="insight">Enable cron after successful validation so evidence begins accumulating automatically.</div>
+              </div>
+            </div>
+            <div class="card">
+              <h3>Operational Playbook: Troubleshooting</h3>
+              <div class="insight-list">
+                <div class="insight">If device evidence is empty, confirm a customer and org are selected.</div>
+                <div class="insight">If 401 or 403 errors appear, review API key validity and org permissions.</div>
+                <div class="insight">If 404 errors repeat, review endpoint scope, org mapping, and network applicability.</div>
+                <div class="insight">If cron is quiet, confirm the trigger exists and the Worker deployment contains the scheduled handler.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid two">
+            <div class="card">
+              <h3>Reporting Template: Customer QBR</h3>
+              <div class="insight-list">
+                <div class="insight">Show lifecycle stage, total call volume, success rate, and proof endpoint counts.</div>
+                <div class="insight">Add device inventory count, top models, and serial-level evidence where relevant.</div>
+                <div class="insight">Use the top failing endpoints section to explain improvement opportunities.</div>
+                <div class="insight">Export the executive PDF to preserve a clean proof artifact.</div>
+              </div>
+            </div>
+            <div class="card">
+              <h3>Reporting Template: Internal Operations Review</h3>
+              <div class="insight-list">
+                <div class="insight">Review cron status, proof accumulation, and success-rate trends.</div>
+                <div class="insight">Identify customers that are still in Implement or Use and determine next operational actions.</div>
+                <div class="insight">Use status-code reasoning to classify the most common blockers.</div>
+                <div class="insight">Capture exports for follow-up, escalation, or managed-services tracking.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="panel-notes" class="panel">
+          <div class="card">
+            <h3>Implementation Notes</h3>
+            <div class="insight-list">
+              <div class="insight">This frontend assumes the Worker exposes the expanded proof endpoint and scheduled run status route.</div>
+              <div class="insight">The force-live toggle is intended for ad hoc validation rather than continuous use.</div>
+              <div class="insight">Customer and org selection materially affect device, topology, and proof rendering because those views are scope-aware.</div>
+              <div class="insight">CSV exports are intended for raw evidence review, while PDF exports are intended for executive proof artifacts.</div>
+            </div>
+          </div>
+        </section>
+</section>
       </div>
     </main>
   </div>
@@ -1604,6 +1565,7 @@
       selectedOrgId: "",
       weekly: null,
       lifecycle30: null,
+      proof14: null,
       calls: [],
       filteredCalls: [],
       snmpTargets: [],
@@ -1633,8 +1595,7 @@
     function bindNavigation() {
       document.querySelectorAll(".nav-btn").forEach(btn => {
         btn.addEventListener("click", () => {
-          const route = btn.dataset.route;
-          navigate(route);
+          navigate(btn.dataset.route);
         });
       });
 
@@ -1694,7 +1655,6 @@
       });
 
       document.getElementById("reportPeriodDays").addEventListener("change", refreshReports);
-
       document.getElementById("globalSearch").addEventListener("input", handleGlobalSearch);
 
       document.getElementById("btnGlobalRun").addEventListener("click", runSelectedCustomer);
@@ -1710,13 +1670,10 @@
       document.getElementById("btnSidebarRun").addEventListener("click", runSelectedCustomer);
       document.getElementById("btnSidebarRefresh").addEventListener("click", fullRefresh);
       document.getElementById("btnSidebarExport").addEventListener("click", exportExecutivePdf);
-
       document.getElementById("btnRefreshDevices").addEventListener("click", loadDevicesPage);
       document.getElementById("btnExportDevicesPdf").addEventListener("click", exportDevicesPdf);
-
       document.getElementById("btnRefreshTopology").addEventListener("click", loadTopologyPage);
       document.getElementById("btnExportTopologyPdf").addEventListener("click", exportTopologyPdf);
-
       document.getElementById("btnExportExecutive").addEventListener("click", exportExecutivePdf);
 
       document.addEventListener("keydown", (e) => {
@@ -1751,7 +1708,6 @@
         await loadSnmpTargets();
         handleRoute();
         await fullRefresh();
-
         setInterval(async () => {
           try {
             await fullRefresh(false);
@@ -1782,7 +1738,7 @@
     function currentPathRoute() {
       const path = location.pathname.replace(/^\/+/, "").toLowerCase();
       if (!path) return "dashboard";
-      if (["dashboard", "devices", "topology", "customers", "snmp", "onprem", "reports"].includes(path)) return path;
+      if (["dashboard", "devices", "topology", "customers", "snmp", "onprem", "reports", "governance", "executive", "audit-detail", "appendix", "reference", "playbooks", "notes"].includes(path)) return path;
       return "dashboard";
     }
 
@@ -1807,7 +1763,7 @@
       const titles = {
         dashboard: {
           title: "Enterprise Dashboard",
-          subtitle: "Centralized operational picture of Meraki API activity, lifecycle attainment, SLA posture, status behavior, and executive drill-downs."
+          subtitle: "Centralized operational picture of Meraki API activity, lifecycle attainment, proof readiness, SLA posture, status behavior, and executive drill-downs."
         },
         devices: {
           title: "Devices Intelligence Dashboard",
@@ -1831,7 +1787,35 @@
         },
         reports: {
           title: "Operational Reports",
-          subtitle: "Filter, paginate, export, and inspect raw API call evidence, including HTTP response codes, latency, payload snippets, and explanations."
+          subtitle: "Filter, paginate, export, and inspect raw API call evidence, proof summaries, HTTP response codes, latency, payload snippets, and explanations."
+        },
+        governance: {
+          title: "Adoption Governance",
+          subtitle: "Review lifecycle, proof coverage, cron health, evidence completeness, and managed-services governance readiness."
+        },
+        executive: {
+          title: "Executive Readout",
+          subtitle: "Summarize customer status, adoption progress, operational value, and reporting language for leadership audiences."
+        },
+        "audit-detail": {
+          title: "Audit Detail",
+          subtitle: "Review proof endpoint behavior, audit sample counts, and how to interpret API request and configuration change evidence."
+        },
+        appendix: {
+          title: "Appendix",
+          subtitle: "Reference endpoint catalog, reporting interpretation guidance, and managed-services notes."
+        },
+        reference: {
+          title: "Reference",
+          subtitle: "Status matrix, review cadence, collection design notes, and executive usage guidance."
+        },
+        playbooks: {
+          title: "Playbooks",
+          subtitle: "Operational onboarding, troubleshooting, and reporting templates for recurring use."
+        },
+        notes: {
+          title: "Notes",
+          subtitle: "Implementation notes and practical usage guidance for the portal."
         }
       };
 
@@ -1952,196 +1936,13 @@
       await loadCronBanner();
     }
 
-    function renderCustomersTable() {
-      const wrap = document.getElementById("customersTableWrap");
-
-      if (!state.customers.length) {
-        wrap.innerHTML = '<div class="empty">No customers have been configured yet.</div>';
-        return;
-      }
-
-      wrap.innerHTML = `
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Customer ID</th>
-                <th>Primary Org</th>
-                <th>Mapped Orgs</th>
-                <th>Enabled</th>
-                <th>API Key</th>
-                <th>Write Test</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${state.customers.map(customer => `
-                <tr>
-                  <td>
-                    <strong>${escapeHtml(customer.customerName || customer.name || "")}</strong><br>
-                    <span class="subtle">${escapeHtml(customer.notes || "")}</span>
-                  </td>
-                  <td><code>${escapeHtml(customer.customerId || "")}</code></td>
-                  <td><code>${escapeHtml(customer.primaryOrgId || customer.orgId || "")}</code></td>
-                  <td>${Array.isArray(customer.orgs) ? customer.orgs.length : 0}</td>
-                  <td>${customer.enabled ? '<span class="status-ok">Enabled</span>' : '<span class="status-bad">Disabled</span>'}</td>
-                  <td>${customer.hasApiKey ? '<span class="status-ok">Stored</span>' : '<span class="status-warn">Missing</span>'}</td>
-                  <td>${customer.writeTest ? '<span class="status-ok">Enabled</span>' : '<span class="status-warn">Disabled</span>'}</td>
-                  <td>
-                    <div class="section-actions">
-                      <button class="btn secondary small" onclick="editCustomerById('${escapeJs(customer.customerId)}')">Edit</button>
-                      <button class="btn secondary small" onclick="discoverCustomerOrgsById('${escapeJs(customer.customerId)}')">Discover Orgs</button>
-                      <button class="btn danger small" onclick="deleteCustomerById('${escapeJs(customer.customerId)}')">Delete</button>
-                    </div>
-                  </td>
-                </tr>
-              `).join("")}
-            </tbody>
-          </table>
-        </div>
-      `;
-    }
-
-    function renderOrgMapTable() {
-      const wrap = document.getElementById("orgMapTableWrap");
-      const customer = state.customers.find(c => c.customerId === state.selectedCustomerId);
-
-      if (!customer || !Array.isArray(customer.orgs) || !customer.orgs.length) {
-        wrap.innerHTML = '<div class="empty">No mapped organizations are available for the selected customer.</div>';
-        return;
-      }
-
-      wrap.innerHTML = `
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Org Name</th>
-                <th>Org ID</th>
-                <th>Customer Number</th>
-                <th>Licensing Model</th>
-                <th>Cloud Region</th>
-                <th>API Enabled</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${customer.orgs.map(org => `
-                <tr>
-                  <td>${escapeHtml(org.name || "")}</td>
-                  <td><code>${escapeHtml(org.orgId || "")}</code></td>
-                  <td>${escapeHtml(org.customerNumber || "")}</td>
-                  <td>${escapeHtml(org.licensingModel || "")}</td>
-                  <td>${escapeHtml(org.cloudRegion || "")}</td>
-                  <td>${org.apiEnabled ? '<span class="status-ok">Yes</span>' : '<span class="status-warn">No</span>'}</td>
-                </tr>
-              `).join("")}
-            </tbody>
-          </table>
-        </div>
-      `;
-    }
-
-    window.editCustomerById = function(customerId) {
-      const customer = state.customers.find(c => c.customerId === customerId);
-      if (!customer) return;
-
-      state.selectedCustomerId = customerId;
-      state.selectedOrgId = customer.primaryOrgId || "";
-      syncCustomerFilters();
-      syncOrgFilters();
-
-      document.getElementById("custCustomerId").value = customer.customerId || "";
-      document.getElementById("custName").value = customer.customerName || customer.name || "";
-      document.getElementById("custOrgId").value = customer.primaryOrgId || customer.orgId || "";
-      document.getElementById("custTags").value = Array.isArray(customer.tags) ? customer.tags.join(", ") : "";
-      document.getElementById("custApiKey").value = "";
-      document.getElementById("custNetworkId").value = customer.networkId || "";
-      document.getElementById("custEnabled").value = String(customer.enabled !== false);
-      document.getElementById("custWriteTest").value = String(customer.writeTest === true);
-      document.getElementById("custNotes").value = customer.notes || "";
-
-      renderOrgMapTable();
-      navigate("customers");
-    };
-
-    window.discoverCustomerOrgsById = async function(customerId) {
-      await api("/api/customers/" + encodeURIComponent(customerId) + "/discover-orgs", { method: "POST", body: JSON.stringify({}) });
-      await loadCustomers();
-      state.selectedCustomerId = customerId;
-      syncCustomerFilters();
-      renderOrgMapTable();
-      await fullRefresh();
-      alert("Organization discovery completed.");
-    };
-
-    window.deleteCustomerById = async function(customerId) {
-      if (!confirm("Delete customer " + customerId + "?")) return;
-      await api("/api/customers/" + encodeURIComponent(customerId), { method: "DELETE" });
-      if (state.selectedCustomerId === customerId) {
-        state.selectedCustomerId = "";
-        state.selectedOrgId = "";
-      }
-      await loadCustomers();
-      await fullRefresh();
-    };
-
-    async function saveCustomer() {
-      const payload = {
-        customerId: document.getElementById("custCustomerId").value.trim() || undefined,
-        customerName: document.getElementById("custName").value.trim(),
-        orgId: document.getElementById("custOrgId").value.trim(),
-        apiKey: document.getElementById("custApiKey").value.trim() || undefined,
-        networkId: document.getElementById("custNetworkId").value.trim(),
-        enabled: document.getElementById("custEnabled").value === "true",
-        writeTest: document.getElementById("custWriteTest").value === "true",
-        notes: document.getElementById("custNotes").value.trim(),
-        tags: document.getElementById("custTags").value.split(",").map(item => item.trim()).filter(Boolean)
-      };
-
-      if (!payload.customerName && !payload.customerId) {
-        alert("Customer name or customer ID is required.");
-        return;
-      }
-
-      await api("/api/customers", {
-        method: "POST",
-        body: JSON.stringify(payload)
-      });
-
-      clearCustomerForm();
-      await loadCustomers();
-      await fullRefresh();
-      alert("Customer saved successfully.");
-    }
-
-    async function discoverCustomerOrgs() {
-      const customerId = document.getElementById("custCustomerId").value.trim() || state.selectedCustomerId;
-      if (!customerId) {
-        alert("Select or save a customer first.");
-        return;
-      }
-      await discoverCustomerOrgsById(customerId);
-    }
-
-    function clearCustomerForm() {
-      document.getElementById("custCustomerId").value = "";
-      document.getElementById("custName").value = "";
-      document.getElementById("custOrgId").value = "";
-      document.getElementById("custTags").value = "";
-      document.getElementById("custApiKey").value = "";
-      document.getElementById("custNetworkId").value = "";
-      document.getElementById("custEnabled").value = "true";
-      document.getElementById("custWriteTest").value = "false";
-      document.getElementById("custNotes").value = "";
-    }
-
     async function refreshDashboard(preserveSearch = true) {
       const customerId = state.selectedCustomerId || "";
       const orgId = state.selectedOrgId || "";
 
       state.weekly = await api("/api/weekly?customerId=" + encodeURIComponent(customerId) + "&orgId=" + encodeURIComponent(orgId));
       state.lifecycle30 = await api("/api/reports/lifecycle?days=30&customerId=" + encodeURIComponent(customerId) + "&orgId=" + encodeURIComponent(orgId));
+      state.proof14 = await api("/api/reports/proof?days=14&customerId=" + encodeURIComponent(customerId) + "&orgId=" + encodeURIComponent(orgId));
 
       const reportData = await api("/api/reports/calls?days=30&customerId=" + encodeURIComponent(customerId) + "&orgId=" + encodeURIComponent(orgId) + "&limit=500");
       state.calls = reportData.items || [];
@@ -2161,6 +1962,8 @@
       renderStatusCodeChips();
       renderSlaInsights();
       renderTopFailingEndpoints();
+      renderExtendedNarratives();
+      renderGovernanceAndExecutive();
     }
 
     function analyzeTopFailingEndpoints() {
@@ -2195,10 +1998,7 @@
       if (success < 85 || (w.totalCalls || 0) === 0) status = "red";
       else if (success < 95) status = "yellow";
 
-      state.sla = {
-        status,
-        reasons
-      };
+      state.sla = { status, reasons };
 
       const el = document.getElementById("slaStatus");
       el.className = "pill " + (status === "green" ? "sla-green" : status === "yellow" ? "sla-yellow" : "sla-red");
@@ -2236,8 +2036,6 @@
       document.getElementById("statPost").textContent = formatNumber(methods.POST || 0);
       document.getElementById("statPut").textContent = formatNumber(methods.PUT || 0);
       document.getElementById("statDelete").textContent = formatNumber(methods.DELETE || 0);
-
-      document.getElementById("kpiInventoryCount").textContent = formatNumber(inventoryCount);
 
       updateRAG();
       renderSparklines();
@@ -2330,9 +2128,7 @@
 
     function createSparkline(values) {
       if (!values.length || values.every(v => Number(v) === 0)) {
-        return `<svg class="sparkline-svg" viewBox="0 0 100 40" preserveAspectRatio="none">
-          <line x1="0" y1="30" x2="100" y2="30" stroke="rgba(255,255,255,.12)" stroke-width="1" />
-        </svg>`;
+        return `<svg class="sparkline-svg" viewBox="0 0 100 40" preserveAspectRatio="none"><line x1="0" y1="30" x2="100" y2="30" stroke="rgba(255,255,255,.12)" stroke-width="1" /></svg>`;
       }
 
       const max = Math.max(...values, 1);
@@ -2365,11 +2161,7 @@
         return;
       }
 
-      const sortedRows = rowsSource
-        .slice()
-        .sort((a,b) => String(b.timestamp || "").localeCompare(String(a.timestamp || "")))
-        .slice(0, 100);
-
+      const sortedRows = rowsSource.slice().sort((a,b) => String(b.timestamp || "").localeCompare(String(a.timestamp || ""))).slice(0, 100);
       const rows = sortedRows.map((call, idx) => {
         const statusClass = classifyStatus(call.status);
         return `
@@ -2386,29 +2178,8 @@
         `;
       }).join("");
 
-      wrap.innerHTML = `
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Timestamp</th>
-                <th>Customer</th>
-                <th>Org</th>
-                <th>Method</th>
-                <th>Path</th>
-                <th>Status</th>
-                <th>Latency</th>
-                <th>Preview</th>
-              </tr>
-            </thead>
-            <tbody>${rows}</tbody>
-          </table>
-        </div>
-      `;
-
-      wrap.querySelectorAll("tr.clickable").forEach((row, idx) => {
-        row.addEventListener("click", () => openCallModal(sortedRows[idx]));
-      });
+      wrap.innerHTML = `<div class="table-wrap"><table><thead><tr><th>Timestamp</th><th>Customer</th><th>Org</th><th>Method</th><th>Path</th><th>Status</th><th>Latency</th><th>Preview</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+      wrap.querySelectorAll("tr.clickable").forEach((row, idx) => row.addEventListener("click", () => openCallModal(sortedRows[idx])));
     }
 
     function renderCustomerSummary() {
@@ -2416,10 +2187,7 @@
       const customerId = state.selectedCustomerId;
 
       if (!customerId) {
-        summary.innerHTML = `
-          <p>All customers are currently selected.</p>
-          <p>This view aggregates lifecycle, calls, devices, and alerts across every customer returned by the Worker.</p>
-        `;
+        summary.innerHTML = `<p>All customers are currently selected.</p><p>This view aggregates lifecycle, calls, devices, proof, and alerts across every customer returned by the Worker.</p>`;
         renderOrgMapTable();
         return;
       }
@@ -2442,18 +2210,19 @@
         <div><strong>Tags:</strong> ${Array.isArray(customer.tags) && customer.tags.length ? customer.tags.map(escapeHtml).join(", ") : "None"}</div>
         <div><strong>Notes:</strong> ${escapeHtml(customer.notes || "No notes")}</div>
       `;
-
       renderOrgMapTable();
     }
 
     function renderExecutiveSnapshot() {
       const w = state.lifecycle30 || state.weekly || {};
+      const p = state.proof14 || {};
       document.getElementById("executiveSnapshot").innerHTML = `
         <div><strong>Customer Name:</strong> ${escapeHtml(w.customerName || "-")}</div>
         <div><strong>Org Name:</strong> ${escapeHtml(w.orgName || w.orgId || "-")}</div>
         <div><strong>Stage:</strong> ${escapeHtml(w.stage || "-")}</div>
         <div><strong>Total API Calls:</strong> ${formatNumber(w.totalCalls || 0)}</div>
         <div><strong>Success Rate:</strong> ${escapeHtml(String(w.successRate || 0))}%</div>
+        <div><strong>14-Day Proof Calls:</strong> ${formatNumber(p.totalCalls || 0)}</div>
         <div><strong>Reason:</strong> ${escapeHtml(w.reason || w.stageReason || "No lifecycle rationale available.")}</div>
       `;
     }
@@ -2474,14 +2243,7 @@
         wrap.innerHTML = '<div class="empty">No failing endpoints were identified in the selected period.</div>';
         return;
       }
-
-      wrap.innerHTML = state.topFailing.map(item => `
-        <div class="insight">
-          <div><strong>${escapeHtml(item.key)}</strong></div>
-          <div>Failures: ${formatNumber(item.count)}</div>
-          <div class="small-note">${escapeHtml(item.reason || "")}</div>
-        </div>
-      `).join("");
+      wrap.innerHTML = state.topFailing.map(item => `<div class="insight"><div><strong>${escapeHtml(item.key)}</strong></div><div>Failures: ${formatNumber(item.count)}</div><div class="small-note">${escapeHtml(item.reason || "")}</div></div>`).join("");
     }
 
     async function runSelectedCustomer() {
@@ -2489,6 +2251,7 @@
       const qs = [];
       if (state.selectedCustomerId) qs.push("customerId=" + encodeURIComponent(state.selectedCustomerId));
       if (state.selectedOrgId) qs.push("orgId=" + encodeURIComponent(state.selectedOrgId));
+      if (document.getElementById("forceLiveToggle").checked) qs.push("forceLive=true");
       if (qs.length) path += "?" + qs.join("&");
 
       const result = await api(path, { method: "GET" });
@@ -2520,7 +2283,6 @@
 
     function renderSnmpTargetsTable() {
       const wrap = document.getElementById("snmpTargetsTableWrap");
-
       if (!state.snmpTargets.length) {
         wrap.innerHTML = '<div class="empty">No SNMP targets have been stored in this browser yet.</div>';
         return;
@@ -2529,16 +2291,7 @@
       wrap.innerHTML = `
         <div class="table-wrap">
           <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Address</th>
-                <th>Version</th>
-                <th>Credential</th>
-                <th>Notes</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
+            <thead><tr><th>Name</th><th>Address</th><th>Version</th><th>Credential</th><th>Notes</th><th>Actions</th></tr></thead>
             <tbody>
               ${state.snmpTargets.map((target, index) => `
                 <tr>
@@ -2552,8 +2305,7 @@
               `).join("")}
             </tbody>
           </table>
-        </div>
-      `;
+        </div>`;
     }
 
     async function saveSnmpTarget() {
@@ -2576,10 +2328,7 @@
       clearSnmpForm();
 
       try {
-        await api("/api/snmp", {
-          method: "POST",
-          body: JSON.stringify(target)
-        });
+        await api("/api/snmp", { method: "POST", body: JSON.stringify(target) });
       } catch (error) {
         console.warn("SNMP API route did not accept payload:", error.message);
       }
@@ -2656,7 +2405,6 @@
           }
         ]
       };
-
       document.getElementById("onPremJson").value = JSON.stringify(example, null, 2);
     }
 
@@ -2673,12 +2421,16 @@
 
       const data = await api("/api/reports/calls?" + params.toString());
       state.reportCalls = data.items || [];
+      state.proof14 = await api("/api/reports/proof?days=14&customerId=" + encodeURIComponent(customerId) + "&orgId=" + encodeURIComponent(orgId));
 
       if (resetPage) state.reportPage = 1;
       applyReportFilters();
       renderLifecycleSnapshot();
       renderStatusReasoningPanel();
       renderFailingApiPatterns();
+      renderProofSummary();
+      renderExtendedNarratives();
+      renderGovernanceAndExecutive();
     }
 
     function applyReportFilters() {
@@ -2704,6 +2456,111 @@
         <div><strong>Success Rate:</strong> ${escapeHtml(String(w.successRate || 0))}%</div>
         <div><strong>Reason:</strong> ${escapeHtml(w.reason || w.stageReason || "No stage reasoning was returned.")}</div>
       `;
+    }
+
+
+    function renderGovernanceAndExecutive() {
+      const weekly = state.weekly || {};
+      const lifecycle = state.lifecycle30 || {};
+      const proof = state.proof14 || {};
+      const total = Number(lifecycle.totalCalls || weekly.totalCalls || 0);
+      const success = Number(lifecycle.successRate || weekly.successRate || 0);
+      const stage = lifecycle.stage || weekly.stage || "ONBOARD";
+
+      const governanceAlign = document.getElementById("lifecycleProofAlignment");
+      const riskNotes = document.getElementById("riskNotes");
+      const mitigationNotes = document.getElementById("mitigationNotes");
+      const execNarr = document.getElementById("executiveNarrative");
+      const execTalk = document.getElementById("executiveTalkingPoints");
+      const execMetrics = document.getElementById("executiveMetricsRollup");
+      const custValue = document.getElementById("customerValueNarrative");
+      const opsValue = document.getElementById("operationalValueNarrative");
+      const auditSummary = document.getElementById("auditEndpointSummary");
+      const auditInterp = document.getElementById("auditInterpretation");
+      const proofGuide = document.getElementById("proofArtifactGuidance");
+
+      if (!governanceAlign) return;
+
+      governanceAlign.innerHTML = `
+        <div><strong>Lifecycle Stage:</strong> ${escapeHtml(stage)}</div>
+        <div><strong>30-Day Calls:</strong> ${formatNumber(total)}</div>
+        <div><strong>Success Rate:</strong> ${escapeHtml(String(success))}%</div>
+        <div><strong>14-Day Proof Calls:</strong> ${formatNumber(proof.totalCalls || 0)}</div>
+        <div><strong>Audit Coverage:</strong> API Requests ${formatNumber(proof.apiRequestsAuditCalls || 0)} | Config Changes ${formatNumber(proof.configurationChangesAuditCalls || 0)}</div>
+      `;
+
+      riskNotes.innerHTML = `
+        <div class="insight">Low success rate can undermine adoption claims even when call volume is high.</div>
+        <div class="insight">Repeated 404 responses often indicate endpoint mismatch or unresolved org mapping.</div>
+        <div class="insight">Missing proof samples weaken executive reporting and customer-facing validation.</div>
+        <div class="insight">No cron history usually means the platform depends too heavily on manual execution.</div>
+      `;
+
+      mitigationNotes.innerHTML = `
+        <div class="insight">Complete org discovery after each new API key is saved.</div>
+        <div class="insight">Use the cron schedule to create steady evidence over time rather than bursty activity.</div>
+        <div class="insight">Refresh device insights after successful onboarding to confirm serial-level visibility.</div>
+        <div class="insight">Export proof reports regularly for customer reviews and internal operational checkpoints.</div>
+      `;
+
+      execNarr.innerHTML = `
+        <div class="insight">The customer is currently in the <strong>${escapeHtml(stage)}</strong> stage based on recent platform-observed API activity and response quality.</div>
+        <div class="insight">The portal combines lifecycle activity, proof endpoints, and device inventory into a single operational narrative for leadership review.</div>
+        <div class="insight">This enables you to explain both quantity of activity and the reliability of that activity.</div>
+      `;
+
+      execTalk.innerHTML = `
+        <div class="insight">Call volume alone is not enough. Success rate and endpoint quality determine operational confidence.</div>
+        <div class="insight">Proof endpoints demonstrate that the platform is capturing meaningful audit-oriented API activity, not just repetitive polling.</div>
+        <div class="insight">Inventory and serial visibility support customer-facing evidence and lifecycle maturity validation.</div>
+      `;
+
+      execMetrics.innerHTML = `
+        <div><strong>Weekly Calls:</strong> ${formatNumber(weekly.totalCalls || 0)}</div>
+        <div><strong>30-Day Calls:</strong> ${formatNumber(lifecycle.totalCalls || 0)}</div>
+        <div><strong>14-Day Proof Calls:</strong> ${formatNumber(proof.totalCalls || 0)}</div>
+        <div><strong>Inventory Count:</strong> ${formatNumber(state.devices?.inventoryCount || 0)}</div>
+        <div><strong>Unique Endpoints:</strong> ${formatNumber(weekly.uniqueEndpoints || 0)}</div>
+      `;
+
+      custValue.innerHTML = `
+        <div class="insight">Customers gain measurable visibility into device inventory, API behavior, and evidence-backed operational health.</div>
+        <div class="insight">This supports QBR discussions, managed-services reviews, and adoption reporting with more substance than a raw screenshot or isolated API sample.</div>
+      `;
+
+      opsValue.innerHTML = `
+        <div class="insight">Operations teams can use the portal to identify failing endpoints, validate cron health, and determine whether automation is accumulating enough useful activity.</div>
+        <div class="insight">The proof export turns daily collection into a portable artifact for audits, escalations, and internal reporting.</div>
+      `;
+
+      auditSummary.innerHTML = `
+        <div><strong>API Requests Audit Calls:</strong> ${formatNumber(proof.apiRequestsAuditCalls || 0)}</div>
+        <div><strong>Configuration Changes Audit Calls:</strong> ${formatNumber(proof.configurationChangesAuditCalls || 0)}</div>
+        <div><strong>Total Proof Samples:</strong> ${formatNumber((proof.samples || []).length)}</div>
+      `;
+
+      auditInterp.innerHTML = `
+        <div class="insight">API request audit samples help prove that the automation platform is making calls over time, not just storing a one-time result.</div>
+        <div class="insight">Configuration change audit samples can demonstrate whether change-oriented activity is observable within the reporting window.</div>
+        <div class="insight">Together, these support executive and operational claims about platform activity quality.</div>
+      `;
+
+      proofGuide.innerHTML = `
+        <div class="insight">Use the PDF export for leadership and customer-facing reviews.</div>
+        <div class="insight">Use CSV for deeper technical inspection, status-code analysis, and filtered endpoint evidence.</div>
+        <div class="insight">Pair proof summaries with lifecycle and inventory sections for a more complete adoption story.</div>
+      `;
+    }
+
+    function renderProofSummary() {
+      const p = state.proof14 || {};
+      document.getElementById("proofSummaryPanel").innerHTML = `
+        <div><strong>Period:</strong> ${formatNumber(p.days || 14)} days</div>
+        <div><strong>Total Logged Calls:</strong> ${formatNumber(p.totalCalls || 0)}</div>
+        <div><strong>API Requests Audit Calls:</strong> ${formatNumber(p.apiRequestsAuditCalls || 0)}</div>
+        <div><strong>Configuration Changes Audit Calls:</strong> ${formatNumber(p.configurationChangesAuditCalls || 0)}</div>
+      `;
+      document.getElementById("proofSamples").textContent = JSON.stringify(p.samples || [], null, 2);
     }
 
     function renderStatusReasoningPanel() {
@@ -2756,10 +2613,7 @@
       state.reportPage = Math.min(Math.max(state.reportPage, 1), totalPages);
 
       const start = (state.reportPage - 1) * pageSize;
-      const pageItems = state.reportFilteredCalls
-        .slice()
-        .sort((a,b) => String(b.timestamp || "").localeCompare(String(a.timestamp || "")))
-        .slice(start, start + pageSize);
+      const pageItems = state.reportFilteredCalls.slice().sort((a,b) => String(b.timestamp || "").localeCompare(String(a.timestamp || ""))).slice(start, start + pageSize);
 
       const rows = pageItems.map((item, idx) => `
         <tr class="clickable" data-idx="${idx}">
@@ -2775,33 +2629,9 @@
         </tr>
       `).join("");
 
-      wrap.innerHTML = `
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Timestamp</th>
-                <th>Customer</th>
-                <th>Org</th>
-                <th>Method</th>
-                <th>Path</th>
-                <th>Status</th>
-                <th>Latency</th>
-                <th>Success</th>
-                <th>Response Preview</th>
-              </tr>
-            </thead>
-            <tbody>${rows}</tbody>
-          </table>
-        </div>
-      `;
-
-      wrap.querySelectorAll("tr.clickable").forEach((row, idx) => {
-        row.addEventListener("click", () => openCallModal(pageItems[idx]));
-      });
-
-      document.getElementById("reportPageMeta").textContent =
-        "Page " + state.reportPage + " of " + totalPages + " | " + formatNumber(state.reportFilteredCalls.length) + " rows";
+      wrap.innerHTML = `<div class="table-wrap"><table><thead><tr><th>Timestamp</th><th>Customer</th><th>Org</th><th>Method</th><th>Path</th><th>Status</th><th>Latency</th><th>Success</th><th>Response Preview</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+      wrap.querySelectorAll("tr.clickable").forEach((row, idx) => row.addEventListener("click", () => openCallModal(pageItems[idx])));
+      document.getElementById("reportPageMeta").textContent = "Page " + state.reportPage + " of " + totalPages + " | " + formatNumber(state.reportFilteredCalls.length) + " rows";
     }
 
     function previousReportPage() {
@@ -2854,7 +2684,6 @@
         const result = last.result || {};
         const totalCalls = result.totalCalls ?? result.total ?? 0;
         const successCalls = result.successCalls ?? result.success ?? 0;
-
         let status = "Normal";
         if (Number(totalCalls) === 0) status = "Warning";
         if (Number(successCalls) === 0 && Number(totalCalls) > 0) status = "Critical";
@@ -2869,7 +2698,7 @@
       }
     }
 
-    async function loadDevicesPage(triggerRenders = true) {
+    async function loadDevicesPage() {
       if (!state.selectedCustomerId) {
         state.devices = null;
         renderDevicePage();
@@ -2907,9 +2736,7 @@
       const modelCounts = data.modelCounts || {};
       const uniqueModels = Object.keys(modelCounts).length;
       const serialNumbers = Array.isArray(data.serialNumbers) ? data.serialNumbers : [];
-      const licenseSignals = data.licenseOverview && typeof data.licenseOverview === "object"
-        ? Object.keys(data.licenseOverview).length
-        : 0;
+      const licenseSignals = data.licenseOverview && typeof data.licenseOverview === "object" ? Object.keys(data.licenseOverview).length : 0;
 
       const productTypeCounts = {};
       devices.forEach(d => {
@@ -2967,20 +2794,12 @@
         return;
       }
       const max = Math.max(...entries.map(([_, c]) => c), 1);
-      container.innerHTML = `
-        <div class="chart">
-          ${entries.map(([model, count]) => {
-            const height = Math.max((count / max) * 100, 4);
-            return `
-              <div class="bar-col">
-                <div class="bar-shell"><div class="bar-fill" style="height:${height}%"></div></div>
-                <div class="chart-label">${escapeHtml(model)}</div>
-                <div class="chart-value">${formatNumber(count)}</div>
-              </div>
-            `;
-          }).join("")}
-        </div>
-      `;
+      container.innerHTML = `<div class="chart">${
+        entries.map(([model, count]) => {
+          const height = Math.max((count / max) * 100, 4);
+          return `<div class="bar-col"><div class="bar-shell"><div class="bar-fill" style="height:${height}%"></div></div><div class="chart-label">${escapeHtml(model)}</div><div class="chart-value">${formatNumber(count)}</div></div>`;
+        }).join("")
+      }</div>`;
     }
 
     function renderDeviceTable(devices) {
@@ -2992,17 +2811,7 @@
       container.innerHTML = `
         <div class="table-wrap">
           <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Model</th>
-                <th>Serial</th>
-                <th>MAC</th>
-                <th>Network ID</th>
-                <th>Product Type</th>
-                <th>Claimed</th>
-              </tr>
-            </thead>
+            <thead><tr><th>Name</th><th>Model</th><th>Serial</th><th>MAC</th><th>Network ID</th><th>Product Type</th><th>Claimed</th></tr></thead>
             <tbody>
               ${devices.map(d => `
                 <tr>
@@ -3039,7 +2848,7 @@
       }
 
       if (!state.devices) {
-        await loadDevicesPage(false);
+        await loadDevicesPage();
       }
 
       state.topology = buildTopologyModel(state.devices);
@@ -3055,7 +2864,6 @@
       const switches = devices.filter(d => String(d.productType || "").toLowerCase().includes("switch") || String(d.model || "").startsWith("MS"));
       const aps = devices.filter(d => String(d.productType || "").toLowerCase().includes("wireless") || String(d.model || "").startsWith("MR"));
       const others = devices.filter(d => !gateways.includes(d) && !switches.includes(d) && !aps.includes(d));
-
       const centerGateway = gateways[0] || devices[0] || null;
 
       devices.forEach((d, idx) => {
@@ -3080,16 +2888,7 @@
         });
       }
 
-      return {
-        nodes,
-        edges,
-        groups: {
-          gateways,
-          switches,
-          aps,
-          others
-        }
-      };
+      return { nodes, edges, groups: { gateways, switches, aps, others } };
     }
 
     function classifyDeviceType(device) {
@@ -3122,15 +2921,9 @@
       const radius = 240;
 
       const positions = nodes.map((node, idx) => {
-        if (idx === 0) {
-          return { ...node, x: cx, y: cy };
-        }
+        if (idx === 0) return { ...node, x: cx, y: cy };
         const angle = (Math.PI * 2 * (idx - 1)) / Math.max(nodes.length - 1, 1);
-        return {
-          ...node,
-          x: cx + Math.cos(angle) * radius,
-          y: cy + Math.sin(angle) * radius
-        };
+        return { ...node, x: cx + Math.cos(angle) * radius, y: cy + Math.sin(angle) * radius };
       });
 
       const posMap = Object.fromEntries(positions.map(p => [p.id, p]));
@@ -3182,6 +2975,159 @@
       return s.length > n ? s.slice(0, n - 1) + "…" : s;
     }
 
+    function renderCustomersTable() {
+      const wrap = document.getElementById("customersTableWrap");
+      if (!state.customers.length) {
+        wrap.innerHTML = '<div class="empty">No customers have been configured yet.</div>';
+        return;
+      }
+
+      wrap.innerHTML = `
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Name</th><th>Customer ID</th><th>Primary Org</th><th>Mapped Orgs</th><th>Enabled</th><th>API Key</th><th>Write Test</th><th>Actions</th></tr></thead>
+            <tbody>
+              ${state.customers.map(customer => `
+                <tr>
+                  <td><strong>${escapeHtml(customer.customerName || customer.name || "")}</strong><br><span class="subtle">${escapeHtml(customer.notes || "")}</span></td>
+                  <td><code>${escapeHtml(customer.customerId || "")}</code></td>
+                  <td><code>${escapeHtml(customer.primaryOrgId || customer.orgId || "")}</code></td>
+                  <td>${Array.isArray(customer.orgs) ? customer.orgs.length : 0}</td>
+                  <td>${customer.enabled ? '<span class="status-ok">Enabled</span>' : '<span class="status-bad">Disabled</span>'}</td>
+                  <td>${customer.hasApiKey ? '<span class="status-ok">Stored</span>' : '<span class="status-warn">Missing</span>'}</td>
+                  <td>${customer.writeTest ? '<span class="status-ok">Enabled</span>' : '<span class="status-warn">Disabled</span>'}</td>
+                  <td>
+                    <div class="section-actions">
+                      <button class="btn secondary small" onclick="editCustomerById('${escapeJs(customer.customerId)}')">Edit</button>
+                      <button class="btn secondary small" onclick="discoverCustomerOrgsById('${escapeJs(customer.customerId)}')">Discover Orgs</button>
+                      <button class="btn danger small" onclick="deleteCustomerById('${escapeJs(customer.customerId)}')">Delete</button>
+                    </div>
+                  </td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>`;
+    }
+
+    function renderOrgMapTable() {
+      const wrap = document.getElementById("orgMapTableWrap");
+      const customer = state.customers.find(c => c.customerId === state.selectedCustomerId);
+
+      if (!customer || !Array.isArray(customer.orgs) || !customer.orgs.length) {
+        wrap.innerHTML = '<div class="empty">No mapped organizations are available for the selected customer.</div>';
+        return;
+      }
+
+      wrap.innerHTML = `
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Org Name</th><th>Org ID</th><th>Customer Number</th><th>Licensing Model</th><th>Cloud Region</th><th>API Enabled</th></tr></thead>
+            <tbody>
+              ${customer.orgs.map(org => `
+                <tr>
+                  <td>${escapeHtml(org.name || "")}</td>
+                  <td><code>${escapeHtml(org.orgId || "")}</code></td>
+                  <td>${escapeHtml(org.customerNumber || "")}</td>
+                  <td>${escapeHtml(org.licensingModel || "")}</td>
+                  <td>${escapeHtml(org.cloudRegion || "")}</td>
+                  <td>${org.apiEnabled ? '<span class="status-ok">Yes</span>' : '<span class="status-warn">No</span>'}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>`;
+    }
+
+    window.editCustomerById = function(customerId) {
+      const customer = state.customers.find(c => c.customerId === customerId);
+      if (!customer) return;
+
+      state.selectedCustomerId = customerId;
+      state.selectedOrgId = customer.primaryOrgId || "";
+      syncCustomerFilters();
+      syncOrgFilters();
+
+      document.getElementById("custCustomerId").value = customer.customerId || "";
+      document.getElementById("custName").value = customer.customerName || customer.name || "";
+      document.getElementById("custOrgId").value = customer.primaryOrgId || customer.orgId || "";
+      document.getElementById("custTags").value = Array.isArray(customer.tags) ? customer.tags.join(", ") : "";
+      document.getElementById("custApiKey").value = "";
+      document.getElementById("custNetworkId").value = customer.networkId || "";
+      document.getElementById("custEnabled").value = String(customer.enabled !== false);
+      document.getElementById("custWriteTest").value = String(customer.writeTest === true);
+      document.getElementById("custNotes").value = customer.notes || "";
+      renderOrgMapTable();
+      navigate("customers");
+    };
+
+    window.discoverCustomerOrgsById = async function(customerId) {
+      await api("/api/customers/" + encodeURIComponent(customerId) + "/discover-orgs", { method: "POST", body: JSON.stringify({}) });
+      await loadCustomers();
+      state.selectedCustomerId = customerId;
+      syncCustomerFilters();
+      renderOrgMapTable();
+      await fullRefresh();
+      alert("Organization discovery completed.");
+    };
+
+    window.deleteCustomerById = async function(customerId) {
+      if (!confirm("Delete customer " + customerId + "?")) return;
+      await api("/api/customers/" + encodeURIComponent(customerId), { method: "DELETE" });
+      if (state.selectedCustomerId === customerId) {
+        state.selectedCustomerId = "";
+        state.selectedOrgId = "";
+      }
+      await loadCustomers();
+      await fullRefresh();
+    };
+
+    async function saveCustomer() {
+      const payload = {
+        customerId: document.getElementById("custCustomerId").value.trim() || undefined,
+        customerName: document.getElementById("custName").value.trim(),
+        orgId: document.getElementById("custOrgId").value.trim(),
+        apiKey: document.getElementById("custApiKey").value.trim() || undefined,
+        networkId: document.getElementById("custNetworkId").value.trim(),
+        enabled: document.getElementById("custEnabled").value === "true",
+        writeTest: document.getElementById("custWriteTest").value === "true",
+        notes: document.getElementById("custNotes").value.trim(),
+        tags: document.getElementById("custTags").value.split(",").map(item => item.trim()).filter(Boolean)
+      };
+
+      if (!payload.customerName && !payload.customerId) {
+        alert("Customer name or customer ID is required.");
+        return;
+      }
+
+      await api("/api/customers", { method: "POST", body: JSON.stringify(payload) });
+      clearCustomerForm();
+      await loadCustomers();
+      await fullRefresh();
+      alert("Customer saved successfully.");
+    }
+
+    async function discoverCustomerOrgs() {
+      const customerId = document.getElementById("custCustomerId").value.trim() || state.selectedCustomerId;
+      if (!customerId) {
+        alert("Select or save a customer first.");
+        return;
+      }
+      await discoverCustomerOrgsById(customerId);
+    }
+
+    function clearCustomerForm() {
+      document.getElementById("custCustomerId").value = "";
+      document.getElementById("custName").value = "";
+      document.getElementById("custOrgId").value = "";
+      document.getElementById("custTags").value = "";
+      document.getElementById("custApiKey").value = "";
+      document.getElementById("custNetworkId").value = "";
+      document.getElementById("custEnabled").value = "true";
+      document.getElementById("custWriteTest").value = "false";
+      document.getElementById("custNotes").value = "";
+    }
+
     function openCallModal(call) {
       document.getElementById("callModalContent").textContent = JSON.stringify(call, null, 2);
       document.getElementById("callModal").classList.add("show");
@@ -3226,6 +3172,7 @@
 
     function buildExecutiveReportHtml(sectionTitle) {
       const w = state.lifecycle30 || state.weekly || {};
+      const p = state.proof14 || {};
       const devices = state.devices || {};
       const calls = (state.reportFilteredCalls && state.reportFilteredCalls.length ? state.reportFilteredCalls : state.calls || []).slice(0, 20);
 
@@ -3240,6 +3187,16 @@
           <td>${escapeHtml(c.path || "")}</td>
           <td>${escapeHtml(String(c.status || ""))}</td>
           <td>${escapeHtml(c.statusReason || "")}</td>
+        </tr>
+      `).join("");
+
+      const proofSection = (p.samples || []).slice(0, 15).map(sample => `
+        <tr>
+          <td>${escapeHtml(sample.timestamp || "")}</td>
+          <td>${escapeHtml(sample.label || "")}</td>
+          <td>${escapeHtml(sample.method || "")}</td>
+          <td>${escapeHtml(sample.path || "")}</td>
+          <td>${escapeHtml(String(sample.status || ""))}</td>
         </tr>
       `).join("");
 
@@ -3286,6 +3243,13 @@
           </div>
 
           <div class="section">
+            <h2>Proof Summary</h2>
+            <p><strong>14-Day Total Logged Calls:</strong> ${formatNumber(p.totalCalls || 0)}</p>
+            <p><strong>API Requests Audit Calls:</strong> ${formatNumber(p.apiRequestsAuditCalls || 0)}</p>
+            <p><strong>Configuration Changes Audit Calls:</strong> ${formatNumber(p.configurationChangesAuditCalls || 0)}</p>
+          </div>
+
+          <div class="section">
             <h2>API Status Codes and Reasons</h2>
             <ul>${statusSection || "<li>No status codes available.</li>"}</ul>
           </div>
@@ -3293,10 +3257,16 @@
           <div class="section">
             <h2>Sample API Calls</h2>
             <table>
-              <thead>
-                <tr><th>Timestamp</th><th>Method</th><th>Path</th><th>Status</th><th>Explanation</th></tr>
-              </thead>
+              <thead><tr><th>Timestamp</th><th>Method</th><th>Path</th><th>Status</th><th>Explanation</th></tr></thead>
               <tbody>${callSection || '<tr><td colspan="5">No call evidence available.</td></tr>'}</tbody>
+            </table>
+          </div>
+
+          <div class="section">
+            <h2>Proof Samples</h2>
+            <table>
+              <thead><tr><th>Timestamp</th><th>Label</th><th>Method</th><th>Path</th><th>Status</th></tr></thead>
+              <tbody>${proofSection || '<tr><td colspan="5">No proof samples available.</td></tr>'}</tbody>
             </table>
           </div>
 
@@ -3305,9 +3275,7 @@
             <p><strong>Inventory Count:</strong> ${formatNumber(devices.inventoryCount || 0)}</p>
             <p><strong>Serial Count:</strong> ${formatNumber((devices.serialNumbers || []).length)}</p>
             <table>
-              <thead>
-                <tr><th>Name</th><th>Model</th><th>Serial</th><th>Product Type</th></tr>
-              </thead>
+              <thead><tr><th>Name</th><th>Model</th><th>Serial</th><th>Product Type</th></tr></thead>
               <tbody>${deviceSection || '<tr><td colspan="4">No device evidence available.</td></tr>'}</tbody>
             </table>
           </div>
@@ -3336,7 +3304,59 @@
       win.document.close();
     }
 
-    function exportReportsCsv() {
+    
+    function renderExtendedNarratives() {
+      const weekly = state.weekly || {};
+      const proof = state.proof14 || {};
+      const lifecycleWrap = document.getElementById("lifecycleNarrative");
+      const opsWrap = document.getElementById("operationalRecommendations");
+      const successWrap = document.getElementById("successDistributionSummary");
+      const endpointWrap = document.getElementById("endpointMixSummary");
+      const proofWrap = document.getElementById("proofReadinessNarrative");
+
+      if (!lifecycleWrap || !opsWrap || !successWrap || !endpointWrap || !proofWrap) return;
+
+      const total = Number(weekly.totalCalls || 0);
+      const success = Number(weekly.successRate || 0);
+      const stage = weekly.stage || "ONBOARD";
+      const methods = weekly.methods || {};
+      const methodPairs = Object.entries(methods).map(([k,v]) => `${k}: ${formatNumber(v)}`).join(", ");
+      const statusCounts = weekly.statusCounts || {};
+      const statusPairs = Object.entries(statusCounts).map(([k,v]) => `${k}: ${formatNumber(v)}`).join(", ");
+
+      lifecycleWrap.innerHTML = `
+        <div class="insight">The current lifecycle stage is <strong>${escapeHtml(stage)}</strong>, based on ${formatNumber(total)} logged calls and a ${escapeHtml(String(success))}% success rate.</div>
+        <div class="insight">The portal classifies progress according to Onboard, Implement, Use, Engage, and Adopt thresholds to make customer maturity visible in operational terms.</div>
+        <div class="insight">This is useful for showing not only raw volume but whether usage is consistent and healthy enough to support adoption claims.</div>
+      `;
+
+      opsWrap.innerHTML = `
+        <div class="insight">Maintain a six-hour cron cadence to create a steady accumulation of useful calls without excessive duplication.</div>
+        <div class="insight">Use the force-live toggle for validation after onboarding a new API key, discovering orgs, or confirming a customer-specific issue.</div>
+        <div class="insight">Prioritize remediation of repeated 401, 403, 404, and 429 responses since they directly reduce success rate and delay adoption attainment.</div>
+        <div class="insight">Keep proof exports for customer reviews, QBRs, and internal managed-services reporting.</div>
+      `;
+
+      successWrap.innerHTML = `
+        <div><strong>Total Calls:</strong> ${formatNumber(total)}</div>
+        <div><strong>Success Rate:</strong> ${escapeHtml(String(success))}%</div>
+        <div><strong>Status Code Mix:</strong> ${escapeHtml(statusPairs || "No status data")}</div>
+      `;
+
+      endpointWrap.innerHTML = `
+        <div><strong>Method Mix:</strong> ${escapeHtml(methodPairs || "No method data")}</div>
+        <div><strong>Unique Endpoints:</strong> ${formatNumber(weekly.uniqueEndpoints || 0)}</div>
+        <div><strong>Top Failing Patterns:</strong> ${formatNumber((state.topFailing || []).length)}</div>
+      `;
+
+      proofWrap.innerHTML = `
+        <div class="insight">The 14-day proof view currently contains ${formatNumber(proof.totalCalls || 0)} logged calls, including ${formatNumber(proof.apiRequestsAuditCalls || 0)} API-request audit samples and ${formatNumber(proof.configurationChangesAuditCalls || 0)} configuration-change audit samples.</div>
+        <div class="insight">Use these proof metrics alongside lifecycle and inventory evidence to demonstrate both activity volume and the type of activity being captured.</div>
+        <div class="insight">Where device inventory is populated, the report can show serial-level evidence to support operational visibility claims.</div>
+      `;
+    }
+
+function exportReportsCsv() {
       const params = new URLSearchParams();
       if (state.selectedCustomerId) params.set("customerId", state.selectedCustomerId);
       if (state.selectedOrgId) params.set("orgId", state.selectedOrgId);
@@ -3344,23 +3364,8 @@
       params.set("limit", "1000");
       window.open(API_BASE + "/api/reports/calls.csv?" + params.toString(), "_blank");
     }
-
-    async function loadDevicesPage() {
-      if (!state.selectedCustomerId) {
-        state.devices = null;
-        renderDevicePage();
-        return;
-      }
-
-      const params = new URLSearchParams();
-      params.set("customerId", state.selectedCustomerId);
-      if (state.selectedOrgId) params.set("orgId", state.selectedOrgId);
-
-      state.devices = await api("/api/reports/devices?" + params.toString());
-      renderDevicePage();
-    }
-
-    window.exportExecutivePdf = exportExecutivePdf;
   </script>
 </body>
 </html>
+
+<!-- Additional enterprise sections for reporting depth -->
