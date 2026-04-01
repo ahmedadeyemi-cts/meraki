@@ -47,3 +47,4 @@ FROM_EMAIL = "meraki-ussignal@onenecklab.com"
 # Cron trigger for steady call generation
 [triggers]
 crons = ["0 */6 * * *"]
+
