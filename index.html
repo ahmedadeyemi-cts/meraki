@@ -866,7 +866,7 @@
 
           <div class="grid kpi">
             <div class="card">
-              <div class="kpi-label">Weekly Calls</div>
+              <div class="kpi-label">API Calls in Selected Range</div>
               <div class="kpi-value" id="kpiWeeklyCalls">0</div>
               <div class="kpi-meta" id="kpiWeeklyCallsMeta">Target 7,500</div>
               <div class="progress"><span id="callsProgress"></span></div>
@@ -1563,6 +1563,7 @@
       selectedCustomerId: "",
       selectedOrgId: "",
       weekly: null,
+      countSummary: null,
       lifecycle30: null,
       proof14: null,
       calls: [],
@@ -1947,34 +1948,58 @@
 }
 
     async function refreshDashboard(preserveSearch = true) {
-      const customerId = state.selectedCustomerId || "";
-      const orgId = state.selectedOrgId || "";
+  const customerId = state.selectedCustomerId || "";
+  const orgId = state.selectedOrgId || "";
+  const startDate = document.getElementById("weekStart").value || "";
+  const endDate = new Date().toISOString().slice(0, 10);
 
-      state.weekly = await api("/api/weekly?customerId=" + encodeURIComponent(customerId) + "&orgId=" + encodeURIComponent(orgId));
-      state.lifecycle30 = await api("/api/reports/lifecycle?days=30&customerId=" + encodeURIComponent(customerId) + "&orgId=" + encodeURIComponent(orgId));
-      state.proof14 = await api("/api/reports/proof?days=14&customerId=" + encodeURIComponent(customerId) + "&orgId=" + encodeURIComponent(orgId));
+  state.countSummary = await api(
+    "/api/reports/counts?customerId=" + encodeURIComponent(customerId) +
+    "&orgId=" + encodeURIComponent(orgId) +
+    "&startDate=" + encodeURIComponent(startDate) +
+    "&endDate=" + encodeURIComponent(endDate)
+  );
 
-      const reportData = await api("/api/reports/calls?days=30&customerId=" + encodeURIComponent(customerId) + "&orgId=" + encodeURIComponent(orgId) + "&limit=500");
-      state.calls = reportData.items || [];
+  state.weekly = await api(
+    "/api/weekly?customerId=" + encodeURIComponent(customerId) +
+    "&orgId=" + encodeURIComponent(orgId)
+  );
 
-      if (!preserveSearch) {
-        document.getElementById("globalSearch").value = "";
-      }
+  state.lifecycle30 = await api(
+    "/api/reports/lifecycle?days=30&customerId=" + encodeURIComponent(customerId) +
+    "&orgId=" + encodeURIComponent(orgId)
+  );
 
-      applyGlobalSearch(false);
-      analyzeTopFailingEndpoints();
-      computeSlaState();
-      renderDashboardKpis();
-      renderActivityChart();
-      renderRecentCallsTable();
-      renderCustomerSummary();
-      renderExecutiveSnapshot();
-      renderStatusCodeChips();
-      renderSlaInsights();
-      renderTopFailingEndpoints();
-      renderExtendedNarratives();
-      renderGovernanceAndExecutive();
-    }
+  state.proof14 = await api(
+    "/api/reports/proof?days=14&customerId=" + encodeURIComponent(customerId) +
+    "&orgId=" + encodeURIComponent(orgId)
+  );
+
+  const reportData = await api(
+    "/api/reports/calls?days=30&customerId=" + encodeURIComponent(customerId) +
+    "&orgId=" + encodeURIComponent(orgId) +
+    "&limit=500"
+  );
+  state.calls = reportData.items || [];
+
+  if (!preserveSearch) {
+    document.getElementById("globalSearch").value = "";
+  }
+
+  applyGlobalSearch(false);
+  analyzeTopFailingEndpoints();
+  computeSlaState();
+  renderDashboardKpis();
+  renderActivityChart();
+  renderRecentCallsTable();
+  renderCustomerSummary();
+  renderExecutiveSnapshot();
+  renderStatusCodeChips();
+  renderSlaInsights();
+  renderTopFailingEndpoints();
+  renderExtendedNarratives();
+  renderGovernanceAndExecutive();
+}
 
     function analyzeTopFailingEndpoints() {
       const map = {};
@@ -2015,42 +2040,51 @@
       el.textContent = status === "green" ? "SLA Healthy" : status === "yellow" ? "SLA At Risk" : "SLA Alert";
     }
 
-    function renderDashboardKpis() {
-      const weekly = state.weekly || {};
-      const methods = weekly.methods || {};
-      const totalCalls = Number(weekly.totalCalls || 0);
-      const successRate = Number(weekly.successRate || 0);
-      const stage = weekly.stage || "ONBOARD";
-      const stageReason = weekly.reason || weekly.stageReason || "No lifecycle reasoning available.";
-      const writeCalls = Number(methods.POST || 0) + Number(methods.PUT || 0) + Number(methods.DELETE || 0);
-      const uniqueEndpoints = Number(weekly.uniqueEndpoints || 0);
-      const inventoryCount = Number(state.devices?.inventoryCount || 0);
+   function renderDashboardKpis() {
+  const weekly = state.weekly || {};
+  const counts = state.countSummary || {};
+  const methods = weekly.methods || {};
 
-      document.getElementById("kpiWeeklyCalls").textContent = formatNumber(totalCalls);
-      document.getElementById("kpiSuccessRate").textContent = successRate + "%";
-      document.getElementById("kpiWriteCalls").textContent = formatNumber(writeCalls);
-      document.getElementById("kpiUniqueEndpoints").textContent = formatNumber(uniqueEndpoints);
-      document.getElementById("kpiInventoryCount").textContent = formatNumber(inventoryCount);
+  const totalCalls = Number(counts.totalCalls || 0);
+  const successRate = Number(weekly.successRate || 0);
+  const stage = weekly.stage || "ONBOARD";
+  const stageReason = weekly.reason || weekly.stageReason || "No lifecycle reasoning available.";
+  const writeCalls = Number(methods.POST || 0) + Number(methods.PUT || 0) + Number(methods.DELETE || 0);
+  const uniqueEndpoints = Number(weekly.uniqueEndpoints || 0);
+  const inventoryCount = Number(state.devices?.inventoryCount || 0);
 
-      const stageBadge = document.getElementById("kpiStageBadge");
-      stageBadge.textContent = stage;
-      stageBadge.className = "badge stage-" + stage;
+  document.getElementById("kpiWeeklyCalls").textContent = formatNumber(totalCalls);
+  document.getElementById("kpiSuccessRate").textContent = successRate + "%";
+  document.getElementById("kpiWriteCalls").textContent = formatNumber(writeCalls);
+  document.getElementById("kpiUniqueEndpoints").textContent = formatNumber(uniqueEndpoints);
+  document.getElementById("kpiInventoryCount").textContent = formatNumber(inventoryCount);
 
-      document.getElementById("kpiStageReason").textContent = stageReason;
+  const stageBadge = document.getElementById("kpiStageBadge");
+  stageBadge.textContent = stage;
+  stageBadge.className = "badge stage-" + stage;
 
-      const progress = Math.min((totalCalls / 7500) * 100, 100);
-      document.getElementById("callsProgress").style.width = progress + "%";
-      document.getElementById("kpiWeeklyCallsMeta").textContent = "Target 7,500 | " + progress.toFixed(1) + "% achieved";
+  document.getElementById("kpiStageReason").textContent = stageReason;
 
-      document.getElementById("statGet").textContent = formatNumber(methods.GET || 0);
-      document.getElementById("statPost").textContent = formatNumber(methods.POST || 0);
-      document.getElementById("statPut").textContent = formatNumber(methods.PUT || 0);
-      document.getElementById("statDelete").textContent = formatNumber(methods.DELETE || 0);
+  const progress = Math.min((totalCalls / 7600) * 100, 100);
+  document.getElementById("callsProgress").style.width = progress + "%";
 
-      updateRAG();
-      renderSparklines();
-    }
+  const rangeText =
+    (counts.startDate || "start") + " to " + (counts.endDate || "today");
 
+  document.getElementById("kpiWeeklyCallsMeta").textContent =
+    rangeText +
+    " | Target 7,600 | " +
+    progress.toFixed(1) + "% achieved | Remaining: " +
+    formatNumber(counts.callsRemainingToAdopt || 0);
+
+  document.getElementById("statGet").textContent = formatNumber(methods.GET || 0);
+  document.getElementById("statPost").textContent = formatNumber(methods.POST || 0);
+  document.getElementById("statPut").textContent = formatNumber(methods.PUT || 0);
+  document.getElementById("statDelete").textContent = formatNumber(methods.DELETE || 0);
+
+  updateRAG();
+  renderSparklines();
+}
     function updateRAG() {
       const weekly = state.weekly || {};
       const total = Number(weekly.totalCalls || 0);
@@ -2230,7 +2264,8 @@
         <div><strong>Customer Name:</strong> ${escapeHtml(w.customerName || "-")}</div>
         <div><strong>Org Name:</strong> ${escapeHtml(w.orgName || w.orgId || "-")}</div>
         <div><strong>Stage:</strong> ${escapeHtml(w.stage || "-")}</div>
-        <div><strong>Total API Calls:</strong> ${formatNumber(w.totalCalls || 0)}</div>
+        <div><strong>30-Day Lifecycle Calls:</strong> ${formatNumber(w.totalCalls || 0)}</div>
+        <div><strong>Selected Range Calls:</strong> ${formatNumber((state.countSummary || {}).totalCalls || 0)}</div>
         <div><strong>Success Rate:</strong> ${escapeHtml(String(w.successRate || 0))}%</div>
         <div><strong>14-Day Proof Calls:</strong> ${formatNumber(p.totalCalls || 0)}</div>
         <div><strong>Reason:</strong> ${escapeHtml(w.reason || w.stageReason || "No lifecycle rationale available.")}</div>
