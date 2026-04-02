@@ -1699,26 +1699,19 @@
       applyTheme(current === "dark" ? "light" : "dark");
     }
 
-    async function bootstrap() {
-      try {
-        await loadMe();
-        startSessionTimer();
-        await loadCustomers();
-        await loadSnmpTargets();
-        handleRoute();
-        await fullRefresh();
-        setInterval(async () => {
-          try {
-            await fullRefresh(false);
-          } catch (error) {
-            console.warn("Auto-refresh failed:", error.message);
-          }
-        }, 60000);
-      } catch (error) {
-        alert("Initialization failed: " + error.message);
-      }
-    }
-
+  async function bootstrap() {
+  try {
+    await loadMe();
+    startSessionTimer();
+    await loadCustomers();
+    await loadSnmpTargets();
+    await handleRoute();
+    await refreshDashboard();
+    await loadCronBanner();
+  } catch (error) {
+    alert("Initialization failed: " + error.message);
+  }
+}
     function startSessionTimer() {
       state.sessionStartedAt = Date.now();
       updateSessionChip();
@@ -1741,10 +1734,10 @@
       return "dashboard";
     }
 
-    function navigate(route) {
-      history.pushState({}, "", "/" + route);
-      handleRoute();
-    }
+    async function navigate(route) {
+  history.pushState({}, "", "/" + route);
+  await handleRoute();
+}
 
     function handleRoute() {
       const route = currentPathRoute();
@@ -1805,45 +1798,113 @@
           subtitle: "Reference endpoint catalog, reporting interpretation guidance, and managed-services notes."
         },
         reference: {
-          title: "Reference",
-          subtitle: "Status matrix, review cadence, collection design notes, and executive usage guidance."
-        },
-        playbooks: {
-          title: "Playbooks",
-          subtitle: "Operational onboarding, troubleshooting, and reporting templates for recurring use."
-        },
-        notes: {
-          title: "Notes",
-          subtitle: "Implementation notes and practical usage guidance for the portal."
-        }
-      };
+async function handleRoute() {
+  const route = currentPathRoute();
+  state.currentRoute = route;
 
-      document.getElementById("pageTitle").textContent = titles[route].title;
-      document.getElementById("pageSubtitle").textContent = titles[route].subtitle;
+  document.querySelectorAll(".panel").forEach(panel => panel.classList.remove("active"));
+  document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
+
+  const panel = document.getElementById("panel-" + route);
+  if (panel) panel.classList.add("active");
+
+  const navBtn = document.querySelector('.nav-btn[data-route="' + route + '"]');
+  if (navBtn) navBtn.classList.add("active");
+
+  const titles = {
+    dashboard: {
+      title: "Enterprise Dashboard",
+      subtitle: "Centralized operational picture of Meraki API activity, lifecycle attainment, proof readiness, SLA posture, status behavior, and executive drill-downs."
+    },
+    devices: {
+      title: "Devices Intelligence Dashboard",
+      subtitle: "Inventory analytics, serial visibility, model concentration, licensing overview, and device-level reporting for Meraki environments."
+    },
+    topology: {
+      title: "Topology Visualization",
+      subtitle: "Visual structure of the environment using inventory categorization, topology inference, and operational context for review and proof artifacts."
+    },
+    customers: {
+      title: "Customer Administration",
+      subtitle: "Create, update, and maintain Meraki customer definitions, mapped organizations, API keys, notes, and write-test settings."
+    },
+    snmp: {
+      title: "SNMP Target Workflow",
+      subtitle: "Track single-IP, range, and CIDR-based SNMP collection targets for customer inventory and future topology enrichment workflows."
+    },
+    onprem: {
+      title: "On-Prem Collector Import",
+      subtitle: "Import locally gathered JSON from customers who restrict direct cloud telemetry or API connectivity from inside their network."
+    },
+    reports: {
+      title: "Operational Reports",
+      subtitle: "Filter, paginate, export, and inspect raw API call evidence, proof summaries, HTTP response codes, latency, payload snippets, and explanations."
+    },
+    governance: {
+      title: "Adoption Governance",
+      subtitle: "Review lifecycle, proof coverage, cron health, evidence completeness, and managed-services governance readiness."
+    },
+    executive: {
+      title: "Executive Readout",
+      subtitle: "Summarize customer status, adoption progress, operational value, and reporting language for leadership audiences."
+    },
+    "audit-detail": {
+      title: "Audit Detail",
+      subtitle: "Review proof endpoint behavior, audit sample counts, and how to interpret API request and configuration change evidence."
+    },
+    appendix: {
+      title: "Appendix",
+      subtitle: "Reference endpoint catalog, reporting interpretation guidance, and managed-services notes."
+    },
+    reference: {
+      title: "Reference",
+      subtitle: "Status matrix, review cadence, collection design notes, and executive usage guidance."
+    },
+    playbooks: {
+      title: "Playbooks",
+      subtitle: "Operational onboarding, troubleshooting, and reporting templates for recurring use."
+    },
+    notes: {
+      title: "Notes",
+      subtitle: "Implementation notes and practical usage guidance for the portal."
+    }
+  };
+
+  document.getElementById("pageTitle").textContent = titles[route].title;
+  document.getElementById("pageSubtitle").textContent = titles[route].subtitle;
+
+  if (route === "reports") await refreshReports(false);
+  if (route === "devices") await loadDevicesPage(false);
+  if (route === "topology") await loadTopologyPage(false);
+}
+
+  async function api(path, options = {}) {
+  const response = await fetch(API_BASE + path, {
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...(options.headers || {})
+    }
+  });
+
+  const contentType = response.headers.get("content-type") || "";
+  const isJson = contentType.includes("application/json");
+  const payload = isJson ? await response.json() : await response.text();
+
+  if (!response.ok) {
+    if (!isJson && String(payload).includes("Worker exceeded resource limits")) {
+      throw new Error("Cloudflare Worker exceeded resource limits. Reduce simultaneous dashboard/report queries.");
     }
 
-    async function api(path, options = {}) {
-      const response = await fetch(API_BASE + path, {
-        ...options,
-        headers: {
-          "Content-Type": "application/json",
-          ...(options.headers || {})
-        }
-      });
+    const message = typeof payload === "string"
+      ? payload.slice(0, 400)
+      : (payload.error || payload.message || JSON.stringify(payload));
 
-      const contentType = response.headers.get("content-type") || "";
-      const isJson = contentType.includes("application/json");
-      const payload = isJson ? await response.json() : await response.text();
+    throw new Error(message);
+  }
 
-      if (!response.ok) {
-        const message = typeof payload === "string"
-          ? payload
-          : (payload.error || payload.message || JSON.stringify(payload));
-        throw new Error(message);
-      }
-
-      return payload;
-    }
+  return payload;
+}
 
     async function loadMe() {
       const data = await api("/api/me");
@@ -1927,13 +1988,22 @@
       await fullRefresh();
     }
 
-    async function fullRefresh(preserveSearch = true) {
-      await refreshDashboard(preserveSearch);
-      await refreshReports(false);
-      await loadDevicesPage(false);
-      await loadTopologyPage(false);
-      await loadCronBanner();
-    }
+  async function fullRefresh(preserveSearch = true) {
+  await refreshDashboard(preserveSearch);
+  await loadCronBanner();
+
+  if (state.currentRoute === "reports") {
+    await refreshReports(false);
+  }
+
+  if (state.currentRoute === "devices") {
+    await loadDevicesPage(false);
+  }
+
+  if (state.currentRoute === "topology") {
+    await loadTopologyPage(false);
+  }
+}
 
     async function refreshDashboard(preserveSearch = true) {
       const customerId = state.selectedCustomerId || "";
