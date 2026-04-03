@@ -730,6 +730,7 @@
         <button class="nav-btn active" data-route="dashboard">Dashboard</button>
         <button class="nav-btn" data-route="devices">Devices</button>
         <button class="nav-btn" data-route="topology">Topology</button>
+        <button class="nav-btn" data-route="architecture">Architecture</button>
         <button class="nav-btn" data-route="customers">Customers</button>
         <button class="nav-btn" data-route="snmp">SNMP Targets</button>
         <button class="nav-btn" data-route="onprem">On-Prem Upload</button>
@@ -794,6 +795,7 @@
           <li><span class="mono">/api/reports/proof</span></li>
           <li><span class="mono">/api/cron/status</span></li>
           <li><span class="mono">/api/snmp</span></li>
+          <li><span class="mono">/api/reports/architecture</span></li>
           <li><span class="mono">/api/onprem/upload</span></li>
         </ul>
       </div>
@@ -1068,7 +1070,77 @@
             </div>
           </div>
         </section>
+         <section id="panel-architecture" class="panel">
+  <div class="toolbar">
+    <select id="architectureCustomerFilter" class="select"></select>
+    <select id="architectureOrgFilter" class="select"></select>
+    <button id="btnRefreshArchitecture" class="btn">Refresh Architecture</button>
+  </div>
 
+  <div class="grid kpi">
+    <div class="card">
+      <div class="kpi-label">Architecture Nodes</div>
+      <div class="kpi-value" id="architectureNodeCount">0</div>
+      <div class="kpi-meta">All retained nodes after reconciliation</div>
+    </div>
+    <div class="card">
+      <div class="kpi-label">Architecture Edges</div>
+      <div class="kpi-value" id="architectureEdgeCount">0</div>
+      <div class="kpi-meta">Discovered LLDP/CDP or link-layer edges</div>
+    </div>
+    <div class="card">
+      <div class="kpi-label">Meraki Nodes</div>
+      <div class="kpi-value" id="architectureMerakiCount">0</div>
+      <div class="kpi-meta">Core Meraki infrastructure devices</div>
+    </div>
+    <div class="card">
+      <div class="kpi-label">Neighbor Nodes</div>
+      <div class="kpi-value" id="architectureNeighborCount">0</div>
+      <div class="kpi-meta">Non-Meraki or unresolved adjacent devices</div>
+    </div>
+    <div class="card">
+      <div class="kpi-label">Peripheral Nodes</div>
+      <div class="kpi-value" id="architecturePeripheralCount">0</div>
+      <div class="kpi-meta">Phones, room devices, printers, endpoints</div>
+    </div>
+    <div class="card">
+      <div class="kpi-label">Confidence</div>
+      <div class="kpi-value" id="architectureConfidence">0%</div>
+      <div class="kpi-meta">Backend topology confidence score</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Architecture Diagram</h3>
+    <div class="topology-wrap">
+      <svg id="architectureSvg" class="topology-svg" viewBox="0 0 1600 950"></svg>
+    </div>
+    <div class="footer-note">
+      This architecture view uses reconciled Meraki inventory plus discovered LLDP/CDP relationships. It is intended to be closer to an architectural document than the standard topology page.
+    </div>
+  </div>
+
+  <div class="grid two">
+    <div class="card">
+      <h3>Architecture Notes</h3>
+      <div id="architectureNotes"></div>
+    </div>
+    <div class="card">
+      <h3>Architecture Summary</h3>
+      <div id="architectureSummary"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Architecture Edges</h3>
+    <div id="architectureEdgeTable"></div>
+  </div>
+
+  <div class="card">
+    <h3>Architecture Nodes</h3>
+    <div id="architectureNodeTable"></div>
+  </div>
+</section>
         <section id="panel-customers" class="panel">
           <div class="grid two">
             <div class="card">
@@ -1583,6 +1655,7 @@
       currentRoute: "dashboard",
       devices: null,
       topology: null,
+      architecture: null,
       topFailing: [],
       sessionStartedAt: Date.now(),
       sessionTimer: null,
@@ -1617,6 +1690,10 @@
       document.getElementById("btnRefreshCustomersMini").addEventListener("click", loadCustomers);
       document.getElementById("btnJumpReports").addEventListener("click", () => navigate("reports"));
       document.getElementById("btnJumpDevices").addEventListener("click", () => navigate("devices"));
+
+      document.getElementById("architectureCustomerFilter").addEventListener("change", onCustomerSelectionChange);
+      document.getElementById("architectureOrgFilter").addEventListener("change", onOrgSelectionChange);
+      document.getElementById("btnRefreshArchitecture").addEventListener("click", loadArchitecturePage);
 
       document.getElementById("btnSaveCustomer").addEventListener("click", saveCustomer);
       document.getElementById("btnDiscoverOrgs").addEventListener("click", discoverCustomerOrgs);
@@ -1747,7 +1824,7 @@
     function currentPathRoute() {
       const path = location.pathname.replace(/^\/+/, "").toLowerCase();
       if (!path) return "dashboard";
-      if (["dashboard", "devices", "topology", "customers", "snmp", "onprem", "reports", "governance", "executive", "audit-detail", "appendix", "reference", "playbooks", "notes"].includes(path)) return path;
+      if (["dashboard", "devices", "topology", "architecture", "customers", "snmp", "onprem", "reports", "governance", "executive", "audit-detail", "appendix", "reference", "playbooks", "notes"].includes(path)) return path;
       return "dashboard";
     }
 
@@ -1759,6 +1836,8 @@
     async function handleRoute() {
   const route = currentPathRoute();
   state.currentRoute = route;
+
+  
 
   document.querySelectorAll(".panel").forEach(panel => panel.classList.remove("active"));
   document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
@@ -1782,6 +1861,10 @@
       title: "Topology Visualization",
       subtitle: "Visual structure of the environment using inventory categorization, topology inference, and operational context for review and proof artifacts."
     },
+    architecture: {
+  title: "Architecture View",
+  subtitle: "Reconciled infrastructure and LLDP/CDP-discovered relationships rendered as an architecture-oriented diagram."
+},
     customers: {
       title: "Customer Administration",
       subtitle: "Create, update, and maintain Meraki customer definitions, mapped organizations, API keys, notes, and write-test settings."
@@ -1834,6 +1917,7 @@
   if (route === "reports") await refreshReports(false);
   if (route === "devices") await loadDevicesPage(false);
   if (route === "topology") await loadTopologyPage(false);
+  if (route === "architecture") await loadArchitecturePage();
 }
 
   async function api(path, options = {}) {
@@ -1882,12 +1966,13 @@
 
     function populateCustomerDropdowns() {
       const dropdownIds = [
-        "customerFilter",
-        "reportCustomerFilter",
-        "globalCustomerSwitcher",
-        "devicesCustomerFilter",
-        "topologyCustomerFilter"
-      ];
+  "customerFilter",
+  "reportCustomerFilter",
+  "globalCustomerSwitcher",
+  "devicesCustomerFilter",
+  "topologyCustomerFilter",
+  "architectureCustomerFilter"
+];
 
       dropdownIds.forEach(id => {
         const sel = document.getElementById(id);
@@ -1901,7 +1986,7 @@
     }
 
     function populateOrgSwitcher() {
-      const ids = ["orgSwitcher", "dashboardOrgFilter", "reportOrgFilter", "devicesOrgFilter", "topologyOrgFilter"];
+      const ids = ["orgSwitcher", "dashboardOrgFilter", "reportOrgFilter", "devicesOrgFilter", "topologyOrgFilter", "architectureOrgFilter"];
       const customer = state.customers.find(c => c.customerId === state.selectedCustomerId);
 
       ids.forEach(id => {
@@ -1918,7 +2003,7 @@
     }
 
     function syncCustomerFilters() {
-      ["customerFilter","reportCustomerFilter","globalCustomerSwitcher","devicesCustomerFilter","topologyCustomerFilter"].forEach(id => {
+      ["customerFilter","reportCustomerFilter","globalCustomerSwitcher","devicesCustomerFilter","topologyCustomerFilter","architectureCustomerFilter"].forEach(id => {
         const el = document.getElementById(id);
         el.value = state.selectedCustomerId || "";
       });
@@ -1926,7 +2011,7 @@
     }
 
     function syncOrgFilters() {
-      ["orgSwitcher","dashboardOrgFilter","reportOrgFilter","devicesOrgFilter","topologyOrgFilter"].forEach(id => {
+      ["orgSwitcher","dashboardOrgFilter","reportOrgFilter","devicesOrgFilter","topologyOrgFilter","architectureOrgFilter"].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.value = state.selectedOrgId || "";
       });
@@ -1961,6 +2046,9 @@
   if (state.currentRoute === "topology") {
     await loadTopologyPage(false);
   }
+  if (state.currentRoute === "architecture") {
+    await loadArchitecturePage();
+}
 }
 
     async function refreshDashboard(preserveSearch = true) {
@@ -2943,7 +3031,20 @@ function renderDashboardKpis() {
       state.topology = buildTopologyModel(state.devices);
       renderTopologyPage();
     }
+async function loadArchitecturePage() {
+  if (!state.selectedCustomerId) {
+    state.architecture = null;
+    renderArchitecturePage();
+    return;
+  }
 
+  const params = new URLSearchParams();
+  params.set("customerId", state.selectedCustomerId);
+  if (state.selectedOrgId) params.set("orgId", state.selectedOrgId);
+
+  state.architecture = await api("/api/reports/architecture?" + params.toString());
+  renderArchitecturePage();
+}
     function buildTopologyModel(deviceData) {
       const devices = Array.isArray(deviceData?.devices) ? deviceData.devices : [];
       const nodes = [];
@@ -3058,7 +3159,197 @@ function renderDashboardKpis() {
       ];
       notes.innerHTML = notesList.map(n => `<div class="insight">${escapeHtml(n)}</div>`).join("");
     }
+function renderArchitecturePage() {
+  const data = state.architecture;
 
+  if (!data) {
+    document.getElementById("architectureNodeCount").textContent = "0";
+    document.getElementById("architectureEdgeCount").textContent = "0";
+    document.getElementById("architectureMerakiCount").textContent = "0";
+    document.getElementById("architectureNeighborCount").textContent = "0";
+    document.getElementById("architecturePeripheralCount").textContent = "0";
+    document.getElementById("architectureConfidence").textContent = "0%";
+    document.getElementById("architectureSvg").innerHTML = "";
+    document.getElementById("architectureNotes").innerHTML = '<div class="empty">No architecture data loaded.</div>';
+    document.getElementById("architectureSummary").innerHTML = '<div class="empty">No architecture summary available.</div>';
+    document.getElementById("architectureEdgeTable").innerHTML = '<div class="empty">No edges available.</div>';
+    document.getElementById("architectureNodeTable").innerHTML = '<div class="empty">No nodes available.</div>';
+    return;
+  }
+
+  const summary = data.summary || {};
+  const nodes = Array.isArray(data.nodes) ? data.nodes : [];
+  const edges = Array.isArray(data.edges) ? data.edges : [];
+  const notes = Array.isArray(data.notes) ? data.notes : [];
+
+  document.getElementById("architectureNodeCount").textContent = formatNumber(summary.nodeCount || nodes.length || 0);
+  document.getElementById("architectureEdgeCount").textContent = formatNumber(summary.edgeCount || edges.length || 0);
+  document.getElementById("architectureMerakiCount").textContent = formatNumber(summary.merakiCount || 0);
+  document.getElementById("architectureNeighborCount").textContent = formatNumber(summary.neighborCount || 0);
+  document.getElementById("architecturePeripheralCount").textContent = formatNumber(summary.peripheralCount || 0);
+  document.getElementById("architectureConfidence").textContent = formatNumber(data.confidence || 0) + "%";
+
+  renderArchitectureSvg(nodes, edges);
+  renderArchitectureNotes(notes);
+  renderArchitectureSummary(data);
+  renderArchitectureEdgeTable(edges);
+  renderArchitectureNodeTable(nodes);
+}
+
+function renderArchitectureSvg(nodes, edges) {
+  const svg = document.getElementById("architectureSvg");
+  if (!svg) return;
+
+  const core = nodes.filter(n => n.type === "mx");
+  const distribution = nodes.filter(n => n.type === "ms");
+  const access = nodes.filter(n => n.type === "mr");
+  const peripherals = nodes.filter(n => n.classification === "peripheral");
+  const neighbors = nodes.filter(n => !core.includes(n) && !distribution.includes(n) && !access.includes(n) && !peripherals.includes(n));
+
+  const placed = [];
+  const width = 1600;
+  const centerX = width / 2;
+
+  core.forEach((n, i) => placed.push({ ...n, x: centerX + (i * 240) - ((core.length - 1) * 120), y: 110 }));
+  distribution.forEach((n, i) => placed.push({ ...n, x: 220 + (i % 5) * 260, y: 320 + Math.floor(i / 5) * 120 }));
+  access.forEach((n, i) => placed.push({ ...n, x: 180 + (i % 6) * 220, y: 560 + Math.floor(i / 6) * 120 }));
+  neighbors.forEach((n, i) => placed.push({ ...n, x: 120 + (i % 8) * 180, y: 760 + Math.floor(i / 8) * 90 }));
+  peripherals.forEach((n, i) => placed.push({ ...n, x: 120 + (i % 8) * 180, y: 860 + Math.floor(i / 8) * 90 }));
+
+  const pos = new Map(placed.map(n => [n.id, n]));
+
+  function nodeColor(node) {
+    if (node.type === "mx") return "#2fcf84";
+    if (node.type === "ms") return "#00a3e0";
+    if (node.type === "mr") return "#f2b84b";
+    if (node.classification === "peripheral") return "#f06a6a";
+    return "#94a3b8";
+  }
+
+  svg.innerHTML = `
+    ${edges.map(edge => {
+      const a = pos.get(edge.from);
+      const b = pos.get(edge.to);
+      if (!a || !b) return "";
+      return `
+        <g>
+          <line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="rgba(255,255,255,.24)" stroke-width="2"></line>
+          <text x="${(a.x + b.x) / 2}" y="${(a.y + b.y) / 2 - 6}" fill="var(--muted)" font-size="10" text-anchor="middle">
+            ${(edge.localPort || "")}${edge.remotePort ? " → " + edge.remotePort : ""}
+          </text>
+        </g>
+      `;
+    }).join("")}
+
+    ${placed.map(node => `
+      <g>
+        <circle cx="${node.x}" cy="${node.y}" r="34" fill="${nodeColor(node)}"></circle>
+        <text x="${node.x}" y="${node.y - 48}" text-anchor="middle" fill="var(--text)" font-size="12">
+          ${escapeHtml(shortLabel(node.label || node.id, 24))}
+        </text>
+        <text x="${node.x}" y="${node.y + 4}" text-anchor="middle" fill="#081a2f" font-size="11" font-weight="700">
+          ${escapeHtml(shortLabel(node.model || node.type || "", 14))}
+        </text>
+        <text x="${node.x}" y="${node.y + 18}" text-anchor="middle" fill="#081a2f" font-size="9">
+          ${escapeHtml(shortLabel(node.serial || node.ip || "", 16))}
+        </text>
+      </g>
+    `).join("")}
+  `;
+}
+
+function renderArchitectureNotes(notes) {
+  document.getElementById("architectureNotes").innerHTML =
+    notes.length
+      ? notes.map(n => `<div class="insight">${escapeHtml(n)}</div>`).join("")
+      : '<div class="empty">No notes available.</div>';
+}
+
+function renderArchitectureSummary(data) {
+  document.getElementById("architectureSummary").innerHTML = `
+    <div><strong>Customer:</strong> ${escapeHtml(data.customerName || "-")}</div>
+    <div><strong>Organization:</strong> ${escapeHtml(data.orgName || data.orgId || "-")}</div>
+    <div><strong>Networks Analyzed:</strong> ${formatNumber(data.networksAnalyzed || 0)}</div>
+    <div><strong>Confidence:</strong> ${formatNumber(data.confidence || 0)}%</div>
+    <div><strong>Generated:</strong> ${escapeHtml(data.generatedAt || "-")}</div>
+  `;
+}
+
+function renderArchitectureEdgeTable(edges) {
+  const wrap = document.getElementById("architectureEdgeTable");
+  if (!edges.length) {
+    wrap.innerHTML = '<div class="empty">No architecture edges available.</div>';
+    return;
+  }
+
+  wrap.innerHTML = `
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>From</th>
+            <th>To</th>
+            <th>Local Port</th>
+            <th>Remote Port</th>
+            <th>Protocol</th>
+            <th>Network</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${edges.map(e => `
+            <tr>
+              <td>${escapeHtml(e.fromLabel || e.from || "-")}</td>
+              <td>${escapeHtml(e.toLabel || e.to || "-")}</td>
+              <td>${escapeHtml(e.localPort || "-")}</td>
+              <td>${escapeHtml(e.remotePort || "-")}</td>
+              <td>${escapeHtml(e.protocol || "-")}</td>
+              <td>${escapeHtml(e.networkName || "-")}</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function renderArchitectureNodeTable(nodes) {
+  const wrap = document.getElementById("architectureNodeTable");
+  if (!nodes.length) {
+    wrap.innerHTML = '<div class="empty">No architecture nodes available.</div>';
+    return;
+  }
+
+  wrap.innerHTML = `
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Classification</th>
+            <th>Model</th>
+            <th>Serial</th>
+            <th>IP</th>
+            <th>Network</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${nodes.map(n => `
+            <tr>
+              <td>${escapeHtml(n.label || "-")}</td>
+              <td>${escapeHtml(n.type || "-")}</td>
+              <td>${escapeHtml(n.classification || "-")}</td>
+              <td>${escapeHtml(n.model || "-")}</td>
+              <td>${escapeHtml(n.serial || "-")}</td>
+              <td>${escapeHtml(n.ip || "-")}</td>
+              <td>${escapeHtml(n.networkName || "-")}</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
     function shortLabel(text, n) {
       const s = String(text || "");
       return s.length > n ? s.slice(0, n - 1) + "…" : s;
