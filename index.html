@@ -1262,10 +1262,12 @@
               </div>
 
               <div class="section-actions">
-                <button id="btnRefreshReports" class="btn">Refresh Reports</button>
-                <button id="btnExportReportsCsv" class="btn secondary">Export Report CSV</button>
-                <button id="btnExportReportsPdf" class="btn secondary">Export PDF</button>
-              </div>
+  <button id="btnRefreshReports" class="btn">Refresh Reports</button>
+  <button id="btnExportReportsCsv" class="btn secondary">Export Report CSV</button>
+  <button id="btnExportReportsFullCsv" class="btn secondary">Export Full 30-Day CSV</button>
+  <button id="btnExportEvidencePdf" class="btn secondary">Export Evidence PDF</button>
+  <button id="btnExportReportsPdf" class="btn secondary">Export PDF</button>
+</div>
 
               <div class="help">
                 This view provides raw operational visibility into recently logged API calls, response codes, latency,
@@ -1707,6 +1709,8 @@
 
       document.getElementById("btnRefreshReports").addEventListener("click", refreshReports);
       document.getElementById("btnExportReportsCsv").addEventListener("click", exportReportsCsv);
+      document.getElementById("btnExportReportsFullCsv").addEventListener("click", exportReportsFullCsv);
+      document.getElementById("btnExportEvidencePdf").addEventListener("click", exportEvidencePdf);
       document.getElementById("btnExportReportsPdf").addEventListener("click", exportExecutivePdf);
 
       document.getElementById("btnPrevPage").addEventListener("click", previousReportPage);
@@ -3665,7 +3669,110 @@ function renderArchitectureNodeTable(nodes) {
         </html>
       `;
     }
+    function buildEvidencePdfHtml(evidence) {
+  const meta = evidence.meta || {};
+  const devices = evidence.devices || {};
+  const statusCounts = evidence.statusCounts || {};
+  const calls = Array.isArray(evidence.calls) ? evidence.calls : [];
 
+  const statusRows = Object.entries(statusCounts).map(([code, count]) => `
+    <tr>
+      <td>${escapeHtml(code)}</td>
+      <td>${formatNumber(count)}</td>
+    </tr>
+  `).join("");
+
+  const deviceRows = Array.isArray(devices.devices)
+    ? devices.devices.slice(0, 50).map(d => `
+      <tr>
+        <td>${escapeHtml(d.name || "-")}</td>
+        <td>${escapeHtml(d.model || "-")}</td>
+        <td>${escapeHtml(d.serial || "-")}</td>
+        <td>${escapeHtml(d.productType || "-")}</td>
+      </tr>
+    `).join("")
+    : "";
+
+  const callRows = calls.map(c => `
+    <tr>
+      <td>${escapeHtml(c.timestamp || "")}</td>
+      <td>${escapeHtml(c.method || "")}</td>
+      <td>${escapeHtml(c.path || "")}</td>
+      <td>${escapeHtml(String(c.status || ""))}</td>
+      <td>${escapeHtml(c.customerName || "")}</td>
+      <td>${escapeHtml(c.orgName || c.orgId || "")}</td>
+      <td>${escapeHtml(c.statusReason || "")}</td>
+    </tr>
+  `).join("");
+
+  return `
+    <html>
+    <head>
+      <title>US Signal Meraki API Evidence Report</title>
+      <style>
+        body { font-family: Arial, sans-serif; padding: 24px; color: #10253a; }
+        h1, h2, h3 { margin: 0 0 12px; }
+        .section { margin-bottom: 24px; }
+        .logo { width: 180px; margin-bottom: 18px; }
+        table { width: 100%; border-collapse: collapse; font-size: 11px; }
+        td, th { border: 1px solid #cdd9e6; padding: 6px; vertical-align: top; }
+        th { background: #eef5fb; text-align: left; }
+        .meta-grid div { margin-bottom: 6px; }
+      </style>
+    </head>
+    <body>
+      <img class="logo" src="https://oncall.onenecklab.com/ussignal.jpg" alt="US Signal Logo" />
+      <h1>US Signal Meraki API Evidence Report</h1>
+
+      <div class="section meta-grid">
+        <div><strong>Customer Name:</strong> ${escapeHtml(meta.customerName || "-")}</div>
+        <div><strong>Customer ID:</strong> ${escapeHtml(meta.customerId || "-")}</div>
+        <div><strong>Organization:</strong> ${escapeHtml(meta.orgName || meta.orgId || "-")}</div>
+        <div><strong>Date Range:</strong> ${escapeHtml(meta.rangeStart || "-")} to ${escapeHtml(meta.rangeEnd || "-")}</div>
+        <div><strong>Generated At:</strong> ${escapeHtml(meta.generatedAt || "-")}</div>
+        <div><strong>Exported By:</strong> ${escapeHtml(meta.exportedBy || (state.me?.email || "-"))}</div>
+        <div><strong>Total Records:</strong> ${formatNumber(meta.totalRecords || 0)}</div>
+      </div>
+
+      <div class="section">
+        <h2>Status Code Summary</h2>
+        <table>
+          <thead><tr><th>Status Code</th><th>Count</th></tr></thead>
+          <tbody>${statusRows || '<tr><td colspan="2">No status data</td></tr>'}</tbody>
+        </table>
+      </div>
+
+      <div class="section">
+        <h2>Customer Devices</h2>
+        <table>
+          <thead><tr><th>Name</th><th>Model</th><th>Serial</th><th>Product Type</th></tr></thead>
+          <tbody>${deviceRows || '<tr><td colspan="4">No device data available</td></tr>'}</tbody>
+        </table>
+      </div>
+
+      <div class="section">
+        <h2>Full API Evidence</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Method</th>
+              <th>Path</th>
+              <th>Status</th>
+              <th>Customer</th>
+              <th>Org</th>
+              <th>Status Reason</th>
+            </tr>
+          </thead>
+          <tbody>${callRows || '<tr><td colspan="7">No API calls found</td></tr>'}</tbody>
+        </table>
+      </div>
+
+      <script>window.print()<\/script>
+    </body>
+    </html>
+  `;
+}
     function exportExecutivePdf() {
       const win = window.open("", "_blank");
       win.document.write(buildExecutiveReportHtml("Executive Summary"));
@@ -3744,6 +3851,40 @@ function exportReportsCsv() {
       params.set("limit", "1000");
       window.open(API_BASE + "/api/reports/calls.csv?" + params.toString(), "_blank");
     }
+    function exportReportsFullCsv() {
+  const params = new URLSearchParams();
+  if (state.selectedCustomerId) params.set("customerId", state.selectedCustomerId);
+  if (state.selectedOrgId) params.set("orgId", state.selectedOrgId);
+  params.set("days", document.getElementById("reportPeriodDays").value || "30");
+
+  const method = document.getElementById("reportMethodFilter").value || "";
+  const status = document.getElementById("reportStatusFilter").value || "";
+
+  if (method) params.set("method", method);
+  if (status) params.set("status", status);
+
+  window.open(API_BASE + "/api/reports/calls-full.csv?" + params.toString(), "_blank");
+}
+
+async function exportEvidencePdf() {
+  const params = new URLSearchParams();
+  if (state.selectedCustomerId) params.set("customerId", state.selectedCustomerId);
+  if (state.selectedOrgId) params.set("orgId", state.selectedOrgId);
+  params.set("days", document.getElementById("reportPeriodDays").value || "30");
+
+  const method = document.getElementById("reportMethodFilter").value || "";
+  const status = document.getElementById("reportStatusFilter").value || "";
+
+  if (method) params.set("method", method);
+  if (status) params.set("status", status);
+
+  const evidence = await api("/api/reports/evidence?" + params.toString());
+
+  const html = buildEvidencePdfHtml(evidence);
+  const win = window.open("", "_blank");
+  win.document.write(html);
+  win.document.close();
+}
   </script>
 </body>
 </html>
