@@ -917,10 +917,10 @@
 
           <div class="grid two">
             <div class="card">
-              <h3>Weekly Activity Trend</h3>
+              <h3>Sampled Activity Trend</h3>
               <div id="activityChart" class="chart"></div>
               <div class="footer-note">
-                This chart shows total logged calls by day in the selected week. It helps determine whether activity
+                This chart shows sampled logged calls by day from the lifecycle/report dataset and may not equal the full KV count total. It helps determine whether activity
                 is consistent enough to support lifecycle thresholds instead of being clustered into isolated bursts.
               </div>
             </div>
@@ -2059,7 +2059,7 @@
       el.textContent = status === "green" ? "SLA Healthy" : status === "yellow" ? "SLA At Risk" : "SLA Alert";
     }
 
-  function renderDashboardKpis() {
+function renderDashboardKpis() {
   const weekly = state.weekly || {};
   const counts = state.countSummary || {};
   const allTime = state.allTimeCountSummary || {};
@@ -2074,34 +2074,51 @@
   const uniqueEndpoints = Number(weekly.uniqueEndpoints || 0);
   const inventoryCount = Number(state.devices?.inventoryCount || 0);
 
-  document.getElementById("kpiWeeklyCalls").textContent = formatNumber(totalCalls);
-  document.getElementById("kpiAllTimeCalls").textContent = formatNumber(allTimeCalls);
-  document.getElementById("kpiSuccessRate").textContent = successRate + "%";
-  document.getElementById("kpiWriteCalls").textContent = formatNumber(writeCalls);
-  document.getElementById("kpiUniqueEndpoints").textContent = formatNumber(uniqueEndpoints);
-  document.getElementById("kpiInventoryCount").textContent = formatNumber(inventoryCount);
+  const kpiWeeklyCalls = document.getElementById("kpiWeeklyCalls");
+  const kpiAllTimeCalls = document.getElementById("kpiAllTimeCalls");
+  const kpiSuccessRate = document.getElementById("kpiSuccessRate");
+  const kpiWriteCalls = document.getElementById("kpiWriteCalls");
+  const kpiUniqueEndpoints = document.getElementById("kpiUniqueEndpoints");
+  const kpiInventoryCount = document.getElementById("kpiInventoryCount");
+  const kpiStageBadge = document.getElementById("kpiStageBadge");
+  const kpiStageReason = document.getElementById("kpiStageReason");
+  const callsProgress = document.getElementById("callsProgress");
+  const kpiWeeklyCallsMeta = document.getElementById("kpiWeeklyCallsMeta");
+  const kpiAllTimeCallsMeta = document.getElementById("kpiAllTimeCallsMeta");
 
-  const stageBadge = document.getElementById("kpiStageBadge");
-  stageBadge.textContent = stage;
-  stageBadge.className = "badge stage-" + stage;
+  if (kpiWeeklyCalls) kpiWeeklyCalls.textContent = formatNumber(totalCalls);
+  if (kpiAllTimeCalls) kpiAllTimeCalls.textContent = formatNumber(allTimeCalls);
+  if (kpiSuccessRate) kpiSuccessRate.textContent = successRate + "%";
+  if (kpiWriteCalls) kpiWriteCalls.textContent = formatNumber(writeCalls);
+  if (kpiUniqueEndpoints) kpiUniqueEndpoints.textContent = formatNumber(uniqueEndpoints);
+  if (kpiInventoryCount) kpiInventoryCount.textContent = formatNumber(inventoryCount);
 
-  document.getElementById("kpiStageReason").textContent = stageReason;
+  if (kpiStageBadge) {
+    kpiStageBadge.textContent = stage;
+    kpiStageBadge.className = "badge stage-" + stage;
+  }
+
+  if (kpiStageReason) kpiStageReason.textContent = stageReason;
 
   const progress = Math.min((totalCalls / 7600) * 100, 100);
-  document.getElementById("callsProgress").style.width = progress + "%";
+  if (callsProgress) callsProgress.style.width = progress + "%";
 
   const rangeText =
     (counts.startDate || "start") + " to " + (counts.endDate || "today");
 
-  document.getElementById("kpiWeeklyCallsMeta").textContent =
-    rangeText +
-    " | Target 7,600 | " +
-    progress.toFixed(1) + "% achieved | Remaining: " +
-    formatNumber(counts.callsRemainingToAdopt || 0);
+  if (kpiWeeklyCallsMeta) {
+    kpiWeeklyCallsMeta.textContent =
+      rangeText +
+      " | Target 7,600 | " +
+      progress.toFixed(1) + "% achieved | Remaining: " +
+      formatNumber(counts.callsRemainingToAdopt || 0);
+  }
 
-  document.getElementById("kpiAllTimeCallsMeta").textContent =
-    "First seen: " + (allTime.firstSeen || "-") +
-    " | Last seen: " + (allTime.lastSeen || "-");
+  if (kpiAllTimeCallsMeta) {
+    kpiAllTimeCallsMeta.textContent =
+      "First seen: " + (allTime.firstSeen || "-") +
+      " | Last seen: " + (allTime.lastSeen || "-");
+  }
 
   document.getElementById("statGet").textContent = formatNumber(methods.GET || 0);
   document.getElementById("statPost").textContent = formatNumber(methods.POST || 0);
@@ -2111,26 +2128,27 @@
   updateRAG();
   renderSparklines();
 }
-    function updateRAG() {
-      const weekly = state.weekly || {};
-      const total = Number(weekly.totalCalls || 0);
-      const success = Number(weekly.successRate || 0);
+ function updateRAG() {
+  const counts = state.countSummary || {};
+  const weekly = state.weekly || {};
+  const total = Number(counts.totalCalls || 0);
+  const success = Number(weekly.successRate || 0);
 
-      let css = "pill rag-red";
-      let label = "Critical";
+  let css = "pill rag-red";
+  let label = "Critical";
 
-      if (total >= 7500 && success >= 95) {
-        css = "pill rag-green";
-        label = "Healthy";
-      } else if (total >= 5000 && success >= 85) {
-        css = "pill rag-yellow";
-        label = "At Risk";
-      }
+  if (total >= 7600 && success >= 95) {
+    css = "pill rag-green";
+    label = "Healthy";
+  } else if (total >= 5000 && success >= 85) {
+    css = "pill rag-yellow";
+    label = "At Risk";
+  }
 
-      const el = document.getElementById("ragStatus");
-      el.className = css;
-      el.textContent = label;
-    }
+  const el = document.getElementById("ragStatus");
+  el.className = css;
+  el.textContent = label;
+}
 
     function renderStatusCodeChips() {
       const wrap = document.getElementById("statusCodeChips");
