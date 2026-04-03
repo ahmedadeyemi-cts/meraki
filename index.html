@@ -858,6 +858,7 @@
             <select id="customerFilter" class="select"></select>
             <select id="dashboardOrgFilter" class="select"></select>
             <input id="weekStart" class="input" type="date" />
+            <input id="weekEnd" class="input" type="date" />
             <label class="checkbox-wrap"><input id="forceLiveToggle" type="checkbox" /> Force live run</label>
             <button id="btnRefreshDashboard" class="btn">Refresh Dashboard</button>
             <button id="btnRunNow" class="btn secondary">Run Selected Customer</button>
@@ -872,7 +873,13 @@
               <div class="progress"><span id="callsProgress"></span></div>
               <div class="sparkline-wrap" id="sparklineCallsWrap"></div>
             </div>
-
+            
+             <div class="card">
+              <div class="kpi-label">All Logged API Calls</div>
+              <div class="kpi-value" id="kpiAllTimeCalls">0</div>
+              <div class="kpi-meta" id="kpiAllTimeCallsMeta">All stored call logs in KV</div>
+              </div>
+            
             <div class="card">
               <div class="kpi-label">Success Rate</div>
               <div class="kpi-value" id="kpiSuccessRate">0%</div>
@@ -1564,6 +1571,7 @@
       selectedOrgId: "",
       weekly: null,
       countSummary: null,
+      allTimeCountSummary: null,
       lifecycle30: null,
       proof14: null,
       calls: [],
@@ -1681,13 +1689,21 @@
       });
     }
 
+   // function initializeWeekStart() {
+     // const now = new Date();
+    //  const day = now.getUTCDay();
+    //  const diff = day === 0 ? -6 : 1 - day;
+    //  now.setUTCDate(now.getUTCDate() + diff);
+    //  document.getElementById("weekStart").value = now.toISOString().slice(0, 10);
+  //  }
     function initializeWeekStart() {
-      const now = new Date();
-      const day = now.getUTCDay();
-      const diff = day === 0 ? -6 : 1 - day;
-      now.setUTCDate(now.getUTCDate() + diff);
-      document.getElementById("weekStart").value = now.toISOString().slice(0, 10);
-    }
+  const end = new Date();
+  const start = new Date();
+  start.setUTCDate(start.getUTCDate() - 29);
+
+  document.getElementById("weekStart").value = start.toISOString().slice(0, 10);
+  document.getElementById("weekEnd").value = end.toISOString().slice(0, 10);
+}
 
     function applyTheme(mode) {
       document.documentElement.classList.toggle("light", mode === "light");
@@ -1951,7 +1967,7 @@
   const customerId = state.selectedCustomerId || "";
   const orgId = state.selectedOrgId || "";
   const startDate = document.getElementById("weekStart").value || "";
-  const endDate = new Date().toISOString().slice(0, 10);
+  const endDate = document.getElementById("weekEnd").value || "";
 
   state.countSummary = await api(
     "/api/reports/counts?customerId=" + encodeURIComponent(customerId) +
@@ -1959,7 +1975,10 @@
     "&startDate=" + encodeURIComponent(startDate) +
     "&endDate=" + encodeURIComponent(endDate)
   );
-
+  state.allTimeCountSummary = await api(
+    "/api/reports/counts?customerId=" + encodeURIComponent(customerId) +
+    "&orgId=" + encodeURIComponent(orgId)
+  );
   state.weekly = await api(
     "/api/weekly?customerId=" + encodeURIComponent(customerId) +
     "&orgId=" + encodeURIComponent(orgId)
@@ -2040,12 +2059,14 @@
       el.textContent = status === "green" ? "SLA Healthy" : status === "yellow" ? "SLA At Risk" : "SLA Alert";
     }
 
-   function renderDashboardKpis() {
+  function renderDashboardKpis() {
   const weekly = state.weekly || {};
   const counts = state.countSummary || {};
+  const allTime = state.allTimeCountSummary || {};
   const methods = weekly.methods || {};
 
   const totalCalls = Number(counts.totalCalls || 0);
+  const allTimeCalls = Number(allTime.totalCalls || 0);
   const successRate = Number(weekly.successRate || 0);
   const stage = weekly.stage || "ONBOARD";
   const stageReason = weekly.reason || weekly.stageReason || "No lifecycle reasoning available.";
@@ -2054,6 +2075,7 @@
   const inventoryCount = Number(state.devices?.inventoryCount || 0);
 
   document.getElementById("kpiWeeklyCalls").textContent = formatNumber(totalCalls);
+  document.getElementById("kpiAllTimeCalls").textContent = formatNumber(allTimeCalls);
   document.getElementById("kpiSuccessRate").textContent = successRate + "%";
   document.getElementById("kpiWriteCalls").textContent = formatNumber(writeCalls);
   document.getElementById("kpiUniqueEndpoints").textContent = formatNumber(uniqueEndpoints);
@@ -2076,6 +2098,10 @@
     " | Target 7,600 | " +
     progress.toFixed(1) + "% achieved | Remaining: " +
     formatNumber(counts.callsRemainingToAdopt || 0);
+
+  document.getElementById("kpiAllTimeCallsMeta").textContent =
+    "First seen: " + (allTime.firstSeen || "-") +
+    " | Last seen: " + (allTime.lastSeen || "-");
 
   document.getElementById("statGet").textContent = formatNumber(methods.GET || 0);
   document.getElementById("statPost").textContent = formatNumber(methods.POST || 0);
