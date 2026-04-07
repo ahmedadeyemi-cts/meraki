@@ -1797,7 +1797,7 @@
       applyTheme(current === "dark" ? "light" : "dark");
     }
 
-  async function bootstrap() {
+  /* async function bootstrap() {
   try {
     await loadMe();
     startSessionTimer();
@@ -1805,6 +1805,18 @@
     await loadSnmpTargets();
     await handleRoute();
     await refreshDashboard();
+    await loadCronBanner();
+  } catch (error) {
+    alert("Initialization failed: " + error.message);
+  }
+}*/
+    async function bootstrap() {
+  try {
+    await loadMe();
+    startSessionTimer();
+    await loadCustomers();
+    await loadSnmpTargets();
+    await handleRoute();
     await loadCronBanner();
   } catch (error) {
     alert("Initialization failed: " + error.message);
@@ -2119,57 +2131,59 @@ state.weekly = await api(
   renderGovernanceAndExecutive();
 }*/
     async function refreshDashboard(preserveSearch = true) {
-  const customerId = state.selectedCustomerId || "";
-  const orgId = state.selectedOrgId || "";
-  const startDate = document.getElementById("weekStart").value || "";
-  const endDate = document.getElementById("weekEnd").value || "";
+  if (state.dashboardRefreshing) return;
+  state.dashboardRefreshing = true;
 
-  state.countSummary = await api(
-    "/api/reports/counts?customerId=" + encodeURIComponent(customerId) +
-    "&orgId=" + encodeURIComponent(orgId) +
-    "&startDate=" + encodeURIComponent(startDate) +
-    "&endDate=" + encodeURIComponent(endDate)
-  );
+  try {
+    const customerId = state.selectedCustomerId || "";
+    const orgId = state.selectedOrgId || "";
+    const startDate = document.getElementById("weekStart").value || "";
+    const endDate = document.getElementById("weekEnd").value || "";
 
-  state.allTimeCountSummary = await api(
-    "/api/reports/counts?customerId=" + encodeURIComponent(customerId) +
-    "&orgId=" + encodeURIComponent(orgId)
-  );
+    state.countSummary = await api(
+      "/api/reports/counts?customerId=" + encodeURIComponent(customerId) +
+      "&orgId=" + encodeURIComponent(orgId) +
+      "&startDate=" + encodeURIComponent(startDate) +
+      "&endDate=" + encodeURIComponent(endDate)
+    );
 
-  state.weekly = await api(
-    "/api/weekly?customerId=" + encodeURIComponent(customerId) +
-    "&orgId=" + encodeURIComponent(orgId)
-  );
+    state.allTimeCountSummary = await api(
+      "/api/reports/counts?customerId=" + encodeURIComponent(customerId) +
+      "&orgId=" + encodeURIComponent(orgId)
+    );
 
-  state.lifecycle30 = await api(
-    "/api/reports/lifecycle?days=30&customerId=" + encodeURIComponent(customerId) +
-    "&orgId=" + encodeURIComponent(orgId)
-  );
+    state.weekly = await api(
+      "/api/weekly?customerId=" + encodeURIComponent(customerId) +
+      "&orgId=" + encodeURIComponent(orgId)
+    );
 
-  const reportData = await api(
-    "/api/reports/calls?days=30&customerId=" + encodeURIComponent(customerId) +
-    "&orgId=" + encodeURIComponent(orgId) +
-    "&limit=100"
-  );
-  state.calls = reportData.items || [];
+    const reportData = await api(
+      "/api/reports/calls?days=30&customerId=" + encodeURIComponent(customerId) +
+      "&orgId=" + encodeURIComponent(orgId) +
+      "&limit=100"
+    );
+    state.calls = reportData.items || [];
 
-  if (!preserveSearch) {
-    document.getElementById("globalSearch").value = "";
+    if (!preserveSearch) {
+      document.getElementById("globalSearch").value = "";
+    }
+
+    applyGlobalSearch(false);
+    analyzeTopFailingEndpoints();
+    computeSlaState();
+    renderDashboardKpis();
+    renderActivityChart();
+    renderRecentCallsTable();
+    renderCustomerSummary();
+    renderExecutiveSnapshot();
+    renderStatusCodeChips();
+    renderSlaInsights();
+    renderTopFailingEndpoints();
+    renderExtendedNarratives();
+    renderGovernanceAndExecutive();
+  } finally {
+    state.dashboardRefreshing = false;
   }
-
-  applyGlobalSearch(false);
-  analyzeTopFailingEndpoints();
-  computeSlaState();
-  renderDashboardKpis();
-  renderActivityChart();
-  renderRecentCallsTable();
-  renderCustomerSummary();
-  renderExecutiveSnapshot();
-  renderStatusCodeChips();
-  renderSlaInsights();
-  renderTopFailingEndpoints();
-  renderExtendedNarratives();
-  renderGovernanceAndExecutive();
 }
     function analyzeTopFailingEndpoints() {
       const map = {};
