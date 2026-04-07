@@ -2071,10 +2071,17 @@
     "/api/reports/counts?customerId=" + encodeURIComponent(customerId) +
     "&orgId=" + encodeURIComponent(orgId)
   );
-  state.weekly = await api(
-    "/api/weekly?customerId=" + encodeURIComponent(customerId) +
-    "&orgId=" + encodeURIComponent(orgId)
-  );
+  state.rangeSummary = await api(
+  "/api/reports/lifecycle?customerId=" + encodeURIComponent(customerId) +
+  "&orgId=" + encodeURIComponent(orgId) +
+  "&startDate=" + encodeURIComponent(startDate) +
+  "&endDate=" + encodeURIComponent(endDate)
+);
+
+state.weekly = await api(
+  "/api/weekly?customerId=" + encodeURIComponent(customerId) +
+  "&orgId=" + encodeURIComponent(orgId)
+);
 
   state.lifecycle30 = await api(
     "/api/reports/lifecycle?days=30&customerId=" + encodeURIComponent(customerId) +
@@ -2131,7 +2138,7 @@
     }
 
     function computeSlaState() {
-      const w = state.weekly || {};
+      const w = state.rangeSummary || {};
       const success = Number(w.successRate || 0);
       const reasons = [];
 
@@ -2152,19 +2159,18 @@
     }
 
 function renderDashboardKpis() {
-  const weekly = state.weekly || {};
-  const counts = state.countSummary || {};
-  const allTime = state.allTimeCountSummary || {};
-  const methods = weekly.methods || {};
+  const range = state.rangeSummary || {};
+const counts = state.countSummary || {};
+const allTime = state.allTimeCountSummary || {};
+const methods = range.methods || {};
 
-  const totalCalls = Number(counts.totalCalls || 0);
-  const allTimeCalls = Number(allTime.totalCalls || 0);
-  const successRate = Number(weekly.successRate || 0);
-  const stage = weekly.stage || "ONBOARD";
-  const stageReason = weekly.reason || weekly.stageReason || "No lifecycle reasoning available.";
-  const writeCalls = Number(methods.POST || 0) + Number(methods.PUT || 0) + Number(methods.DELETE || 0);
-  const uniqueEndpoints = Number(weekly.uniqueEndpoints || 0);
-  const inventoryCount = Number(state.devices?.inventoryCount || 0);
+const totalCalls = Number(counts.totalCalls || 0);
+const allTimeCalls = Number(allTime.totalCalls || 0);
+const successRate = Number(range.successRate || 0);
+const stage = range.stage || "ONBOARD";
+const stageReason = range.reason || range.stageReason || "No lifecycle reasoning available.";
+const writeCalls = Number(methods.POST || 0) + Number(methods.PUT || 0) + Number(methods.DELETE || 0);
+const uniqueEndpoints = Number(range.uniqueEndpoints || 0);
 
   const kpiWeeklyCalls = document.getElementById("kpiWeeklyCalls");
   const kpiAllTimeCalls = document.getElementById("kpiAllTimeCalls");
