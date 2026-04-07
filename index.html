@@ -2158,6 +2158,11 @@ state.weekly = await api(
       "&orgId=" + encodeURIComponent(orgId)
     );
 
+    state.devices = await api(
+      "/api/reports/devices?customerId=" + encodeURIComponent(customerId) +
+      "&orgId=" + encodeURIComponent(orgId)
+    );
+
     const reportData = await api(
       "/api/reports/calls?days=30&customerId=" + encodeURIComponent(customerId) +
       "&orgId=" + encodeURIComponent(orgId) +
@@ -2315,7 +2320,7 @@ const uniqueEndpoints = Number(range.uniqueEndpoints || 0);
   el.textContent = label;
 }
 
-    function renderStatusCodeChips() {
+    /*function renderStatusCodeChips() {
       const wrap = document.getElementById("statusCodeChips");
       const counts = (state.weekly && state.weekly.statusCounts) || {};
       const reasons = (state.weekly && state.weekly.statusReasons) || {};
@@ -2332,9 +2337,35 @@ const uniqueEndpoints = Number(range.uniqueEndpoints || 0);
         if (String(code).startsWith("4") || String(code).startsWith("5") || String(code) === "0") cls = "bad";
         return `<div class="chip ${cls}">${escapeHtml(code)} · ${formatNumber(count)} · ${escapeHtml(reasons[code] || "")}</div>`;
       }).join("");
-    }
+    }*/
+    function renderStatusCodeChips() {
+  const calls = Array.isArray(state.calls) ? state.calls : [];
+  const statusWrap = document.getElementById("statusCodeChips");
+  if (!statusWrap) return;
 
-    function renderActivityChart() {
+  const methods = { GET: 0, POST: 0, PUT: 0, DELETE: 0 };
+  const statuses = {};
+
+  for (const item of calls) {
+    const method = String(item.method || "").toUpperCase();
+    if (methods[method] !== undefined) methods[method] += 1;
+
+    const status = String(item.status || "0");
+    statuses[status] = (statuses[status] || 0) + 1;
+  }
+
+  document.getElementById("statGet").textContent = methods.GET || 0;
+  document.getElementById("statPost").textContent = methods.POST || 0;
+  document.getElementById("statPut").textContent = methods.PUT || 0;
+  document.getElementById("statDelete").textContent = methods.DELETE || 0;
+
+  const ordered = Object.entries(statuses).sort((a, b) => a[0].localeCompare(b[0]));
+  statusWrap.innerHTML = ordered.length
+    ? ordered.map(([code, count]) => `<span class="chip">${code} · ${count}</span>`).join("")
+    : '<div class="empty">No status data in sampled calls.</div>';
+}
+
+   /* function renderActivityChart() {
       const chart = document.getElementById("activityChart");
       const daily = (state.weekly && state.weekly.daily) || {};
       const days = Object.keys(daily).sort();
@@ -2357,7 +2388,38 @@ const uniqueEndpoints = Number(range.uniqueEndpoints || 0);
           </div>
         `;
       }).join("");
-    }
+    }*/
+    function renderActivityChart() {
+  const calls = Array.isArray(state.calls) ? state.calls : [];
+  const el = document.getElementById("activityChart");
+  if (!el) return;
+
+  if (!calls.length) {
+    el.innerHTML = '<div class="empty">No sampled activity available.</div>';
+    return;
+  }
+
+  const byDay = {};
+  for (const item of calls) {
+    const day = String(item.timestamp || "").slice(0, 10);
+    byDay[day] = (byDay[day] || 0) + 1;
+  }
+
+  const rows = Object.entries(byDay).sort((a, b) => a[0].localeCompare(b[0]));
+  const max = Math.max(...rows.map(([, count]) => count), 1);
+
+  el.innerHTML = `
+    <div class="bar-grid">
+      ${rows.map(([day, count]) => `
+        <div class="bar-col">
+          <div class="bar" style="height:${Math.max(12, Math.round((count / max) * 220))}px"></div>
+          <div class="bar-label">${day.slice(5)}</div>
+          <div class="bar-value">${count}</div>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
 
     function renderSparklines() {
       const daily = (state.weekly && state.weekly.daily) || {};
@@ -2434,7 +2496,7 @@ const uniqueEndpoints = Number(range.uniqueEndpoints || 0);
       wrap.innerHTML = `<div class="table-wrap"><table><thead><tr><th>Timestamp</th><th>Customer</th><th>Org</th><th>Method</th><th>Path</th><th>Status</th><th>Latency</th><th>Preview</th></tr></thead><tbody>${rows}</tbody></table></div>`;
       wrap.querySelectorAll("tr.clickable").forEach((row, idx) => row.addEventListener("click", () => openCallModal(sortedRows[idx])));
     }
-
+/*
     function renderCustomerSummary() {
       const summary = document.getElementById("customerSummary");
       const customerId = state.selectedCustomerId;
@@ -2465,7 +2527,26 @@ const uniqueEndpoints = Number(range.uniqueEndpoints || 0);
       `;
       renderOrgMapTable();
     }
+    */
+    function renderCustomerSummary() {
+  const wrap = document.getElementById("customerSummary");
+  if (!wrap) return;
 
+  const customer = (state.customers || []).find(
+    c => String(c.customerId) === String(state.selectedCustomerId)
+  );
+  const devices = state.devices || {};
+
+  wrap.innerHTML = `
+    <div><strong>Name:</strong> ${escapeHtml(customer?.customerName || customer?.name || "Unknown")}</div>
+    <div><strong>Customer ID:</strong> ${escapeHtml(state.selectedCustomerId || "-")}</div>
+    <div><strong>Selected Org:</strong> ${escapeHtml(state.selectedOrgId || "-")}</div>
+    <div><strong>Inventory Count:</strong> ${formatNumber(devices.inventoryCount || 0)}</div>
+    <div><strong>Serial Count:</strong> ${formatNumber((devices.serialNumbers || []).length || 0)}</div>
+    <div><strong>Top Insight:</strong> ${escapeHtml((devices.insights || [])[0] || "No device insight available.")}</div>
+  `;
+}
+/*
     function renderExecutiveSnapshot() {
       const w = state.lifecycle30 || state.weekly || {};
       const p = state.proof14 || {};
@@ -2480,7 +2561,23 @@ const uniqueEndpoints = Number(range.uniqueEndpoints || 0);
         <div><strong>Reason:</strong> ${escapeHtml(w.reason || w.stageReason || "No lifecycle rationale available.")}</div>
       `;
     }
+*/
+    function renderExecutiveSnapshot() {
+  const wrap = document.getElementById("executiveSnapshot");
+  if (!wrap) return;
 
+  const counts = state.countSummary || {};
+  const allTime = state.allTimeCountSummary || {};
+  const weekly = state.weekly || {};
+
+  wrap.innerHTML = `
+    <div><strong>Selected Range Calls:</strong> ${formatNumber(counts.totalCalls || 0)}</div>
+    <div><strong>All Logged Calls:</strong> ${formatNumber(allTime.totalCalls || 0)}</div>
+    <div><strong>Weekly Success Rate:</strong> ${formatNumber(weekly.successRate || 0)}%</div>
+    <div><strong>Lifecycle Stage:</strong> ${escapeHtml(weekly.stage || "ONBOARD")}</div>
+    <div><strong>Unique Endpoints:</strong> ${formatNumber(weekly.uniqueEndpoints || 0)}</div>
+  `;
+}
     function renderSlaInsights() {
       const wrap = document.getElementById("slaInsights");
       const reasons = state.sla.reasons || [];
