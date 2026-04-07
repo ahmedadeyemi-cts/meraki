@@ -2055,7 +2055,7 @@
 }
 }
 
-    async function refreshDashboard(preserveSearch = true) {
+  /*  async function refreshDashboard(preserveSearch = true) {
   const customerId = state.selectedCustomerId || "";
   const orgId = state.selectedOrgId || "";
   const startDate = document.getElementById("weekStart").value || "";
@@ -2117,8 +2117,60 @@ state.weekly = await api(
   renderTopFailingEndpoints();
   renderExtendedNarratives();
   renderGovernanceAndExecutive();
-}
+}*/
+    async function refreshDashboard(preserveSearch = true) {
+  const customerId = state.selectedCustomerId || "";
+  const orgId = state.selectedOrgId || "";
+  const startDate = document.getElementById("weekStart").value || "";
+  const endDate = document.getElementById("weekEnd").value || "";
 
+  state.countSummary = await api(
+    "/api/reports/counts?customerId=" + encodeURIComponent(customerId) +
+    "&orgId=" + encodeURIComponent(orgId) +
+    "&startDate=" + encodeURIComponent(startDate) +
+    "&endDate=" + encodeURIComponent(endDate)
+  );
+
+  state.allTimeCountSummary = await api(
+    "/api/reports/counts?customerId=" + encodeURIComponent(customerId) +
+    "&orgId=" + encodeURIComponent(orgId)
+  );
+
+  state.weekly = await api(
+    "/api/weekly?customerId=" + encodeURIComponent(customerId) +
+    "&orgId=" + encodeURIComponent(orgId)
+  );
+
+  state.lifecycle30 = await api(
+    "/api/reports/lifecycle?days=30&customerId=" + encodeURIComponent(customerId) +
+    "&orgId=" + encodeURIComponent(orgId)
+  );
+
+  const reportData = await api(
+    "/api/reports/calls?days=30&customerId=" + encodeURIComponent(customerId) +
+    "&orgId=" + encodeURIComponent(orgId) +
+    "&limit=100"
+  );
+  state.calls = reportData.items || [];
+
+  if (!preserveSearch) {
+    document.getElementById("globalSearch").value = "";
+  }
+
+  applyGlobalSearch(false);
+  analyzeTopFailingEndpoints();
+  computeSlaState();
+  renderDashboardKpis();
+  renderActivityChart();
+  renderRecentCallsTable();
+  renderCustomerSummary();
+  renderExecutiveSnapshot();
+  renderStatusCodeChips();
+  renderSlaInsights();
+  renderTopFailingEndpoints();
+  renderExtendedNarratives();
+  renderGovernanceAndExecutive();
+}
     function analyzeTopFailingEndpoints() {
       const map = {};
       state.calls.forEach(call => {
