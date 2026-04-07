@@ -2034,13 +2034,27 @@
       });
     }
 
-    async function onCustomerSelectionChange(e) {
+   /*  async function onCustomerSelectionChange(e) {
       state.selectedCustomerId = e.target.value || "";
       state.selectedOrgId = "";
       syncCustomerFilters();
       syncOrgFilters();
       await fullRefresh();
-    }
+    } */
+    async function onCustomerSelectionChange(e) {
+  state.selectedCustomerId = e.target.value || "";
+  state.selectedOrgId = "";
+  syncCustomerFilters();
+  syncOrgFilters();
+
+  if (state.currentRoute === "dashboard") return await refreshDashboard();
+  if (state.currentRoute === "reports") return await refreshReports();
+  if (state.currentRoute === "devices") return await loadDevicesPage(false);
+  if (state.currentRoute === "topology") return await loadTopologyPage(false);
+  if (state.currentRoute === "architecture") return await loadArchitecturePage();
+
+  await loadCronBanner();
+}
 
     async function onOrgSelectionChange(e) {
       state.selectedOrgId = e.target.value || "";
